@@ -72,25 +72,6 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
         
         const tenantHost = window.location.hostname.split(".")[0];
         const headers = { 'Content-Type': 'application/json', 'x-tenant': tenantHost };
-  
-        // if (isEdit) {
-          
-        //   response = await axios.put(`http://localhost:5000/api/user/${initialValues._id}`, formData, { headers });
-        //   console.log('User updated:', response.data);
-
-        //   if (response.status === 201 || response.status === 200) {
-        //     onClose();
-        //   }
-          
-        // } else {
-          
-        //   response = await axios.post('http://localhost:5000/api/user', formData, { headers });
-        //   console.log('User added:', response.data);
-
-        //   if (response.status === 201 || response.status === 200) {
-        //     onClose();
-        //   }
-        // }
 
         let response;
         if (isEdit) {

@@ -13,7 +13,7 @@ const Workspace = () => {
 
   const tabs = [
     { name: "Dashboard", icon: <RxDashboard />, component: Dashboard, canAccess: true},
-    { name: "Document", icon: <IoDocumentAttachOutline />, component: FileManagement, canAccess: user?.permissions?.includes("m_documents")  },
+    { name: "Document", icon: <IoDocumentAttachOutline />, component: FileManagement, canAccess: user?.permissions?.includes("m_document")  },
     { name: "Notification", icon: <IoNotificationsOutline />, component: NotificationTab, canAccess: true},
   ].filter(tab => tab.canAccess);;
 
