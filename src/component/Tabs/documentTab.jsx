@@ -106,8 +106,8 @@ const FileManagement = () => {
   };
 
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files); // Convert FileList to array
-    setNewFile(selectedFiles); // Store selected files for preview
+    const selectedFiles = Array.from(e.target.files);
+    setNewFile((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
 
   // Handle file deletion
@@ -234,7 +234,7 @@ const FileManagement = () => {
         />
         <button
           onClick={handleFileUpload}
-          disabled={newFile.length === 0}
+          disabled={newFile.length === 0 || newFile.length > 5}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
         >
           <UploadCloud className="inline-block w-5 h-5 mr-2" />
