@@ -226,8 +226,8 @@ const FileManagement = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto mt-10">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold mb-6">Document Management</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-semibold">Document Management</h1>
       </div>
 
       {/* Upload Section */}
@@ -376,12 +376,12 @@ const FileManagement = () => {
                       href={file.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500"
+                      className="text-blue-500 text-sm"
                     >
                       {file.originalName}
                     </a>
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center text-sm">
                     {file.type === "application/pdf" ? "PDF" : file.type}
                   </td>
                   <td className="px-4 py-2 text-center flex justify-center items-center">
@@ -394,15 +394,15 @@ const FileManagement = () => {
                       />
                     )}
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center text-sm">
                     {file.size < 1024
                       ? `${file.size} B`
                       : file.size < 1024 * 1024
                       ? `${(file.size / 1024).toFixed(1)} KB`
                       : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
                   </td>
-                  <td className="px-4 py-2 text-center">{file.tag}</td>
-                  <td className="px-4 py-2 text-center space-x-4">
+                  <td className="px-4 py-2 text-center text-sm">{file.tag}</td>
+                  <td className="px-4 py-2 text-center space-x-4 text-sm">
                     <button
                       onClick={() => {
                         setSelectedFile(file);

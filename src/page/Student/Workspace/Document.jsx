@@ -345,7 +345,9 @@ const FileManagement = () => {
                     }
                   />
                 </th>
-                <th className="px-4 py-2 text-left">File Name</th>
+                <th className="px-4 py-2 text-left w-96">File Name</th>
+                <th className="px-4 py-2 text-center">Type</th>
+                <th className="px-4 py-2 text-center">Size</th>
                 <th className="px-4 py-2 text-center">Tag</th>
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
@@ -360,18 +362,28 @@ const FileManagement = () => {
                       onChange={() => toggleSelection(file._id)}
                     />
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 w-96">
                     <a
                       href={file.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500"
+                      className="text-blue-500 text-sm"
                     >
                       {file.originalName}
                     </a>
                   </td>
-                  <td className="px-4 py-2 text-center">{file.tag}</td>
-                  <td className="px-4 py-2 text-center space-x-4">
+                  <td className="px-4 py-2 text-center text-sm">
+                    {file.type === "application/pdf" ? "PDF" : file.type}
+                  </td>
+                  <td className="px-4 py-2 text-center text-sm">
+                    {file.size < 1024
+                      ? `${file.size} B`
+                      : file.size < 1024 * 1024
+                      ? `${(file.size / 1024).toFixed(1)} KB`
+                      : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
+                  </td>
+                  <td className="px-4 py-2 text-center text-sm">{file.tag}</td>
+                  <td className="px-4 py-2 text-center space-x-4 text-sm">
                     <button
                       onClick={() => {
                         setSelectedFile(file);

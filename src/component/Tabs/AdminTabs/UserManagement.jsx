@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEye, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
+import { Search } from 'lucide-react'
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import { FaLayerGroup } from "react-icons/fa";
 
@@ -162,8 +163,11 @@ const UserManagement = () => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">User List</h1>
-        <div className="flex space-x-4">
+        <h1 className="text-xl font-semibold">User Management</h1>
+      </div>
+
+      <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
+        <div className="flex space-x-2">
           <input
             type="file"
             accept=".xlsx, .xls"
@@ -172,7 +176,7 @@ const UserManagement = () => {
             id="fileUpload"
           />
           <label htmlFor="fileUpload" className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600">
-            <FaUpload className="inline-block mr-2" /> Upload Excel
+            <FaUpload className="inline-block mr-2" /> Bulk Upload
           </label>
 
           <button
@@ -182,32 +186,25 @@ const UserManagement = () => {
             + Add User
           </button>
         </div>
-      </div>
-
-      {/* {loading && (
-        <div className="text-center py-4">
-          <span className="text-blue-500 font-semibold">Processing file... Please wait.</span>
+        <div className="relative w-72">
+          <input
+            type="text"
+            placeholder="Search files..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                fetchUsers(1, usersPerPage);
+              }
+            }}
+            className="border p-2 rounded w-full"
+          />
+          <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
         </div>
-      )} */}
-
-      <div className="flex items-center mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="border rounded-lg px-4 py-2 w-full"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button
-          className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          onClick={handleSearch} // Call search function when clicked
-        >
-          Search
-        </button>
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center h-52">
             {/* Animated Spinner */}
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
