@@ -19,37 +19,36 @@ const FileManagement = () => {
   const [toast, setToast] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-    
-  
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+
 
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
 
-
   // Fetch files from backend
   useEffect(() => {
     getFileByUser()
-    // const savedFiles = JSON.parse(localStorage.getItem("files")) || [];
-    // if (Array.isArray(savedFiles)) {
-    //   setFiles(savedFiles);
-    // } else {
-    //   setFiles([]); // Ensure it's always an array
-    // }
   }, []);
 
-  const getFileByUser = async () => {
-    setLoading(true);  // Show loading immediately when search is triggered
+  // ----------------------------- GET FILES API-----------------------------------
+
+  const getFileByUser = async (page = 1, limit = ITEMS_PER_PAGE) => {
+    setLoading(true);
     try {
 
       setTimeout(async () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/file`, {
+            params: { page, limit, search: searchTerm || undefined },
             headers: { 
               "Authorization": `Bearer ${token}`,
               "x-tenant": subdomain 
             },
           });
-        setFiles(response.data);
+          setFiles(Array.isArray(response.data.data) ? response.data.data : []);
+          setTotalPages(response.data.pages);
+          setCurrentPage(page);
         } catch (error) {
           console.error("Error fetching users:", error);
         }
@@ -60,7 +59,13 @@ const FileManagement = () => {
       setLoading(false);
     }
   }
+
+  const handlePageChange = (pageNumber) => {
+    getFileByUser(pageNumber);
+    setCurrentPage(pageNumber);
+  };
   
+  // ----------------------------- UPLOAD FILES API -----------------------------------
 
   // Handle file upload
   const handleFileUpload = async () => {
@@ -78,9 +83,9 @@ const FileManagement = () => {
     formData.append("tag", tags || "Untagged"); // 
 
     // Properly log FormData contents
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": ", pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": ", pair[1]);
+    // }
   
     try {
       const response = await axios.post("http://localhost:5000/api/file/upload", formData, {
@@ -105,18 +110,40 @@ const FileManagement = () => {
     }
   };
 
+  // Add file to preview listing
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setNewFile((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
 
+  // Handle drag-and-drop
+  const handleDrop = (e) => {
+    e.preventDefault(); // Prevent default browser behavior
+  
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    if (droppedFiles.length > 0) {
+      setNewFile((prevFiles) => [...prevFiles, ...droppedFiles]); // Append new files
+    }
+  };
+
+  const handleRemoveFile = (index) => {
+    setNewFile((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  // ----------------------------- DELETE FILE API (ONE FILE ONLY) -----------------------------------
+
   // Handle file deletion
   const deleteFile = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/file/delete/${id}`);
+      const response = await axios.delete(`http://localhost:5000/api/file/delete/${id}`, {
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "x-tenant": subdomain 
+        },
+      });
   
       if (response.status === 200 || response.status === 204) {
-        getFileByUser();
+        getFileByUser(currentPage);
         showToast("Successfully deleted!", "bg-red-500", "alert");
       } else {
         console.error("Failed to delete file: Unexpected response", response);
@@ -125,82 +152,123 @@ const FileManagement = () => {
       console.error("Error deleting file:", error);
       alert("Failed to delete file. Please try again.");
     }finally{
+      setNewFile([]);
       handleRemoveFile();
       setTags("");
       setIsDeleteModalOpen(false);
     }
   };
 
-  // Handle drag-and-drop
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file) setNewFile(file);
-  };
+  // ----------------------------- DELETE FILES API (MULTIPLE FILE) -----------------------------------
 
-  const handleDragOver = (event) => event.preventDefault();
-
-  const handleRemoveFile = (index) => {
-    setNewFile((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
-  // Filter and sort files
-  const filteredFiles = files.filter((file) =>
-    //console.log("file: " +file)
-    file.originalName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const sortedFiles = filteredFiles.sort((a, b) => {
-    if (a.name === b.name) return a.id - b.id;
-    return sortOrder === "asc"
-      ? a.name.localeCompare(b.name)
-      : b.name.localeCompare(a.name);
-  });
-
-  // Pagination
-  const totalPages = Math.ceil(sortedFiles.length / ITEMS_PER_PAGE);
-  const paginatedFiles = sortedFiles.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
-  const changePage = (direction) => {
-    setCurrentPage((prev) =>
-      direction === "next" && currentPage < totalPages ? prev + 1 :
-      direction === "prev" && currentPage > 1 ? prev - 1 : prev
+  // Select checkboxes for selection of files for multiple files delete
+  const toggleSelection = (fileId) => {
+    setSelectedFiles((prevSelected) =>
+      prevSelected.includes(fileId)
+        ? prevSelected.filter((id) => id !== fileId)
+        : [...prevSelected, fileId]
     );
   };
+
+  // Trigger deleteSelectedFiles function when button is clicked. 
+  const handleDeleteSelected = () => {
+    if (selectedFiles.length > 0) {
+      deleteSelectedFiles(selectedFiles);
+      setSelectedFiles([]); // Clear selection after deletion
+    }
+  };
+
+  const deleteSelectedFiles = async (fileIds) => {
+    if (!Array.isArray(fileIds) || fileIds.length === 0) {
+      console.error("Invalid fileIds:", fileIds);
+      return;
+    }
+
+    const data = {
+      fileIds : fileIds
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/file/delete-multiple", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+          "x-tenant": subdomain 
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.status === 200 || response.status === 204) {
+        getFileByUser(currentPage);
+        showToast("Successfully deleted!", "bg-red-500", "alert");
+      } else {
+        console.error("Failed to delete file: Unexpected response -> ", response);
+      }
+  
+    } catch (error) {
+      console.error("Error deleting files:", error);
+    } finally{
+      handleRemoveFile();
+      setNewFile([]);
+      setTags("");
+      setIsDeleteModalOpen(false);
+    }
+  };    
+
+  // ----------------------------- SHOW TOAST -----------------------------------
 
   const showToast = (message, color, status) => {
     setToast({ message, color, status });
     setTimeout(() => setToast(null), 3000);
   };
+  
 
   return (
-    <div className="max-w-screen-lg mx-auto mt-10" onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div className="max-w-screen-lg mx-auto mt-10">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold mb-6">Document Management</h2>
-        <StorageBar totalStorage={100} usedStorage={60} />
-        <button className="bg-green-500 py-2 px-4 rounded-md">Upgrade Storage</button>
       </div>
 
       {/* Upload Section */}
-      <div
-        className="border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center mb-6 cursor-pointer"
-        onClick={() => fileInputRef.current.click()}
-      >
-        <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"
-          multiple
-        />
+      <div className="flex w-full space-x-4">
+        {/* File Upload Box (7/12 width) */}
+        <div className="w-7/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
+            onClick={() => fileInputRef.current.click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}>
+          <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+            multiple
+          />
+        </div>
+
+        {/* Tag Input and Upload Button (5/12 width) */}
+        <div className="w-5/12 flex flex-col items-center space-y-4  rounded-lg p-6">
+          <input
+            type="text"
+            placeholder="Enter tag (optional)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+          <button
+            onClick={handleFileUpload}
+            disabled={newFile.length === 0 || newFile.length > 5}
+            className="bg-blue-500 h-10 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50 flex items-center w-full justify-center"
+          >
+            <UploadCloud className="w-5 h-5 mr-2" />
+            Upload
+          </button>
+        </div>
       </div>
 
       {newFile.length > 0 && (
-        <div className="space-y-3 mb-6">
+        <div className="space-y-3 mb-6 mt-4">
           {newFile.map((file, index) => (
             <div
               key={index}
@@ -224,32 +292,28 @@ const FileManagement = () => {
         </div>
       )}
 
-      <div className="flex items-center space-x-4 mb-20">
-        <input
-          type="text"
-          placeholder="Enter tag (optional)"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          className="border p-2 rounded flex-1"
-        />
-        <button
-          onClick={handleFileUpload}
-          disabled={newFile.length === 0 || newFile.length > 5}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-        >
-          <UploadCloud className="inline-block w-5 h-5 mr-2" />
-          Upload
-        </button>
-      </div>
-
       {/* Search & Sort */}
-      <div className="flex justify-end space-x-4 mb-4 w-full">
+      <div className="flex justify-end space-x-4 mb-4 mt-20 w-full">
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={handleDeleteSelected}
+            className="bg-red-500 text-white px-4 py-2 rounded disabled:opacity-50"
+            disabled={selectedFiles.length === 0}
+          >
+            Delete Files
+          </button>
+        </div>
         <div className="relative w-96">
           <input
             type="text"
             placeholder="Search files..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                getFileByUser(1, ITEMS_PER_PAGE);
+              }
+            }}
             className="border p-2 rounded w-full"
           />
           <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
@@ -264,36 +328,86 @@ const FileManagement = () => {
       </div>
 
       {/* File Listing */}
-      {loading ? ( 
+      {loading ? (
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      ) :
-      ( <div className="bg-white shadow-md rounded p-4 overflow-x-auto">
+      ) : (
+        <div className="bg-white shadow-md rounded p-4 overflow-x-auto">
           <table className="min-w-full table-auto">
             <thead>
               <tr className="border-b">
-                <th className="px-4 py-2 text-left">File Name</th>
+                <th className="px-4 py-2 text-left">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedFiles(files.map((file) => file._id));
+                      } else {
+                        setSelectedFiles([]);
+                      }
+                    }}
+                    checked={
+                      selectedFiles.length === files.length &&
+                      files.length > 0
+                    }
+                  />
+                </th>
+                <th className="px-4 py-2 text-left w-96">File Name</th>
+                <th className="px-4 py-2 text-center">Type</th>
+                <th className="px-4 py-2 text-center">User</th>
+                <th className="px-4 py-2 text-center">Size</th>
                 <th className="px-4 py-2 text-center">Tag</th>
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {paginatedFiles.map((file) => (
+              {files.map((file) => (
                 <tr key={file._id} className="border-b">
-                  <td className="px-4 py-2">
-                    <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                  <td className="px-4 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedFiles.includes(file._id)}
+                      onChange={() => toggleSelection(file._id)}
+                    />
+                  </td>
+                  <td className="px-4 py-2 w-96">
+                    <a
+                      href={file.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500"
+                    >
                       {file.originalName}
                     </a>
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    {file.type === "application/pdf" ? "PDF" : file.type}
+                  </td>
+                  <td className="px-4 py-2 text-center flex justify-center items-center">
+                    {file.uploadedBy?.profilePictureUrl && (
+                      <img
+                        src={file.uploadedBy.profilePictureUrl}
+                        alt="Profile Photo"
+                        className="w-8 h-8 rounded-full"
+                        title={file.uploadedBy.name}
+                      />
+                    )}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    {file.size < 1024
+                      ? `${file.size} B`
+                      : file.size < 1024 * 1024
+                      ? `${(file.size / 1024).toFixed(1)} KB`
+                      : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
                   </td>
                   <td className="px-4 py-2 text-center">{file.tag}</td>
                   <td className="px-4 py-2 text-center space-x-4">
                     <button
                       onClick={() => {
-                        setSelectedFile(file)
+                        setSelectedFile(file);
                         setIsDeleteModalOpen(true);
                       }}
-                      
                       className="text-red-500 hover:text-red-700"
                       title="Delete Document"
                     >
@@ -304,7 +418,7 @@ const FileManagement = () => {
               ))}
             </tbody>
           </table>
-        </div> 
+        </div>
       )}
 
       {/* Pagination */}
@@ -315,7 +429,7 @@ const FileManagement = () => {
             className={`px-3 py-1 rounded-lg border ${
               currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
             }`}
-            onClick={() => changePage(index + 1)}
+            onClick={() => handlePageChange(index + 1)}
           >
             {index + 1}
           </button>

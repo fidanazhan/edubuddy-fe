@@ -30,7 +30,7 @@ const UserManagement = () => {
   }, []);
 
   const fetchUsers = async (page = 1, limit = usersPerPage) => {
-    setLoading(true);  // Show loading immediately when search is triggered
+    setLoading(true); 
     try {
 
       setTimeout(async () => {
@@ -63,7 +63,7 @@ const UserManagement = () => {
         headers: { "x-tenant": subdomain },
       });
 
-      setRoles(response.data); // Assuming the response contains the roles
+      setRoles(response.data);
     } catch (error) {
       console.error("Error fetching roles:", error);
     }
@@ -76,7 +76,7 @@ const UserManagement = () => {
       });
 
       console.log("Response(Group): " + response.data)
-      setGroups(response.data); // Assuming the response contains the roles
+      setGroups(response.data);
     } catch (error) {
       console.error("Error fetching roles:", error);
     }
