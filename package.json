@@ -34,8 +34,7 @@
     "rehype-highlight": "^7.0.1",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.0",
-    "remark-math": "^6.0.0",
-    "xlsx": "^0.18.5"
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
