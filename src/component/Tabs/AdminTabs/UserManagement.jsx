@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
 import axios from "axios";
 import { FaEye, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
@@ -87,39 +86,39 @@ const UserManagement = () => {
   );
 
   // Handle file upload
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
+  
     setLoading(true);
-    
-    const reader = new FileReader();
-    reader.readAsBinaryString(file);
-    
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: "binary" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const parsedData = XLSX.utils.sheet_to_json(sheet);
+  
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/user/bulk-upload", {
+        headers: { "x-tenant": subdomain },
+        method: "POST",
+        body: formData,
+      });
+  
+      // if (!response.ok) {
+      //   throw new Error("File upload failed");
+      // }
 
-      const formattedUsers = parsedData.map((user, index) => ({
-        id: users.length + index + 1, 
-        name: user.Name || "Unknown",
-        email: user.Email || "No Email",
-        status: user.Status || "Not Active",
-        role: user.Role || "Student",
-      }));
-
-      setUsers([...users, ...formattedUsers]);
+      if (response.status === 201 || response.status === 200) {
+        fetchUsers
+      }
+  
+      const result = await response.json();
+      console.log("Upload successful", result);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    } finally {
       setLoading(false);
-    };
-
-    reader.onerror = () => {
-      console.error("File reading error");
-      setLoading(false);
-    };
+    }
   };
+  
 
   const handlePageChange = (pageNumber) => {
     fetchUsers(pageNumber);
@@ -127,8 +126,6 @@ const UserManagement = () => {
   };
 
   const handleAddUser = () => {
-    // setUsers([...users, { ...newUser, id: users.length + 1 }]);
-    // alert("User added successfully! from parent modal");
     fetchUsers()
     setIsAddModalOpen(false);
   };
