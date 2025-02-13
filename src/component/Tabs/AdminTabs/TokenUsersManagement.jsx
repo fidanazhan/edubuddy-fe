@@ -6,7 +6,7 @@ import UserModal from "../../Admin/UserModal";
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import { FaLayerGroup } from "react-icons/fa";
 
-const UserManagement = () => {
+const TokenUsersManagement = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -165,7 +165,7 @@ const UserManagement = () => {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">User List</h1>
+                <h1 className="text-xl font-semibold">Users Token List</h1>
                 <div className="flex space-x-4">
                     <input
                         type="file"
@@ -222,10 +222,10 @@ const UserManagement = () => {
                                 <tr className="bg-gray-100">
                                     <th className="border border-gray-200 px-4 py-2">No</th>
                                     <th className="border border-gray-200 px-4 py-2">Name</th>
-                                    <th className="border border-gray-200 px-4 py-2">Group</th>
-                                    <th className="border border-gray-200 px-4 py-2">Email</th>
-                                    <th className="border border-gray-200 px-4 py-2">Status</th>
                                     <th className="border border-gray-200 px-4 py-2">Role</th>
+                                    <th className="border border-gray-200 px-4 py-2">Email</th>
+                                    <th className="border border-gray-200 px-4 py-2">Total Token</th>
+                                    <th className="border border-gray-200 px-4 py-2">Used Token</th>
                                     <th className="border border-gray-200 px-4 py-2">Action</th>
                                 </tr>
                             </thead>
@@ -237,25 +237,10 @@ const UserManagement = () => {
                                                 {(currentPage - 1) * usersPerPage + index + 1}
                                             </td>
                                             <td className="border border-gray-200 px-4 py-2 text-sm">{user.name}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">
-                                                {user.groups?.map((group) => (
-                                                    <p key={group._id} className="text-left">{group.name}</p>
-                                                ))}
-                                            </td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{user.email}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">
-                                                <span
-                                                    className={`px-2 py-1 rounded-full text-sm font-semibold ${user.status === 1
-                                                        ? "bg-green-200 text-green-800"
-                                                        : user.status === 0
-                                                            ? "bg-red-200 text-red-800"
-                                                            : "bg-white text-gray-800 border-gray-300"
-                                                        }`}
-                                                >
-                                                    {user.status === 1 ? "Active" : user.status === 0 ? "Not Active" : "Unknown"}
-                                                </span>
-                                            </td>
                                             <td className="border border-gray-200 px-3 py-2 text-sm">{user.role?.name}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{user.email}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{user.totalToken}</td>
+                                            <td className="border border-gray-200 px-1 py-2 text-sm">{user.usedToken}</td>
                                             <td className="border border-gray-200 px- py-2">
                                                 <div className="flex justify-center space-x-2">
                                                     <FaEdit
@@ -362,4 +347,4 @@ const UserManagement = () => {
     );
 };
 
-export default UserManagement;
+export default TokenUsersManagement;
