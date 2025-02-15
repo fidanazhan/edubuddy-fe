@@ -3,15 +3,29 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 
 const themeManagement = () => {
-    const [bannerImage, setBannerImage] = useState(null);
-    const [frontpageLogo, setFrontpageLogo] = useState(null);
+    const [loginLogo, setLoginLogo] = useState(null);
+    const [banner, setBanner] = useState(null);
     const [dashboardLogo, setDashboardLogo] = useState(null);
-    // const [bannerImageUrl, setBannerImageUrl] = useState('');
-    // const [frontpageLogoUrl, setFrontpageLogoUrl] = useState(''); 
+    const token = localStorage.getItem("accessToken");
+    const subdomain = window.location.hostname.split(".")[0];
+
+    const onLoginLogoDrop = useCallback((acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles[0]) {
+            setLoginLogo(acceptedFiles[0]);
+        }
+    }, []);
+
+    const { getRootProps: getLoginLogoDropzoneProps, getInputProps: getLoginLogoInputProps } = useDropzone({
+        onDrop: onLoginLogoDrop,
+        accept: {
+            'image/jpeg': ['.jpg', '.jpeg'],
+            'image/png': ['.png'],
+        },
+    });
 
     const onBannerDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles && acceptedFiles[0]) {
-            setBannerImage(acceptedFiles[0]);
+            setBanner(acceptedFiles[0]);
         }
     }, []);
 
@@ -23,19 +37,6 @@ const themeManagement = () => {
         },
     });
 
-    const onFrontpageLogoDrop = useCallback((acceptedFiles) => {
-        if (acceptedFiles && acceptedFiles[0]) {
-            setFrontpageLogo(acceptedFiles[0]);
-        }
-    }, []);
-
-    const { getRootProps: getFrontpageLogoDropzoneProps, getInputProps: getFrontpageLogoInputProps } = useDropzone({
-        onDrop: onFrontpageLogoDrop,
-        accept: {
-            'image/jpeg': ['.jpg', '.jpeg'],
-            'image/png': ['.png'],
-        },
-    });
 
     const onDashboardLogoDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles && acceptedFiles[0]) {
@@ -54,14 +55,18 @@ const themeManagement = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        // const imagesToSave = {
-        //     bannerImageUrl: bannerImageUrl || null,
-        //     frontpageLogoUrl: frontpageLogoUrl || null,
-        //     dashboardLogoUrl: dashboardLogoUrl || null,
-        // };
-
+        formData.append("loginLogo", loginLogo);
+        formData.append("banner", banner);
+        formData.append("dashboardLogo", dashboardLogo);
+        // formData.append([`${subdomain} Banner`, `${subdomain} loginLogo`, `${subdomain} dashboardLogo`])
+        formData.append("tag", [`loginLogo`, `banner`, `dashboardLogo`])
         try {
-            const response = await axios.post('/api/save-images', imagesToSave);
+            const response = await axios.post('http://localhost:5000/api/modelConfig/upload', formData, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "x-tenant": subdomain
+                },
+            });
             console.log('Image URLs saved to database:', response.data);
         } catch (error) {
             console.error('Error saving image URLs:', error);
@@ -73,17 +78,18 @@ const themeManagement = () => {
             <h2 className="text-2xl font-bold mb-4">Theme Settings</h2>
             <form onSubmit={handleFormSubmit} className="space-y-4">
 
+
                 <div>
-                    <span>Banner</span>
-                    <div {...getBannerDropzoneProps()} className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
-                        <input {...getBannerInputProps()} />
+                    <span>Login Logo</span>
+                    <div {...getLoginLogoDropzoneProps()} className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
+                        <input {...getLoginLogoInputProps()} />
                         <p className="text-gray-500">Drag & drop a file here, or click to upload.</p>
                     </div>
-                    {bannerImage && (
+                    {loginLogo && (
                         <div>
                             <img
-                                src={URL.createObjectURL(bannerImage)}
-                                alt="Banner Preview"
+                                src={URL.createObjectURL(loginLogo)}
+                                alt="Login Logo Preview"
                                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                             />
                         </div>
@@ -91,21 +97,22 @@ const themeManagement = () => {
                 </div>
 
                 <div>
-                    <span>Login Logo</span>
-                    <div {...getFrontpageLogoDropzoneProps()} className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
-                        <input {...getFrontpageLogoInputProps()} />
+                    <span>Banner</span>
+                    <div {...getBannerDropzoneProps()} className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
+                        <input {...getBannerInputProps()} />
                         <p className="text-gray-500">Drag & drop a file here, or click to upload.</p>
                     </div>
-                    {frontpageLogo && (
+                    {banner && (
                         <div>
                             <img
-                                src={URL.createObjectURL(frontpageLogo)}
-                                alt="Frontpage Logo Preview"
+                                src={URL.createObjectURL(banner)}
+                                alt="Banner Preview"
                                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                             />
                         </div>
                     )}
                 </div>
+
 
                 <div>
                     <span>Dashboard Logo</span>

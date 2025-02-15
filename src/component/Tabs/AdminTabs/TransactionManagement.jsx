@@ -1,46 +1,20 @@
 import React, { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
 import axios from "axios";
-import { FaEye, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
-import UserModal from "../../Admin/UserModal";
-import ConfirmationPopup from "../../Admin/ConfirmationPopup";
-import { FaLayerGroup } from "react-icons/fa";
 
-// const initialTransactions = [
-//     {
-//         id: 1,
-//         sender: { name: "Ali" },
-//         receiver: { name: "Abu" },
-//         amount: 100,
-//         senderBefore: 200,
-//         receiverBefore: 50,
-//         senderAfter: 100,
-//         receiverAfter: 150,
-//         timestamp: "2 mins ago",
-//     },
-//     {
-//         id: 2,
-//         sender: "Ali",
-//         receiver: "Abu",
-//         amount: 50,
-//         senderBefore: 250,
-//         receiverBefore: 0,
-//         senderAfter: 200,
-//         receiverAfter: 50,
-//         timestamp: "10 mins ago",
-//     },
-//     {
-//         id: 3,
-//         sender: "Alia",
-//         receiver: "Abi",
-//         amount: 1,
-//         senderBefore: 200,
-//         receiverBefore: 0,
-//         senderAfter: 199,
-//         receiverAfter: 1,
-//         timestamp: "1 hour ago",
-//     },
-// ];
+const customStyles = {
+    control: (provided) => ({
+        ...provided,
+        width: "400px",
+        borderRadius: "8px",
+        boxShadow: "none",
+        textAlign: "left",
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        color: state.isSelected ? "black" : "grey",
+        backgroundColor: state.isSelected ? "lightgrey" : "white",
+    }),
+};
 
 
 const TransactionManagement = () => {
@@ -50,14 +24,35 @@ const TransactionManagement = () => {
     const [searchReceiverName, setReceiverName] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    // const [users, setUsers] = useState([]);
 
-    const transactionsPerPage = 5;
+
+    const transactionsPerPage = 10;
+    const token = localStorage.getItem("accessToken");
     const subdomain = window.location.hostname.split(".")[0];
 
     useEffect(() => {
         fetchTransactions();
+        // fetchUsers();
         setCurrentPage(1);
     }, []);
+
+
+    // const fetchUsers = async () => {
+    //     try {
+    //         const response = await axios.get(`http://localhost:5000/api/transaction/getUsers`, {
+    //             headers: {
+    //                 "Authorization": `Bearer ${token}`,
+    //                 "x-tenant": subdomain
+    //             },
+    //         });
+    //         console.log("DONE FETCHING")
+    //         console.log(response)
+    //         setUsers(response.data);
+    //     } catch (error) {
+    //         console.error("Error fetching users:", error);
+    //     }
+    // };
 
     const fetchTransactions = async (page = 1, limit = transactionsPerPage) => {
         setLoading(true);  // Show loading immediately when search is triggered
@@ -67,8 +62,11 @@ const TransactionManagement = () => {
             setTimeout(async () => {
                 try {
                     const response = await axios.get(`http://localhost:5000/api/transaction`, {
-                        params: { page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined  },
-                        headers: { "x-tenant": subdomain },
+                        params: { page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined },
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "x-tenant": subdomain
+                        },
                     });
 
                     setTransactions(Array.isArray(response.data.data) ? response.data.data : []);
@@ -86,28 +84,16 @@ const TransactionManagement = () => {
         }
     };
 
-    const getIcon = (type) => {
-        switch (type) {
-            case "info":
-                return <Bell className="text-blue-500" />;
-            case "success":
-                return <CheckCircle className="text-green-500" />;
-            case "error":
-                return <XCircle className="text-red-500" />;
-            default:
-                return <Bell />;
-        }
-    };
-
     const handlePageChange = (pageNumber) => {
         fetchTransactions(pageNumber);
         setCurrentPage(pageNumber);
     };
 
     const handleSearch = () => {
+        console.log(searchSenderName)
+        console.log(searchReceiverName)
         fetchTransactions(1, transactionsPerPage); // Trigger search query to the backend
     };
-
 
     return (
         <div className="p-6">
@@ -132,7 +118,8 @@ const TransactionManagement = () => {
                 />
                 <button
                     className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                    onClick={handleSearch} // Call search function when clicked
+                    type="submit"
+                    onClick={handleSearch}
                 >
                     Search
                 </button>
@@ -146,31 +133,42 @@ const TransactionManagement = () => {
             ) : (
                 <div>
                     <div>
-                        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                            {transactions.length > 0 ? (
-                                transactions.map((transaction, index) => (
-                                    <div
-                                        key={transaction.id}
-                                        className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition"
-                                    >
-                                        {/* <div className="flex-shrink-0">
-                                            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-                                                {getIcon(notification.type)}
-                                            </div>
-                                        </div> */}
-                                        <div className="ml-4 flex-1">
-
-                                            <p className="text-sm text-gray-600">{transaction.sender.name} has sent {transaction.amount} tokens to {transaction.receiver.name}</p>
-                                            <span className="text-xs text-gray-400">Sender's Token Before : {transaction.senderBefore} Sender's Token After : {transaction.senderAfter}</span>
-                                            <br />
-                                            <span className="text-xs text-gray-400">Receiver's Token Before : {transaction.receiverBefore} Sender's Token After : {transaction.receiverAfter}</span>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="text-center py-4 text-gray-600">No transactions available.</div>
-                            )}
-                        </div>
+                        <table className="table-auto w-full border-collapse border border-gray-200">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="border border-gray-200 px-4 py-2">No</th>
+                                    <th className="border border-gray-200 px-4 py-2">Sender</th>
+                                    <th className="border border-gray-200 px-4 py-2">Receiver</th>
+                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens Before</th>
+                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens After</th>
+                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens Before</th>
+                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens After</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {transactions.length > 0 ? (
+                                    transactions.map((transaction, index) => (
+                                        <tr key={transaction._id} className="text-center">
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">
+                                                {(currentPage - 1) * transactionsPerPage + index + 1}
+                                            </td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.sender.senderName}</td>
+                                            <td className="border border-gray-200 px-3 py-2 text-sm">{transaction.receiver.receiverName}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.before}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.after}</td>
+                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.before}</td>
+                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.after}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="border border-gray-200 px-4 py-2 text-center">
+                                            No users found.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
 
                     <div className="flex justify-center mt-4 gap-2">
