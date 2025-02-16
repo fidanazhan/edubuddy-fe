@@ -127,8 +127,17 @@ const FileManagement = () => {
   };
 
   const handleRemoveFile = (index) => {
-    setNewFile((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setNewFile((prevFiles) => {
+      const updatedFiles = prevFiles.filter((_, i) => i !== index);
+      return updatedFiles;
+    });
+  
+    // Reset the file input field to allow re-uploading the same file
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
+  
 
   // ----------------------------- DELETE FILE API (ONE FILE ONLY) -----------------------------------
 

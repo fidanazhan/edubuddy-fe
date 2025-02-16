@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { FaEye, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrash, FaUpload, FaPlus, FaLayerGroup } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
 import { Search } from 'lucide-react'
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
-import { FaLayerGroup } from "react-icons/fa";
+import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -18,9 +18,14 @@ const UserManagement = () => {
   const [roles, setRoles] = useState([]);
   const [groups, setGroups] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState("");
+  const [modalType, setModalType] = useState(null);
+  const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
 
   const usersPerPage = 5;
   const subdomain = window.location.hostname.split(".")[0];
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchUsers();
@@ -41,7 +46,6 @@ const UserManagement = () => {
           });
   
           setUsers(Array.isArray(response.data.data) ? response.data.data : []);
-          // setUsers(response.data.data || []);
           setTotalPages(response.data.pages || 1);
           setCurrentPage(page);
         } catch (error) {
@@ -86,41 +90,6 @@ const UserManagement = () => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle file upload
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-  
-    setLoading(true);
-  
-    const formData = new FormData();
-    formData.append("file", file);
-  
-    try {
-      const response = await fetch("http://localhost:5000/api/user/bulk-upload", {
-        headers: { "x-tenant": subdomain },
-        method: "POST",
-        body: formData,
-      });
-  
-      // if (!response.ok) {
-      //   throw new Error("File upload failed");
-      // }
-
-      if (response.status === 201 || response.status === 200) {
-        fetchUsers
-      }
-  
-      const result = await response.json();
-      console.log("Upload successful", result);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-
   const handlePageChange = (pageNumber) => {
     fetchUsers(pageNumber);
     setCurrentPage(pageNumber);
@@ -134,6 +103,15 @@ const UserManagement = () => {
   const handleUpdateUser = () => {
     fetchUsers()
     setIsUpdateModalOpen(false);
+  };
+
+
+
+
+  const triggerModal = (type) => {
+    setModalType(type);
+    setIsOpen(false);
+    setIsBulkProcessModalOpen(true)
   };
 
 
@@ -168,16 +146,36 @@ const UserManagement = () => {
 
       <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
         <div className="flex space-x-2">
-          <input
-            type="file"
-            accept=".xlsx, .xls"
-            onChange={handleFileUpload}
-            className="hidden"
-            id="fileUpload"
-          />
-          <label htmlFor="fileUpload" className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600">
-            <FaUpload className="inline-block mr-2" /> Bulk Upload
-          </label>
+          <div className="relative inline-block text-left">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 flex items-center"
+            >
+              <FaUpload className="mr-2" /> Bulk Process
+            </button>
+            {isOpen && (
+              <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-lg z-10">
+                <button
+                  onClick={() => triggerModal("Bulk Add")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                >
+                  <FaPlus className="mr-2 text-teal-600" /> Bulk Add
+                </button>
+                <button
+                  onClick={() => triggerModal("Bulk Update")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                >
+                  <FaEdit className="mr-2 text-blue-600" /> Bulk Update
+                </button>
+                <button
+                  onClick={() => triggerModal("Bulk Remove")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                >
+                  <FaTrash className="mr-2 text-red-600" /> Bulk Remove
+                </button>
+              </div>
+            )}
+          </div>
 
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -247,7 +245,7 @@ const UserManagement = () => {
                               : "bg-white text-gray-800 border-gray-300"
                           }`}
                         >
-                          {user.status === 1 ? "Active" : user.status === 0 ? "Not Active" : "Unknown"}
+                          {/* {user.status === 1 ? "Active" : user.status === 0 ? "Not Active" : "Unknown"} */}
                         </span>
                       </td>
                       <td className="border border-gray-200 px-3 py-2 text-sm">{user.role?.name}</td>
@@ -353,6 +351,57 @@ const UserManagement = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal Component */}
+      {modalType && isBulkProcessModalOpen && (
+
+        <UserBulkProcessModal 
+          onClose={() => setIsBulkProcessModalOpen(false)} 
+          modalProcess={modalType}
+        />
+
+        // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        //   <div className="bg-white p-6 rounded-lg shadow-lg w-[30rem]">
+        //     <div className="text-xl font-bold mb-4 flex justify-between items-center">
+        //       <h2>{modalType}</h2>
+        //       <button
+        //         className="text-white hover:text-gray-900 bg-red-400 p-1 rounded-md"
+        //         onClick={closeModal}
+        //       >
+        //         <IoMdClose />
+        //       </button>
+        //     </div>
+
+        //     <button
+        //       onClick={() => downloadTemplate(modalType)}
+        //       className="mt-2 text-sm px-2 py-1 mb-2 bg-blue-500 font-semibold text-white rounded hover:bg-blue-600"
+        //     >
+        //       Download Template
+        //     </button>
+        //     {/* <p>Download the Excel template for {modalType}:</p> */}
+        //     <div className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
+        //         // onClick={() => fileInputRef.current.click()}
+        //         // onDragOver={(e) => e.preventDefault()}
+        //         // onDrop={handleDrop}
+        //       >
+        //       <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
+        //       <input
+        //         type="file"
+        //         // ref={fileInputRef}
+        //         // onChange={handleFileChange}
+        //         className="hidden"
+        //       />
+        //     </div>
+            
+        //     <button
+        //       onClick={closeModal}
+        //       className="mt-4 ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        //     >
+        //       Close
+        //     </button>
+        //   </div>
+        // </div>
       )}
     </div>
   );
