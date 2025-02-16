@@ -13,6 +13,13 @@ import TokenTab from '../component/Tabs/tokenTab'
 import UserScreen from '../component/Tabs/AdminTabs/userTab'
 import ProtectedStudentLayout from '../layout/StudentLayout/ProtectedStudentLayout'
 import AdminProtectedRoute from '../layout/AdminLayout/ProtectedAdminLayout'
+import ConfigScreen from '../component/Tabs/configTab'
+import AuthenticationManagement from '../component/Tabs/AdminTabs/AuthenticationManagement'
+import ModelManagement from '../component/Tabs/AdminTabs/ModelManagement'
+import ThemeManagement from '../component/Tabs/AdminTabs/ThemeManagement'
+import TokenUsersManagement from '../component/Tabs/AdminTabs/TokenUsersManagement'
+import TransactionManagement from '../component/Tabs/AdminTabs/TransactionManagement'
+
 
 const StudentRoute = {
   path: '/',
@@ -57,7 +64,21 @@ const StudentRoute = {
             },
             {
               path: 'token',
-              element: <TokenTab />
+              element: <TokenTab />,
+              children: [
+                {
+                  path: 'users',
+                  element: <TokenUsersManagement />
+                },
+                {
+                  path: 'transaction',
+                  element: <TransactionManagement />
+                },
+                {
+                  path: 'theme',
+                  element: <ThemeManagement />
+                }
+              ]
             },
             {
               path: 'user-management',
@@ -74,6 +95,24 @@ const StudentRoute = {
                 {
                   path: 'group',
                   element: <GroupManagement />
+                }
+              ]
+            },
+            {
+              path: 'system-config',
+              element: <ConfigScreen />,
+              children: [
+                {
+                  path: 'authentication',
+                  element: <AuthenticationManagement />
+                },
+                {
+                  path: 'model',
+                  element: <ModelManagement />
+                },
+                {
+                  path: 'theme',
+                  element: <ThemeManagement />
                 }
               ]
             }
