@@ -173,7 +173,7 @@ const StorageUsersManagement = () => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                 {/* <div>Storage Balance | Storage Used | Storage Distributed | ???</div> */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                {/* <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
                     <div className=''>
                         <h2 className="text-xl font-semibold text-gray-700">Storage Balance</h2>
                         <p className="text-gray-500 mt-4">1500/500000</p>
@@ -187,7 +187,7 @@ const StorageUsersManagement = () => {
                         <p className="text-gray-500 mt-4">1000/250000</p>
                     </div>
                     <History className='w-20 h-20 text-gray-400' />
-                </div>
+                </div> */}
 
                 {/* Widget 3 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
