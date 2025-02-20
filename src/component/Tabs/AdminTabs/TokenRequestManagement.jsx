@@ -107,7 +107,7 @@ const TokenRequestScreen = () => {
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl font-semibold">Tokens Request</h1>
             </div>
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <div className="flex border-b border-gray-200 dark:border-gray-700 text-xs">
                 {tabs.map((tab, index) => {
                     return (
                         <button

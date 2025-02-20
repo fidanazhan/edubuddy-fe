@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
 import axios from "axios";
 import { FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
@@ -99,32 +98,6 @@ const StorageUsersManagement = () => {
 
         setLoading(true);
 
-        const reader = new FileReader();
-        reader.readAsBinaryString(file);
-
-        reader.onload = (e) => {
-            const data = e.target.result;
-            const workbook = XLSX.read(data, { type: "binary" });
-            const sheetName = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetName];
-            const parsedData = XLSX.utils.sheet_to_json(sheet);
-
-            const formattedUsers = parsedData.map((user, index) => ({
-                id: users.length + index + 1,
-                name: user.Name || "Unknown",
-                email: user.Email || "No Email",
-                status: user.Status || "Not Active",
-                role: user.Role || "Student",
-            }));
-
-            setUsers([...users, ...formattedUsers]);
-            setLoading(false);
-        };
-
-        reader.onerror = () => {
-            console.error("File reading error");
-            setLoading(false);
-        };
     };
 
     const handlePageChange = (pageNumber) => {
@@ -192,10 +165,10 @@ const StorageUsersManagement = () => {
                 {/* Widget 3 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700">Storage Distributed</h2>
-                        <p className="text-gray-500 mt-4">12500/45000</p>
+                        <h2 className="text-sm font-semibold text-gray-700">Storage Distributed</h2>
+                        <p className="text-gray-500 mt-4 text-sm">12500/45000</p>
                     </div>
-                    <Network className='w-20 h-20 text-blue-500' />
+                    {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 4 */}
