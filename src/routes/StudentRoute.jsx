@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import Dashboard from '../page/Student/Dashboard'
 import StudentLayout from '../layout/StudentLayout'
 import Chat from '../page/Student/Chat'
