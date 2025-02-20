@@ -22,6 +22,10 @@ const TokenTab = lazy(() => import('../component/Tabs/tokenTab'));
 const TokenUsersManagement = lazy(() => import('../component/Tabs/AdminTabs/TokenUsersManagement'));
 const TransactionManagement = lazy(() => import('../component/Tabs/AdminTabs/TransactionManagement'));
 const TokenRequestManagement = lazy(() => import('../component/Tabs/AdminTabs/TokenRequestManagement'));
+const StorageTab = lazy(() => import('../component/Tabs/storageTab'));
+const StorageUsersManagement = lazy(() => import('../component/Tabs/AdminTabs/StorageUsersManagement'));
+const StorageTransactionManagement = lazy(() => import('../component/Tabs/AdminTabs/StorageTransactionManagement'));
+const StorageRequestManagement = lazy(() => import('../component/Tabs/AdminTabs/StorageRequestManagement'));
 
 const StudentRoute = {
   path: '/',
@@ -93,6 +97,40 @@ const StudentRoute = {
                   element: (
                     <Suspense fallback={<div>Loading Request...</div>}>
                       <TokenRequestManagement />
+                    </Suspense>
+                  ),
+                }
+              ]
+            },
+            {
+              path: 'storage',
+              element: (
+                <Suspense fallback={<div>Loading Storage Tab...</div>}>
+                  <StorageTab />
+                </Suspense>
+              ),
+              children: [
+                {
+                  path: 'users',
+                  element: (
+                    <Suspense fallback={<div>Loading StorageUsers...</div>}>
+                      <StorageUsersManagement />
+                    </Suspense>
+                  ),
+                },
+                {
+                  path: 'transaction',
+                  element: (
+                    <Suspense fallback={<div>Loading Storage Transactions...</div>}>
+                      <StorageTransactionManagement />
+                    </Suspense>
+                  ),
+                },
+                {
+                  path: 'request',
+                  element: (
+                    <Suspense fallback={<div>Loading Storage Request...</div>}>
+                      <StorageRequestManagement />
                     </Suspense>
                   ),
                 }
