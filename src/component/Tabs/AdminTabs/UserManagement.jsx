@@ -27,34 +27,38 @@ const UserManagement = () => {
   const subdomain = window.location.hostname.split(".")[0];
   const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        fetchUsers();
-        fetchRoles();
-        fetchGroup();
-        setCurrentPage(1);
-    }, []);
+  const token = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    fetchUsers();
+    fetchRoles();
+    fetchGroup();
+    setCurrentPage(1);
+  }, []);
 
   const fetchUsers = async (page = 1, limit = usersPerPage) => {
     setLoading(true); 
     try {
 
-        setTimeout(async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/user`, {
-                    params: { page, limit, search: searchTerm || undefined },
-                    headers: { "x-tenant": subdomain },
-                });
-
-                setUsers(Array.isArray(response.data.data) ? response.data.data : []);
-                // setUsers(response.data.data || []);
-                setTotalPages(response.data.pages || 1);
-                setCurrentPage(page);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-                setUsers([]);
-            }
-            setLoading(false);
-        }, 1000);
+      setTimeout(async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/user`, {
+            params: { page, limit, search: searchTerm || undefined },
+            headers: { 
+              "x-tenant": subdomain,
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+  
+          setUsers(Array.isArray(response.data.data) ? response.data.data : []);
+          setTotalPages(response.data.pages || 1);
+          setCurrentPage(page);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          setUsers([]);
+        }
+        setLoading(false);
+      }, 1000); 
     } catch (error) {
         console.error("Error fetching users:", error);
         setLoading(false);
@@ -141,9 +145,6 @@ const UserManagement = () => {
         setIsUpdateModalOpen(false);
     };
 
-
-
-
   const triggerModal = (type) => {
     setModalType(type);
     setIsOpen(false);
@@ -195,19 +196,22 @@ const UserManagement = () => {
                   onClick={() => triggerModal("Bulk Add")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaPlus className="mr-2 text-teal-600" /> Bulk Add
+                  <FaPlus className="mr-2 text-teal-600" /> 
+                  <span className="text-sm">Bulk Add</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Update")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaEdit className="mr-2 text-blue-600" /> Bulk Update
+                  <FaEdit className="mr-2 text-blue-600" /> 
+                  <span className="text-sm">Bulk Update</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaTrash className="mr-2 text-red-600" /> Bulk Remove
+                  <FaTrash className="mr-2 text-red-600" /> 
+                  <span className="text-sm">Bulk Remove</span>
                 </button>
               </div>
             )}
