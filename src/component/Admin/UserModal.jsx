@@ -12,6 +12,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
   });
 
   const [errors, setErrors] = useState({}); // Store validation errors
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     if (initialValues) {
@@ -71,7 +72,11 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
       try {
         
         const tenantHost = window.location.hostname.split(".")[0];
-        const headers = { 'Content-Type': 'application/json', 'x-tenant': tenantHost };
+        const headers = { 
+          'Content-Type': 'application/json', 
+          'x-tenant': tenantHost, 
+          "Authorization": `Bearer ${token}`,
+        };
 
         let response;
         if (isEdit) {

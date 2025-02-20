@@ -27,6 +27,8 @@ const UserManagement = () => {
   const subdomain = window.location.hostname.split(".")[0];
   const fileInputRef = useRef(null);
 
+  const token = localStorage.getItem("accessToken");
+
   useEffect(() => {
     fetchUsers();
     fetchRoles();
@@ -42,7 +44,10 @@ const UserManagement = () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/user`, {
             params: { page, limit, search: searchTerm || undefined },
-            headers: { "x-tenant": subdomain },
+            headers: { 
+              "x-tenant": subdomain,
+              "Authorization": `Bearer ${token}`,
+            },
           });
   
           setUsers(Array.isArray(response.data.data) ? response.data.data : []);
@@ -105,9 +110,6 @@ const UserManagement = () => {
     setIsUpdateModalOpen(false);
   };
 
-
-
-
   const triggerModal = (type) => {
     setModalType(type);
     setIsOpen(false);
@@ -159,19 +161,22 @@ const UserManagement = () => {
                   onClick={() => triggerModal("Bulk Add")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaPlus className="mr-2 text-teal-600" /> Bulk Add
+                  <FaPlus className="mr-2 text-teal-600" /> 
+                  <span className="text-sm">Bulk Add</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Update")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaEdit className="mr-2 text-blue-600" /> Bulk Update
+                  <FaEdit className="mr-2 text-blue-600" /> 
+                  <span className="text-sm">Bulk Update</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
-                  <FaTrash className="mr-2 text-red-600" /> Bulk Remove
+                  <FaTrash className="mr-2 text-red-600" /> 
+                  <span className="text-sm">Bulk Remove</span>
                 </button>
               </div>
             )}
@@ -360,48 +365,6 @@ const UserManagement = () => {
           onClose={() => setIsBulkProcessModalOpen(false)} 
           modalProcess={modalType}
         />
-
-        // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="bg-white p-6 rounded-lg shadow-lg w-[30rem]">
-        //     <div className="text-xl font-bold mb-4 flex justify-between items-center">
-        //       <h2>{modalType}</h2>
-        //       <button
-        //         className="text-white hover:text-gray-900 bg-red-400 p-1 rounded-md"
-        //         onClick={closeModal}
-        //       >
-        //         <IoMdClose />
-        //       </button>
-        //     </div>
-
-        //     <button
-        //       onClick={() => downloadTemplate(modalType)}
-        //       className="mt-2 text-sm px-2 py-1 mb-2 bg-blue-500 font-semibold text-white rounded hover:bg-blue-600"
-        //     >
-        //       Download Template
-        //     </button>
-        //     {/* <p>Download the Excel template for {modalType}:</p> */}
-        //     <div className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
-        //         // onClick={() => fileInputRef.current.click()}
-        //         // onDragOver={(e) => e.preventDefault()}
-        //         // onDrop={handleDrop}
-        //       >
-        //       <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
-        //       <input
-        //         type="file"
-        //         // ref={fileInputRef}
-        //         // onChange={handleFileChange}
-        //         className="hidden"
-        //       />
-        //     </div>
-            
-        //     <button
-        //       onClick={closeModal}
-        //       className="mt-4 ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        //     >
-        //       Close
-        //     </button>
-        //   </div>
-        // </div>
       )}
     </div>
   );
