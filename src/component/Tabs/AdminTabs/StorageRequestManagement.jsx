@@ -51,7 +51,7 @@ const StorageRequestScreen = () => {
                             null;
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/storage/status`, {
+                    const response = await axios.get(`http://localhost:5000/api/request/storage/status`, {
                         params: { page, limit, status },
                         headers: { "x-tenant": subdomain },
                     });
@@ -78,7 +78,7 @@ const StorageRequestScreen = () => {
     const handleSubmitApprove = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/storage/approve`, request, {
+            await axios.put(`http://localhost:5000/api/request/storage/approve`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -92,7 +92,7 @@ const StorageRequestScreen = () => {
     const handleSubmitReject = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/storage/reject`, request, {
+            await axios.put(`http://localhost:5000/api/request/storage/reject`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
