@@ -98,10 +98,10 @@ const TransactionManagement = () => {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Transaction List</h1>
+                <h1 className="text-xl font-semibold">Transaction History</h1>
             </div>
 
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 space-x-2">
                 <input
                     type="text"
                     placeholder="Search Sender..."

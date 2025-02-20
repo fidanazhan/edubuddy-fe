@@ -9,7 +9,7 @@ import GroupManagement from '../component/Tabs/AdminTabs/GroupManagement'
 import DashboardTab from '../component/Tabs/dashboardTab'
 import DocumentTab from '../component/Tabs/documentTab'
 import NotificationTab from '../component/Tabs/notificationTab'
-import TokenTab from '../component/Tabs/tokenTab'
+// import TokenTab from '../component/Tabs/tokenTab'
 import UserScreen from '../component/Tabs/AdminTabs/userTab'
 import ProtectedStudentLayout from '../layout/StudentLayout/ProtectedStudentLayout'
 import AdminProtectedRoute from '../layout/AdminLayout/ProtectedAdminLayout'
@@ -17,9 +17,10 @@ import ConfigScreen from '../component/Tabs/configTab'
 import AuthenticationManagement from '../component/Tabs/AdminTabs/AuthenticationManagement'
 import ModelManagement from '../component/Tabs/AdminTabs/ModelManagement'
 import ThemeManagement from '../component/Tabs/AdminTabs/ThemeManagement'
-import TokenUsersManagement from '../component/Tabs/AdminTabs/TokenUsersManagement'
-import TransactionManagement from '../component/Tabs/AdminTabs/TransactionManagement'
-
+const TokenTab = lazy(() => import('../component/Tabs/tokenTab'));
+const TokenUsersManagement = lazy(() => import('../component/Tabs/AdminTabs/TokenUsersManagement'));
+const TransactionManagement = lazy(() => import('../component/Tabs/AdminTabs/TransactionManagement'));
+const TokenRequestManagement = lazy(() => import('../component/Tabs/AdminTabs/TokenRequestManagement'));
 
 const StudentRoute = {
   path: '/',
@@ -64,19 +65,35 @@ const StudentRoute = {
             },
             {
               path: 'token',
-              element: <TokenTab />,
+              element: (
+                <Suspense fallback={<div>Loading Token Tab...</div>}>
+                  <TokenTab />
+                </Suspense>
+              ),
               children: [
                 {
                   path: 'users',
-                  element: <TokenUsersManagement />
+                  element: (
+                    <Suspense fallback={<div>Loading Users...</div>}>
+                      <TokenUsersManagement />
+                    </Suspense>
+                  ),
                 },
                 {
                   path: 'transaction',
-                  element: <TransactionManagement />
+                  element: (
+                    <Suspense fallback={<div>Loading Transactions...</div>}>
+                      <TransactionManagement />
+                    </Suspense>
+                  ),
                 },
                 {
-                  path: 'theme',
-                  element: <ThemeManagement />
+                  path: 'request',
+                  element: (
+                    <Suspense fallback={<div>Loading Request...</div>}>
+                      <TokenRequestManagement />
+                    </Suspense>
+                  ),
                 }
               ]
             },
