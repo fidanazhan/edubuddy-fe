@@ -11,6 +11,8 @@ const systemScreen = () => {
             setActiveTab('users');
         } else if (location.pathname === '/admin-panel/token/transaction') {
             setActiveTab('transaction');
+        } else if (location.pathname === '/admin-panel/token/reqeust') {
+            setActiveTab('request');
         }
     }, [location]);
 
@@ -38,7 +40,16 @@ const systemScreen = () => {
                             onClick={() => handleTabClick('transaction')}
                             className={`hover:text-blue-500 font-semibold ${activeTab === 'transaction' ? 'text-blue-600' : ''}`}
                         >
-                            Transaction
+                            Transaction History
+                        </Link>
+                    </li>
+                    <li className="mb-4">
+                        <Link
+                            to="/admin-panel/token/request"
+                            onClick={() => handleTabClick('request')}
+                            className={`hover:text-blue-500 font-semibold ${activeTab === 'request' ? 'text-blue-600' : ''}`}
+                        >
+                            Request
                         </Link>
                     </li>
                 </ul>

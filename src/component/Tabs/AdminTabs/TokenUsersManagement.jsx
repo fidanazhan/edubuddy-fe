@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaEye, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
+import { FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
-import ConfirmationPopup from "../../Admin/ConfirmationPopup";
-import { FaLayerGroup } from "react-icons/fa";
+// Balance
+import { Wallet, DollarSign, BanknoteIcon } from "lucide-react";
+// Used
+import { History, Recycle, RefreshCw, Archive, ShoppingBag } from "lucide-react";
+// Distributed
+import { Network, Share2, ArrowLeftRight, Banknote } from "lucide-react";
+
+
 
 const TokenUsersManagement = () => {
     const [users, setUsers] = useState([]);
@@ -137,7 +143,46 @@ const TokenUsersManagement = () => {
 
     return (
         <div className="p-6">
-            <div className="flex justify-between items-center mb-4">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                {/* <div>Token Balance | Token Used | Token Distributed | ???</div> */}
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className=''>
+                        <h2 className="text-xl font-semibold text-gray-700">Token Balance</h2>
+                        <p className="text-gray-500 mt-4">1500/500000</p>
+                    </div>
+                    <Wallet className='w-20 h-20 text-blue-500' />
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className=''>
+                        <h2 className="text-xl font-semibold text-gray-700">Token Used</h2>
+                        <p className="text-gray-500 mt-4">1000/250000</p>
+                    </div>
+                    <History className='w-20 h-20 text-gray-400' />
+                </div>
+
+                {/* Widget 3 */}
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className=''>
+                        <h2 className="text-xl font-semibold text-gray-700">Token Distributed</h2>
+                        <p className="text-gray-500 mt-4">12500/45000</p>
+                    </div>
+                    <Network className='w-20 h-20 text-blue-500' />
+                </div>
+
+                {/* Widget 4 */}
+                {/* <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className=''>
+                        <h2 className="text-xl font-semibold text-gray-700">???</h2>
+                        <p className="text-gray-500 mt-4">Put context here</p>
+                    </div>
+                    <Banknote className='w-20 h-20 text-blue-500' />
+                </div> */}
+
+            </div>
+            <div className="flex justify-between items-center mb-4 mt-4">
+
                 <h1 className="text-xl font-semibold">Users Token List</h1>
                 <div className="flex space-x-4">
                     <input
