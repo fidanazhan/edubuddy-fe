@@ -62,9 +62,7 @@ const NotificationTab = () => {
               </div>
             </div>
             <div className="ml-4 flex-1">
-              <h3 className="text-sm font-semibold text-gray-800">
-                {notification.title}
-              </h3>
+              
               <p className="text-sm text-gray-600">{notification.description}</p>
               <span className="text-xs text-gray-400">{notification.timestamp}</span>
             </div>
