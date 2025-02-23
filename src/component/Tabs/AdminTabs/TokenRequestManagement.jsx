@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
 
 // Pending
-import { Clock, Hourglass, Loader2, MoreHorizontal, Bell } from "lucide-react";
+import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
 // Approved
 import { CheckCircle, ThumbsUp, BadgeCheck, CircleCheck, Check } from "lucide-react";
 // Rejected
@@ -159,21 +159,24 @@ const TokenRequestScreen = () => {
                                     </div>
                                 </div>
                                 <div className="ml-4 flex-1">
-                                    <p className="text-md text-gray-800">
-                                        {request.requester?.name} has requested {request?.amount} tokens.
-                                        <a
+                                    <div className="flex items-center">
+                                        <p className="text-md text-gray-800">
+                                            {request.requester?.name} has requested {request?.amount} tokens.
+                                        </p>
+                                        <EllipsisVertical
                                             id={`anchor-reason-${request._id}`}
-                                            className='ml-4 text-gray-400 hover:text-blue-500 hover:shadow-md transition'
-                                        >
-                                            Reason
-                                        </a>
+                                            className="size-4 ml-2 text-gray-400 hover:text-blue-500 hover:shadow-md transition"
+                                        />
                                         <Tooltip
                                             anchorSelect={`#anchor-reason-${request._id}`}
                                             content={request?.reason ? request.reason : "No reason Provided"}
                                         />
-                                    </p>
-                                    <span className="text-sm text-gray-400 mr-4">Created : {formattedDate(request.createdAt)} | Updated : {formattedDate(request.updatedAt)}</span>
+                                    </div>
+                                    <span className="text-sm text-gray-400 mr-4">
+                                        Requested at {formattedDate(request.createdAt)}
+                                    </span>
                                 </div>
+
                                 {request.status === 0 && (
                                     <div className="flex justify-center space-x-2">
                                         <button
