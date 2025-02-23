@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { format } from 'date-fns';
 
 const customStyles = {
     control: (provided) => ({
@@ -17,7 +18,7 @@ const customStyles = {
 };
 
 
-const TransactionManagement = () => {
+const TokenTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchSenderName, setSenderName] = useState("");
@@ -31,28 +32,15 @@ const TransactionManagement = () => {
     const token = localStorage.getItem("accessToken");
     const subdomain = window.location.hostname.split(".")[0];
 
+    const formattedDate = (timestamp) => {
+        return format(new Date(timestamp), 'MM/dd/yyyy hh:mm a')
+    };
+
     useEffect(() => {
         fetchTransactions();
-        // fetchUsers();
         setCurrentPage(1);
     }, []);
 
-
-    // const fetchUsers = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5000/api/transaction/getUsers`, {
-    //             headers: {
-    //                 "Authorization": `Bearer ${token}`,
-    //                 "x-tenant": subdomain
-    //             },
-    //         });
-    //         console.log("DONE FETCHING")
-    //         console.log(response)
-    //         setUsers(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching users:", error);
-    //     }
-    // };
 
     const fetchTransactions = async (page = 1, limit = transactionsPerPage) => {
         setLoading(true);  // Show loading immediately when search is triggered
@@ -61,7 +49,7 @@ const TransactionManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/transaction/storage`, {
+                    const response = await axios.get(`http://localhost:5000/api/transaction`, {
                         params: { page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined },
                         headers: {
                             "Authorization": `Bearer ${token}`,
@@ -98,7 +86,7 @@ const TransactionManagement = () => {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Transaction History</h1>
+                <h1 className="text-xl font-semibold">Storage Transaction History</h1>
             </div>
 
             <div className="flex items-center mb-4 space-x-2">
@@ -139,10 +127,8 @@ const TransactionManagement = () => {
                                     <th className="border border-gray-200 px-4 py-2">No</th>
                                     <th className="border border-gray-200 px-4 py-2">Sender</th>
                                     <th className="border border-gray-200 px-4 py-2">Receiver</th>
-                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens Before</th>
-                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens After</th>
-                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens Before</th>
-                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens After</th>
+                                    <th className="border border-gray-200 px-4 py-2">Amount</th>
+                                    <th className="border border-gray-200 px-4 py-2">Transaction Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,10 +140,8 @@ const TransactionManagement = () => {
                                             </td>
                                             <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.sender.senderName}</td>
                                             <td className="border border-gray-200 px-3 py-2 text-sm">{transaction.receiver.receiverName}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.before}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.after}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.before}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.after}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.amount}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{formattedDate(transaction.createdAt)}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -190,4 +174,4 @@ const TransactionManagement = () => {
     );
 };
 
-export default TransactionManagement;
+export default TokenTransactionManagement;

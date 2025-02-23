@@ -131,14 +131,14 @@ const StorageRequestScreen = () => {
                 </div>
             ) : (
                 <div>
-                    <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1>
-                    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                    {/* <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1> */}
+                    <div className="bg-white shadow-md rounded-lg overflow-hidden mt-4">
                         {requests.map((request) => (
                             <div
                                 key={request._id}
-                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition"
+                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition mt-2"
                             >
-                                <div className="flex-shrink-0">
+                                <div className="flex-shrink-0 ">
                                     <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
                                         {request.status === 0 && (
                                             <>
@@ -171,7 +171,7 @@ const StorageRequestScreen = () => {
                                             }}
                                             aria-label="Approve Request"
                                         >
-                                            Approve
+                                            <ThumbsUp className="text-green-500" />;
                                         </button>
                                         <button
                                             className="text-gray-400 hover:text-red-500 hover:shadow-md transition ml-2"
@@ -181,7 +181,7 @@ const StorageRequestScreen = () => {
                                             }}
                                             aria-label="Reject Request"
                                         >
-                                            Reject
+                                            <ThumbsDown className="text-red-500" />
                                         </button>
                                     </div>
                                 )}

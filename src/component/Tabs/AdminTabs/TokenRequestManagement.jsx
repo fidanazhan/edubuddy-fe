@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../context/JWTContext.jsx'
 import axios from 'axios';
 import { format } from 'date-fns';
+import { Tooltip } from 'react-tooltip';
 
 // Pending
 import { Clock, Hourglass, Loader2, MoreHorizontal, Bell } from "lucide-react";
 // Approved
-import { CheckCircle, ThumbsUp, BadgeCheck } from "lucide-react";
+import { CheckCircle, ThumbsUp, BadgeCheck, CircleCheck, Check } from "lucide-react";
 // Rejected
-import { XCircle, ThumbsDown, Ban } from "lucide-react";
+import { XCircle, ThumbsDown, Ban, X } from "lucide-react";
 
 const TokenRequestScreen = () => {
     const { user } = useAuth();
@@ -51,7 +52,7 @@ const TokenRequestScreen = () => {
                             null;
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/request/status`, {
+                    const response = await axios.get(`http://localhost:5000/api/request/token/status`, {
                         params: { page, limit, status },
                         headers: { "x-tenant": subdomain },
                     });
@@ -78,7 +79,7 @@ const TokenRequestScreen = () => {
     const handleSubmitApprove = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/request/approve`, request, {
+            await axios.put(`http://localhost:5000/api/request/token/approve`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -92,7 +93,7 @@ const TokenRequestScreen = () => {
     const handleSubmitReject = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/request/reject`, request, {
+            await axios.put(`http://localhost:5000/api/request/token/reject`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -131,8 +132,8 @@ const TokenRequestScreen = () => {
                 </div>
             ) : (
                 <div>
-                    <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1>
-                    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                    {/* <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1> */}
+                    <div className="bg-white shadow-md rounded-lg overflow-hidden ">
                         {requests.map((request) => (
                             <div
                                 key={request._id}
@@ -158,8 +159,20 @@ const TokenRequestScreen = () => {
                                     </div>
                                 </div>
                                 <div className="ml-4 flex-1">
-                                    <p className="text-md text-gray-600">{request.requester?.name} has requested {request?.amount} tokens.</p>
-                                    <span className="text-sm text-gray-400">{formattedDate(request.createdAt)}</span>
+                                    <p className="text-md text-gray-800">
+                                        {request.requester?.name} has requested {request?.amount} tokens.
+                                        <a
+                                            id={`anchor-reason-${request._id}`}
+                                            className='ml-4 text-gray-400 hover:text-blue-500 hover:shadow-md transition'
+                                        >
+                                            Reason
+                                        </a>
+                                        <Tooltip
+                                            anchorSelect={`#anchor-reason-${request._id}`}
+                                            content={request?.reason ? request.reason : "No reason Provided"}
+                                        />
+                                    </p>
+                                    <span className="text-sm text-gray-400 mr-4">Created : {formattedDate(request.createdAt)} | Updated : {formattedDate(request.updatedAt)}</span>
                                 </div>
                                 {request.status === 0 && (
                                     <div className="flex justify-center space-x-2">
@@ -171,7 +184,7 @@ const TokenRequestScreen = () => {
                                             }}
                                             aria-label="Approve Request"
                                         >
-                                            Approve
+                                            <Check className="text-green-500" />
                                         </button>
                                         <button
                                             className="text-gray-400 hover:text-red-500 hover:shadow-md transition ml-2"
@@ -181,7 +194,7 @@ const TokenRequestScreen = () => {
                                             }}
                                             aria-label="Reject Request"
                                         >
-                                            Reject
+                                            <X className="text-red-500" />
                                         </button>
                                     </div>
                                 )}

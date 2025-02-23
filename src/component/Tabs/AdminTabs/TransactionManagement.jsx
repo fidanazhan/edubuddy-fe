@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { format } from 'date-fns';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
     control: (provided) => ({
@@ -17,11 +20,13 @@ const customStyles = {
 };
 
 
-const TransactionManagement = () => {
+const TokenTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchSenderName, setSenderName] = useState("");
     const [searchReceiverName, setReceiverName] = useState("");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     // const [users, setUsers] = useState([]);
@@ -31,38 +36,27 @@ const TransactionManagement = () => {
     const token = localStorage.getItem("accessToken");
     const subdomain = window.location.hostname.split(".")[0];
 
+    const formattedDate = (timestamp) => {
+        return format(new Date(timestamp), 'MM/dd/yyyy hh:mm a')
+    };
+
     useEffect(() => {
         fetchTransactions();
-        // fetchUsers();
         setCurrentPage(1);
     }, []);
 
 
-    // const fetchUsers = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5000/api/transaction/getUsers`, {
-    //             headers: {
-    //                 "Authorization": `Bearer ${token}`,
-    //                 "x-tenant": subdomain
-    //             },
-    //         });
-    //         console.log("DONE FETCHING")
-    //         console.log(response)
-    //         setUsers(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching users:", error);
-    //     }
-    // };
-
     const fetchTransactions = async (page = 1, limit = transactionsPerPage) => {
-        setLoading(true);  // Show loading immediately when search is triggered
-        // console.log(searchSenderName, searchReceiverName)
+        setLoading(true);
         try {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/transaction`, {
-                        params: { page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined },
+                    const response = await axios.get(`http://localhost:5000/api/transaction/token`, {
+                        params: {
+                            page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined,
+                            startDate: startDate || undefined, endDate: endDate || startDate || undefined
+                        },
                         headers: {
                             "Authorization": `Bearer ${token}`,
                             "x-tenant": subdomain
@@ -92,29 +86,62 @@ const TransactionManagement = () => {
     const handleSearch = () => {
         console.log(searchSenderName)
         console.log(searchReceiverName)
+        console.log(startDate)
+        console.log(endDate)
         fetchTransactions(1, transactionsPerPage); // Trigger search query to the backend
+    };
+
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+        // Ensure end date is not earlier than start date
+        if (!date) {
+            setEndDate(null);
+        }
+        if (endDate && date > endDate) {
+            setEndDate(null);
+        }
     };
 
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Transaction History</h1>
+                <h1 className="text-xl font-semibold">Tokens Transaction History</h1>
             </div>
 
             <div className="flex items-center mb-4 space-x-2">
                 <input
                     type="text"
                     placeholder="Search Sender..."
-                    className="border rounded-lg px-4 py-2 w-full"
+                    className="border rounded-lg px-4 py-2 w-auto"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}
                 />
                 <input
                     type="text"
                     placeholder="Search Receiver..."
-                    className="border rounded-lg px-4 py-2 w-full"
+                    className="border rounded-lg px-4 py-2 w-auto"
                     value={searchReceiverName}
                     onChange={(e) => setReceiverName(e.target.value)}
+                />
+                <DatePicker
+                    selected={startDate}
+                    onChange={handleStartDateChange}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    className="border rounded-lg px-4 py-2 w-auto"
+                    placeholderText="Choose start date"
+                />
+                <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    disabled={!startDate}
+                    className="border rounded-lg px-4 py-2 w-auto"
+                    placeholderText="Choose end date"
                 />
                 <button
                     className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -139,10 +166,8 @@ const TransactionManagement = () => {
                                     <th className="border border-gray-200 px-4 py-2">No</th>
                                     <th className="border border-gray-200 px-4 py-2">Sender</th>
                                     <th className="border border-gray-200 px-4 py-2">Receiver</th>
-                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens Before</th>
-                                    <th className="border border-gray-200 px-4 py-2">Sender's Tokens After</th>
-                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens Before</th>
-                                    <th className="border border-gray-200 px-4 py-2">Receiver's Tokens After</th>
+                                    <th className="border border-gray-200 px-4 py-2">Amount</th>
+                                    <th className="border border-gray-200 px-4 py-2">Transaction Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,10 +179,8 @@ const TransactionManagement = () => {
                                             </td>
                                             <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.sender.senderName}</td>
                                             <td className="border border-gray-200 px-3 py-2 text-sm">{transaction.receiver.receiverName}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.before}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.senderToken.after}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.before}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">{transaction.receiverToken.after}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{transaction.amount}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{formattedDate(transaction.createdAt)}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -190,4 +213,4 @@ const TransactionManagement = () => {
     );
 };
 
-export default TransactionManagement;
+export default TokenTransactionManagement;
