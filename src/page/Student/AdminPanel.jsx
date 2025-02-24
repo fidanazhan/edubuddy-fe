@@ -30,14 +30,21 @@ const AdminPanel = () => {
     { name: "System-Configuration", path: "/admin-panel/system-config/authentication", icon: <RxDashboard />, component: <SystemConfigTab /> },
   ];
 
+  const parentPaths = {
+    "Users": "/admin-panel/user-management",
+    "Token": "/admin-panel/token",
+    "Storage": "/admin-panel/storage",
+    "System-Configuration": "/admin-panel/system-config"
+  };
+
   return (
     <div className="w-full py-2">
       {/* Tab Navigation */}
       <div className="flex border-b border-gray-200 dark:border-gray-700">
         {tabs.map((tab) => {
           const isActive =
-            location.pathname === tab.path || // Exact match
-            (tab.name === "Users" && location.pathname.startsWith("/admin-panel/user-management")); // Nested paths for Users
+            location.pathname === tab.path
+            || (parentPaths[tab.name] && location.pathname.startsWith(parentPaths[tab.name]));
 
           return (
             <Link

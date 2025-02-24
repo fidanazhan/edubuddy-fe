@@ -7,61 +7,65 @@ import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import { FaLayerGroup } from "react-icons/fa";
 
 const UserManagement = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [roles, setRoles] = useState([]);
-    const [groups, setGroups] = useState([]);
-    const [totalPages, setTotalPages] = useState(1);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [roles, setRoles] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-    const usersPerPage = 5;
-    const subdomain = window.location.hostname.split(".")[0];
+  const usersPerPage = 5;
+  const subdomain = window.location.hostname.split(".")[0];
+  const token = localStorage.getItem("accessToken");
 
-    useEffect(() => {
-        fetchUsers();
-        fetchRoles();
-        fetchGroup();
-        setCurrentPage(1);
-    }, []);
+  useEffect(() => {
+    fetchUsers();
+    fetchRoles();
+    fetchGroup();
+    setCurrentPage(1);
+  }, []);
 
   const fetchUsers = async (page = 1, limit = usersPerPage) => {
-    setLoading(true); 
+    setLoading(true);
     try {
 
-            setTimeout(async () => {
-                try {
-                    const response = await axios.get(`http://localhost:5000/api/user`, {
-                        params: { page, limit, search: searchTerm || undefined },
-                        headers: { "x-tenant": subdomain },
-                    });
-
-                    setUsers(Array.isArray(response.data.data) ? response.data.data : []);
-                    // setUsers(response.data.data || []);
-                    setTotalPages(response.data.pages || 1);
-                    setCurrentPage(page);
-                } catch (error) {
-                    console.error("Error fetching users:", error);
-                    setUsers([]);
-                }
-                setLoading(false);
-            }, 1000);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-            setLoading(false);
-        }
-    };
-
-
-    const fetchRoles = async () => {
+      setTimeout(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/role/select`, {
-                headers: { "x-tenant": subdomain },
-            });
+          const response = await axios.get(`http://localhost:5000/api/user`, {
+            params: { page, limit, search: searchTerm || undefined },
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "x-tenant": subdomain
+            },
+          });
+
+          setUsers(Array.isArray(response.data.data) ? response.data.data : []);
+          // setUsers(response.data.data || []);
+          setTotalPages(response.data.pages || 1);
+          setCurrentPage(page);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          setUsers([]);
+        }
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
+
+
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/role/select`, {
+        headers: { "x-tenant": subdomain },
+      });
 
       setRoles(response.data);
     } catch (error) {
@@ -69,11 +73,11 @@ const UserManagement = () => {
     }
   };
 
-    const fetchGroup = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/group/tenant/select`, {
-                headers: { "x-tenant": subdomain },
-            });
+  const fetchGroup = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/group/tenant/select`, {
+        headers: { "x-tenant": subdomain },
+      });
 
       console.log("Response(Group): " + response.data)
       setGroups(response.data);
@@ -82,27 +86,27 @@ const UserManagement = () => {
     }
   };
 
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle file upload
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     setLoading(true);
-  
+
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
       const response = await fetch("http://localhost:5000/api/user/bulk-upload", {
         headers: { "x-tenant": subdomain },
         method: "POST",
         body: formData,
       });
-  
+
       // if (!response.ok) {
       //   throw new Error("File upload failed");
       // }
@@ -110,7 +114,7 @@ const UserManagement = () => {
       if (response.status === 201 || response.status === 200) {
         fetchUsers
       }
-  
+
       const result = await response.json();
       console.log("Upload successful", result);
     } catch (error) {
@@ -119,45 +123,45 @@ const UserManagement = () => {
       setLoading(false);
     }
   };
-  
 
-    const handlePageChange = (pageNumber) => {
-        fetchUsers(pageNumber);
-        setCurrentPage(pageNumber);
-    };
+
+  const handlePageChange = (pageNumber) => {
+    fetchUsers(pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const handleAddUser = () => {
     fetchUsers()
     setIsAddModalOpen(false);
   };
 
-    const handleUpdateUser = () => {
-        fetchUsers()
-        setIsUpdateModalOpen(false);
-    };
+  const handleUpdateUser = () => {
+    fetchUsers()
+    setIsUpdateModalOpen(false);
+  };
 
 
-    const handleDeleteUser = async () => {
-        // setUsers(users.filter((user) => user.id !== selectedUser.id));
-        setIsDeleteModalOpen(false);
+  const handleDeleteUser = async () => {
+    // setUsers(users.filter((user) => user.id !== selectedUser.id));
+    setIsDeleteModalOpen(false);
 
-        try {
-            await axios.delete(`http://localhost:5000/api/user/${selectedUser._id}`, {
-                headers: { "x-tenant": subdomain },
-            });
-            setUsers(users.filter((user) => user.id !== selectedUser.id));  // Remove the user from the list
-            setIsDeleteModalOpen(false);  // Close the modal
-        } catch (error) {
-            console.error("Error deleting user:", error);
-        }
+    try {
+      await axios.delete(`http://localhost:5000/api/user/${selectedUser._id}`, {
+        headers: { "x-tenant": subdomain },
+      });
+      setUsers(users.filter((user) => user.id !== selectedUser.id));  // Remove the user from the list
+      setIsDeleteModalOpen(false);  // Close the modal
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
 
-        fetchUsers()
+    fetchUsers()
 
-    };
+  };
 
-    const handleSearch = () => {
-        fetchUsers(1, usersPerPage); // Trigger search query to the backend
-    };
+  const handleSearch = () => {
+    fetchUsers(1, usersPerPage); // Trigger search query to the backend
+  };
 
 
   return (
@@ -205,8 +209,8 @@ const UserManagement = () => {
 
       {loading ? (
         <div className="flex flex-col items-center h-52">
-            {/* Animated Spinner */}
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          {/* Animated Spinner */}
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div>
@@ -239,13 +243,12 @@ const UserManagement = () => {
                       <td className="border border-gray-200 px-4 py-2 text-sm">{user.email}</td>
                       <td className="border border-gray-200 px-1 py-2 text-sm">
                         <span
-                          className={`px-2 py-1 rounded-full text-sm font-semibold ${
-                            user.status === 1
-                              ? "bg-green-200 text-green-800"
-                              : user.status === 0
+                          className={`px-2 py-1 rounded-full text-sm font-semibold ${user.status === 1
+                            ? "bg-green-200 text-green-800"
+                            : user.status === 0
                               ? "bg-red-200 text-red-800"
                               : "bg-white text-gray-800 border-gray-300"
-                          }`}
+                            }`}
                         >
                           {user.status === 1 ? "Active" : user.status === 0 ? "Not Active" : "Unknown"}
                         </span>
@@ -282,79 +285,79 @@ const UserManagement = () => {
             </table>
           </div>
 
-                    <div className="flex justify-center mt-4 gap-2">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <button
-                                key={index + 1}
-                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
-                                    }`}
-                                onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-            )}
-
-
-
-            {/* Add User UserModal */}
-            {isAddModalOpen && (
-                <UserModal
-                    title="Add User"
-                    onClose={() => setIsAddModalOpen(false)}
-                    onSubmit={handleAddUser}
-                    roles={roles}
-                    isEdit={false}
-                    groups={groups}
-                />
-            )}
-
-            {/* Update User UserModal */}
-            {isUpdateModalOpen && selectedUser && (
-                <UserModal
-                    title="Update User"
-                    onClose={() => setIsUpdateModalOpen(false)}
-                    initialValues={selectedUser}
-                    roles={roles}
-                    onSubmit={handleUpdateUser}
-                    isEdit={true}
-                    groups={groups}
-                />
-            )}
-
-            {/* Delete User UserModal */}
-            {isDeleteModalOpen && selectedUser && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                            Are you sure you want to delete{" "}
-                            <span className="text-red-500">{selectedUser.name}</span>?
-                        </h3>
-                        <p className="text-gray-600 mb-6">
-                            This action cannot be undone. Please confirm your decision.
-                        </p>
-                        <div className="flex justify-end gap-4">
-                            <button
-                                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-                                onClick={() => setIsDeleteModalOpen(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                                onClick={handleDeleteUser}
-                            >
-                                Confirm
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+          <div className="flex justify-center mt-4 gap-2">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
-    );
+
+      )}
+
+
+
+      {/* Add User UserModal */}
+      {isAddModalOpen && (
+        <UserModal
+          title="Add User"
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddUser}
+          roles={roles}
+          isEdit={false}
+          groups={groups}
+        />
+      )}
+
+      {/* Update User UserModal */}
+      {isUpdateModalOpen && selectedUser && (
+        <UserModal
+          title="Update User"
+          onClose={() => setIsUpdateModalOpen(false)}
+          initialValues={selectedUser}
+          roles={roles}
+          onSubmit={handleUpdateUser}
+          isEdit={true}
+          groups={groups}
+        />
+      )}
+
+      {/* Delete User UserModal */}
+      {isDeleteModalOpen && selectedUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Are you sure you want to delete{" "}
+              <span className="text-red-500">{selectedUser.name}</span>?
+            </h3>
+            <p className="text-gray-600 mb-6">
+              This action cannot be undone. Please confirm your decision.
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                onClick={handleDeleteUser}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default UserManagement;
