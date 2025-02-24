@@ -37,7 +37,7 @@ const UserManagement = () => {
   }, []);
 
   const fetchUsers = async (page = 1, limit = usersPerPage) => {
-    setLoading(true); 
+    setLoading(true);
     try {
 
       setTimeout(async () => {
@@ -66,11 +66,11 @@ const UserManagement = () => {
   };
 
 
-    const fetchRoles = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/role/select`, {
-                headers: { "x-tenant": subdomain },
-            });
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/role/select`, {
+        headers: { "x-tenant": subdomain },
+      });
 
       setRoles(response.data);
     } catch (error) {
@@ -78,11 +78,11 @@ const UserManagement = () => {
     }
   };
 
-    const fetchGroup = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/group/tenant/select`, {
-                headers: { "x-tenant": subdomain },
-            });
+  const fetchGroup = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/group/tenant/select`, {
+        headers: { "x-tenant": subdomain },
+      });
 
       console.log("Response(Group): " + response.data)
       setGroups(response.data);
@@ -91,27 +91,27 @@ const UserManagement = () => {
     }
   };
 
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle file upload
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     setLoading(true);
-  
+
     const formData = new FormData();
     formData.append("file", file);
-  
+
     try {
       const response = await fetch("http://localhost:5000/api/user/bulk-upload", {
         headers: { "x-tenant": subdomain },
         method: "POST",
         body: formData,
       });
-  
+
       // if (!response.ok) {
       //   throw new Error("File upload failed");
       // }
@@ -119,7 +119,7 @@ const UserManagement = () => {
       if (response.status === 201 || response.status === 200) {
         fetchUsers
       }
-  
+
       const result = await response.json();
       console.log("Upload successful", result);
     } catch (error) {
@@ -128,12 +128,12 @@ const UserManagement = () => {
       setLoading(false);
     }
   };
-  
 
-    const handlePageChange = (pageNumber) => {
-        fetchUsers(pageNumber);
-        setCurrentPage(pageNumber);
-    };
+
+  const handlePageChange = (pageNumber) => {
+    fetchUsers(pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const handleAddUser = () => {
     fetchUsers()
@@ -156,23 +156,23 @@ const UserManagement = () => {
     // setUsers(users.filter((user) => user.id !== selectedUser.id));
     setIsDeleteModalOpen(false);
 
-        try {
-            await axios.delete(`http://localhost:5000/api/user/${selectedUser._id}`, {
-                headers: { "x-tenant": subdomain },
-            });
-            setUsers(users.filter((user) => user.id !== selectedUser.id));  // Remove the user from the list
-            setIsDeleteModalOpen(false);  // Close the modal
-        } catch (error) {
-            console.error("Error deleting user:", error);
-        }
+    try {
+      await axios.delete(`http://localhost:5000/api/user/${selectedUser._id}`, {
+        headers: { "x-tenant": subdomain },
+      });
+      setUsers(users.filter((user) => user.id !== selectedUser.id));  // Remove the user from the list
+      setIsDeleteModalOpen(false);  // Close the modal
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
 
-        fetchUsers()
+    fetchUsers()
 
-    };
+  };
 
-    const handleSearch = () => {
-        fetchUsers(1, usersPerPage); // Trigger search query to the backend
-    };
+  const handleSearch = () => {
+    fetchUsers(1, usersPerPage); // Trigger search query to the backend
+  };
 
 
   return (
@@ -243,8 +243,8 @@ const UserManagement = () => {
 
       {loading ? (
         <div className="flex flex-col items-center h-52">
-            {/* Animated Spinner */}
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          {/* Animated Spinner */}
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div>
@@ -277,13 +277,12 @@ const UserManagement = () => {
                       <td className="border border-gray-200 px-4 py-2 text-sm">{user.email}</td>
                       <td className="border border-gray-200 px-1 py-2 text-sm">
                         <span
-                          className={`px-2 py-1 rounded-full text-sm font-semibold ${
-                            user.status === 1
-                              ? "bg-green-200 text-green-800"
-                              : user.status === 0
+                          className={`px-2 py-1 rounded-full text-sm font-semibold ${user.status === 1
+                            ? "bg-green-200 text-green-800"
+                            : user.status === 0
                               ? "bg-red-200 text-red-800"
                               : "bg-white text-gray-800 border-gray-300"
-                          }`}
+                            }`}
                         >
                           {/* {user.status === 1 ? "Active" : user.status === 0 ? "Not Active" : "Unknown"} */}
                         </span>

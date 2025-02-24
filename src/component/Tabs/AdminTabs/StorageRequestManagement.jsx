@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../context/JWTContext.jsx'
 import axios from 'axios';
 import { format } from 'date-fns';
+import { Tooltip } from 'react-tooltip';
 
 // Pending
-import { Clock, Hourglass, Loader2, MoreHorizontal, Bell } from "lucide-react";
+import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
 // Approved
-import { CheckCircle, ThumbsUp, BadgeCheck } from "lucide-react";
+import { CheckCircle, ThumbsUp, BadgeCheck, CircleCheck, Check } from "lucide-react";
 // Rejected
-import { XCircle, ThumbsDown, Ban } from "lucide-react";
+import { XCircle, ThumbsDown, Ban, X } from "lucide-react";
 
 const StorageRequestScreen = () => {
     const { user } = useAuth();
@@ -51,7 +52,7 @@ const StorageRequestScreen = () => {
                             null;
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/storage/status`, {
+                    const response = await axios.get(`http://localhost:5000/api/request/storage/status`, {
                         params: { page, limit, status },
                         headers: { "x-tenant": subdomain },
                     });
@@ -78,7 +79,7 @@ const StorageRequestScreen = () => {
     const handleSubmitApprove = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/storage/approve`, request, {
+            await axios.put(`http://localhost:5000/api/request/storage/approve`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -92,7 +93,7 @@ const StorageRequestScreen = () => {
     const handleSubmitReject = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/storage/reject`, request, {
+            await axios.put(`http://localhost:5000/api/request/storage/reject`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -105,7 +106,7 @@ const StorageRequestScreen = () => {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Storage Request</h1>
+                <h1 className="text-xl font-semibold">Request</h1>
             </div>
             <div className="flex border-b border-gray-200 dark:border-gray-700">
                 {tabs.map((tab, index) => {
@@ -131,8 +132,8 @@ const StorageRequestScreen = () => {
                 </div>
             ) : (
                 <div>
-                    <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1>
-                    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                    {/* <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1> */}
+                    <div className="bg-white shadow-md rounded-lg overflow-hidden ">
                         {requests.map((request) => (
                             <div
                                 key={request._id}
@@ -158,9 +159,24 @@ const StorageRequestScreen = () => {
                                     </div>
                                 </div>
                                 <div className="ml-4 flex-1">
-                                    <p className="text-md text-gray-600">{request.requester?.name} has requested to increase storage size by {request?.amount}MB.</p>
-                                    <span className="text-sm text-gray-400">{formattedDate(request.createdAt)}</span>
+                                    <div className="flex items-center">
+                                        <p className="text-md text-gray-800">
+                                            {request.requester?.name} has requested to increase storage size by {request?.amount}MB.
+                                        </p>
+                                        <EllipsisVertical
+                                            id={`anchor-reason-${request._id}`}
+                                            className="size-4 ml-2 text-gray-400 hover:text-blue-500 hover:shadow-md transition"
+                                        />
+                                        <Tooltip
+                                            anchorSelect={`#anchor-reason-${request._id}`}
+                                            content={request?.reason ? request.reason : "No reason Provided"}
+                                        />
+                                    </div>
+                                    <span className="text-sm text-gray-400 mr-4">
+                                        Requested at {formattedDate(request.createdAt)}
+                                    </span>
                                 </div>
+
                                 {request.status === 0 && (
                                     <div className="flex justify-center space-x-2">
                                         <button
@@ -171,7 +187,7 @@ const StorageRequestScreen = () => {
                                             }}
                                             aria-label="Approve Request"
                                         >
-                                            Approve
+                                            <Check className="text-green-500" />
                                         </button>
                                         <button
                                             className="text-gray-400 hover:text-red-500 hover:shadow-md transition ml-2"
@@ -181,7 +197,7 @@ const StorageRequestScreen = () => {
                                             }}
                                             aria-label="Reject Request"
                                         >
-                                            Reject
+                                            <X className="text-red-500" />
                                         </button>
                                     </div>
                                 )}

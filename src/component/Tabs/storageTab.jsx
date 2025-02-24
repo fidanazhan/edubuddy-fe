@@ -34,7 +34,7 @@ const systemScreen = () => {
                             Users
                         </Link>
                     </li>
-                    {/* <li className="mb-4">
+                    <li className="mb-4">
                         <Link
                             to="/admin-panel/storage/transaction"
                             onClick={() => handleTabClick('transaction')}
@@ -42,7 +42,7 @@ const systemScreen = () => {
                         >
                             Transaction History
                         </Link>
-                    </li> */}
+                    </li>
                     <li className="mb-4">
                         <Link
                             to="/admin-panel/storage/request"

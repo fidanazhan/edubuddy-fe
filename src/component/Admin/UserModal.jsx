@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 
-const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}) => {
+const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,7 +26,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
     }
 
   }, [initialValues, roles, groups]);
-  
+
 
   const handleInputChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -40,7 +40,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
     if (!formData.name.trim()) newErrors.name = "Name is required.";
     if (!formData.email.trim()) newErrors.email = "Email is required.";
     else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = "Invalid email format.";
-    
+
     if (!formData.status) newErrors.status = "Status is required.";
     if (!formData.role) newErrors.role = "Role is required.";
     // if (formData.groups.length === 0) newErrors.groups = "At least one group is required.";
@@ -62,15 +62,15 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
     if (!validateForm()) return;
     if (validateForm()) {
 
-      const tenantId = getTenantIdFromSubdomain();  
+      const tenantId = getTenantIdFromSubdomain();
       const payload = {
         ...formData,
-        role: formData.role.code, 
+        role: formData.role.code,
         groups: formData.groups.map((group) => group.code),
       };
 
       try {
-        
+
         const tenantHost = window.location.hostname.split(".")[0];
         const headers = { 
           'Content-Type': 'application/json', 
@@ -89,13 +89,13 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups}
           onSubmit();
           onClose();
         }
-  
+
       } catch (error) {
         console.error('Error:', error);
       }
     }
   };
-  
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
