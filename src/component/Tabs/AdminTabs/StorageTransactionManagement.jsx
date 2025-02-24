@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from 'date-fns';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
-const customStyles = {
-    control: (provided) => ({
-        ...provided,
-        width: "400px",
-        borderRadius: "8px",
-        boxShadow: "none",
-        textAlign: "left",
-    }),
-    option: (provided, state) => ({
-        ...provided,
-        color: state.isSelected ? "black" : "grey",
-        backgroundColor: state.isSelected ? "lightgrey" : "white",
-    }),
-};
-
-
-const TokenTransactionManagement = () => {
+const StorageTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchSenderName, setSenderName] = useState("");
     const [searchReceiverName, setReceiverName] = useState("");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    // const [users, setUsers] = useState([]);
 
 
     const transactionsPerPage = 10;
@@ -43,14 +30,16 @@ const TokenTransactionManagement = () => {
 
 
     const fetchTransactions = async (page = 1, limit = transactionsPerPage) => {
-        setLoading(true);  // Show loading immediately when search is triggered
-        // console.log(searchSenderName, searchReceiverName)
+        setLoading(true);
         try {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/transaction`, {
-                        params: { page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined },
+                    const response = await axios.get(`http://localhost:5000/api/transaction/storage`, {
+                        params: {
+                            page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined,
+                            startDate: startDate || undefined, endDate: endDate || startDate || undefined
+                        },
                         headers: {
                             "Authorization": `Bearer ${token}`,
                             "x-tenant": subdomain
@@ -80,7 +69,20 @@ const TokenTransactionManagement = () => {
     const handleSearch = () => {
         console.log(searchSenderName)
         console.log(searchReceiverName)
+        console.log(startDate)
+        console.log(endDate)
         fetchTransactions(1, transactionsPerPage); // Trigger search query to the backend
+    };
+
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+        // Ensure end date is not earlier than start date
+        if (!date) {
+            setEndDate(null);
+        }
+        if (endDate && date > endDate) {
+            setEndDate(null);
+        }
     };
 
     return (
@@ -93,16 +95,36 @@ const TokenTransactionManagement = () => {
                 <input
                     type="text"
                     placeholder="Search Sender..."
-                    className="border rounded-lg px-4 py-2 w-full"
+                    className="border rounded-lg px-4 py-2 w-auto"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}
                 />
                 <input
                     type="text"
                     placeholder="Search Receiver..."
-                    className="border rounded-lg px-4 py-2 w-full"
+                    className="border rounded-lg px-4 py-2 w-auto"
                     value={searchReceiverName}
                     onChange={(e) => setReceiverName(e.target.value)}
+                />
+                <DatePicker
+                    selected={startDate}
+                    onChange={handleStartDateChange}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    className="border rounded-lg px-4 py-2 w-auto"
+                    placeholderText="Choose start date"
+                />
+                <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    disabled={!startDate}
+                    className="border rounded-lg px-4 py-2 w-auto"
+                    placeholderText="Choose end date"
                 />
                 <button
                     className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -174,4 +196,4 @@ const TokenTransactionManagement = () => {
     );
 };
 
-export default TokenTransactionManagement;
+export default StorageTransactionManagement;

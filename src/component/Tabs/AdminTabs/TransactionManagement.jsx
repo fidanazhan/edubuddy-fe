@@ -4,22 +4,6 @@ import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const customStyles = {
-    control: (provided) => ({
-        ...provided,
-        width: "400px",
-        borderRadius: "8px",
-        boxShadow: "none",
-        textAlign: "left",
-    }),
-    option: (provided, state) => ({
-        ...provided,
-        color: state.isSelected ? "black" : "grey",
-        backgroundColor: state.isSelected ? "lightgrey" : "white",
-    }),
-};
-
-
 const TokenTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -29,7 +13,6 @@ const TokenTransactionManagement = () => {
     const [endDate, setEndDate] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    // const [users, setUsers] = useState([]);
 
 
     const transactionsPerPage = 10;
