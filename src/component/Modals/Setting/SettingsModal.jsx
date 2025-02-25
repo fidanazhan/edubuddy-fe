@@ -3,14 +3,14 @@ import Modal from 'react-modal';
 import { RxDashboard } from "react-icons/rx";
 import { FaTimes } from 'react-icons/fa';
 const Theme = lazy(() => import("./Theme"));
+const Language = lazy(() => import("./Language"));
 
 const SettingsModal = ({ isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState("Theme");
 
     const settingsTabs = [
         { name: "Theme", icon: <RxDashboard />, component: Theme },
-        { name: "Theme2", icon: <RxDashboard />, component: Theme },
-        { name: "ThemeThemeTheme", icon: <RxDashboard />, component: Theme },
+        { name: "Language", icon: <RxDashboard />, component: Language },
     ]
 
     if (!isOpen) return null; // Don't render if isOpen is false
@@ -33,12 +33,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
             </div>
             <div className="flex">
                 {/* Sidebar with Vertical Tabs */}
-                <div className="flex flex-col space-y-2 border-r border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col border-r border-gray-200 dark:border-gray-700">
                     {settingsTabs.map((tab) => (
                         <button
                             key={tab.name}
                             onClick={() => setActiveTab(tab.name)}
-                            className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-300 ${activeTab === tab.name
+                            className={`flex items-center px-2 py-2 text-sm font-medium transition-all duration-300 ${activeTab === tab.name
                                 ? "text-blue-600 border-l-4 border-blue-600 dark:text-blue-400"
                                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 }`}
@@ -51,7 +51,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Tab Content */}
-                <div className="w-auto">
+                <div className="w-auto ml-2">
                     <Suspense
                         fallback={
                             <div className="flex items-center justify-center h-32">
@@ -62,7 +62,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         {settingsTabs.map(
                             (tab) =>
                                 activeTab === tab.name && (
-                                    <div key={tab.name} className="text-gray-800 dark:text-white">
+                                    <div key={tab.name} className="text-gray-800 dark:text-gray-600">
                                         <tab.component />
                                     </div>
                                 )
