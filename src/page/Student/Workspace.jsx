@@ -6,6 +6,9 @@ import { useAuth } from '../../context/JWTContext'
 const Dashboard = lazy(() => import("./Workspace/Dashboard"));
 const FileManagement = lazy(() => import("./Workspace/Document"));
 const NotificationTab = lazy(() => import("./Workspace/Notification"));
+const Token = lazy(() => import("./Workspace/Token"));
+const Storage = lazy(() => import("./Workspace/Storage"));
+
 
 const Workspace = () => {
   const { user } = useAuth();
@@ -15,6 +18,8 @@ const Workspace = () => {
     { name: "Dashboard", icon: <RxDashboard />, component: Dashboard, canAccess: true},
     { name: "Document", icon: <IoDocumentAttachOutline />, component: FileManagement, canAccess: user?.permissions?.includes("m_document")  },
     { name: "Notification", icon: <IoNotificationsOutline />, component: NotificationTab, canAccess: true},
+    { name: "Token", icon: <IoNotificationsOutline />, component: Token, canAccess: true},
+    { name: "Storage", icon: <IoNotificationsOutline />, component: Storage, canAccess: true},
   ].filter(tab => tab.canAccess);;
 
   return (
@@ -39,7 +44,7 @@ const Workspace = () => {
       </div>
 
       {/* Tab content */}
-      <div className="p-4">
+      <div className="w-auto p-4">
         <Suspense
           fallback={
             <div className="flex items-center justify-center h-32">
