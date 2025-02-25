@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from "react";
 import Modal from 'react-modal';
-import { RxDashboard } from "react-icons/rx";
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaGlobe } from "react-icons/fa";
+import { MdOutlineWbSunny } from "react-icons/md";
 const Theme = lazy(() => import("./Theme"));
 const Language = lazy(() => import("./Language"));
 
@@ -9,8 +9,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState("Theme");
 
     const settingsTabs = [
-        { name: "Theme", icon: <RxDashboard />, component: Theme },
-        { name: "Language", icon: <RxDashboard />, component: Language },
+        { name: "Theme", icon: <MdOutlineWbSunny />, component: Theme },
+        { name: "Language", icon: <FaGlobe />, component: Language },
     ]
 
     if (!isOpen) return null; // Don't render if isOpen is false
@@ -38,7 +38,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         <button
                             key={tab.name}
                             onClick={() => setActiveTab(tab.name)}
-                            className={`flex items-center px-2 py-2 text-sm font-medium transition-all duration-300 ${activeTab === tab.name
+                            className={`flex items-center px-2 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.name
                                 ? "text-blue-600 border-l-4 border-blue-600 dark:text-blue-400"
                                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 }`}
