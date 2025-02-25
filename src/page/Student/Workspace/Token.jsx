@@ -102,10 +102,10 @@ const TokenWorkspace = () => {
                 </div>
             )}
 
-            {isRequestModalOpen && (
+            {isRequestModalOpen && userInfo && (
                 <RequestModal
                     title="Request Token"
-                    type = "token"
+                    type="token"
                     onClose={() => setIsRequestModalOpen(false)}
                     onSubmit={handleAddRequest}
                     initialValues={userInfo}
