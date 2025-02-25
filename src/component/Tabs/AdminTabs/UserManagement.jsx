@@ -5,6 +5,7 @@ import UserModal from "../../Admin/UserModal";
 import { Search } from 'lucide-react'
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
+import { MdGroups2 } from "react-icons/md";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -191,27 +192,34 @@ const UserManagement = () => {
               <FaUpload className="mr-2" /> Bulk Process
             </button>
             {isOpen && (
-              <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-lg z-10">
+              <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10">
                 <button
                   onClick={() => triggerModal("Bulk Add")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaPlus className="mr-2 text-teal-600" /> 
-                  <span className="text-sm">Bulk Add</span>
+                  <span className="text-sm">Create User</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Update")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaEdit className="mr-2 text-blue-600" /> 
-                  <span className="text-sm">Bulk Update</span>
+                  <span className="text-sm">Update User</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaTrash className="mr-2 text-red-600" /> 
-                  <span className="text-sm">Bulk Remove</span>
+                  <span className="text-sm">Remove User</span>
+                </button>
+                <button
+                  onClick={() => triggerModal("Bulk Remove")}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                >
+                  <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" /> 
+                  <span className="text-sm">Assign User To Group</span>
                 </button>
               </div>
             )}
@@ -227,7 +235,7 @@ const UserManagement = () => {
         <div className="relative w-72">
           <input
             type="text"
-            placeholder="Search files..."
+            placeholder="Search user..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {

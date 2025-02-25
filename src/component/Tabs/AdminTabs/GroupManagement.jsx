@@ -113,7 +113,7 @@ const GroupManagement = () => {
 
       <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
         <div className="flex space-x-2">
-          <div className="relative inline-block text-left">
+          {/* <div className="relative inline-block text-left">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 flex items-center"
@@ -133,7 +133,7 @@ const GroupManagement = () => {
                 </button>
               </div>
             )}
-          </div>
+          </div> */}
 
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -186,13 +186,13 @@ const GroupManagement = () => {
                       <td className="py-2 px-4 border text-sm">{group.code}</td>
                       <td className="border border-gray-200 px- py-2">
                         <div className="flex justify-center space-x-2">
-                          <MdGroups2 
+                          {/* <MdGroups2 
                             className="text-blue-400 cursor-pointer"
                             onClick={() => {
                               setSelectedGroup(group);
                               setIsGroupUserModalOpen(true);
                             }}
-                          />
+                          /> */}
                           <FaEdit
                             className="text-green-400 cursor-pointer"
                             onClick={() => {

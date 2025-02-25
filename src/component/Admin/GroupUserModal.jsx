@@ -8,15 +8,18 @@ const GroupUserModal = ({ group, onClose, token, tenantId }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [groupUsers, setGroupUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingSelectDisplay, setLoadingSelectDisplay] = useState(false);
+  const [selectedUserForSearch, setSelectedUserForSearch] = useState(false);
 
   const usersPerPage = 5;
 
   useEffect(() => {
     fetchGroupUsers();
-  }, [currentPage, searchTerm]);
+  }, []);
 
   const fetchGroupUsers = async () => {
     setLoading(true);
@@ -64,6 +67,39 @@ const GroupUserModal = ({ group, onClose, token, tenantId }) => {
     }
   };
 
+  const fetchUsers = async (query) => {
+    if (!query.trim()) return; // Prevent empty searches
+  
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const response = await api.get(`/api/user/select`, {
+        params: { search: query },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "x-tenant": tenantId,
+        },
+      });
+  
+      console.log("Fetched Users:", response.data);
+      setUsers(response.data || []);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setError("Failed to fetch users");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const handleSearchUser = () => {
+    if (setSelectedUserForSearch) {
+      console.log("Selected User for Search:", setSelectedUserForSearch);
+    } else {
+      console.log("No user selected.");
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-[70rem] p-6">
@@ -77,22 +113,41 @@ const GroupUserModal = ({ group, onClose, token, tenantId }) => {
             </button>
         </div>
         
-        <div className="flex">
+        <div className="">
             {/* Left Side - Users List */}
-            <div className="w-1/2 pr-4 border-r">
+            <div className="pr-4 border-r">
             <h2 className="text-lg font-semibold mb-4">User List</h2>
 
             {/* Search Bar */}
             <Select
-                options={groupUsers.map((user) => ({
+              options={users.map((user) => ({
                 value: user._id,
-                label: `${user.userId.name} (${user.userId.email})`,
-                }))}
-                onInputChange={(value) => setSearchTerm(value)}
-                onChange={setSelectedUser}
-                placeholder="Search user..."
-                className="mb-4"
+                label: `${user.name} (${user.email})`,
+              }))}
+              isMulti
+              isClearable
+              onInputChange={(value) => setSearchTerm(value)}
+              onChange={(selectedOption) => {
+                console.log("Selected option:", selectedOption); // Debugging
+                setSelectedUserForSearch(selectedOption);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && searchTerm.trim()) {
+                  fetchUsers(searchTerm);
+                }
+              }}
+              isLoading={loadingSelectDisplay} // Show loading indicator
+              placeholder="Search user and press Enter..."
+              className="mb-2"
             />
+
+              <button
+                  onClick={handleSearchUser}
+                  disabled={!selectedUserForSearch}
+                  className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 mb-2"
+              >
+                  Add User
+              </button>
 
             {/* Users Table */}
             <div className="overflow-x-auto">
@@ -151,28 +206,6 @@ const GroupUserModal = ({ group, onClose, token, tenantId }) => {
 
 
 
-            </div>
-
-            {/* Right Side - Add User */}
-            <div className="w-1/2 pl-4">
-                <h3 className="text-lg font-semibold mb-4">Add User to Group</h3>
-
-                {/* User Selection */}
-                {/* <Select
-                    options={availableUsers}
-                    onChange={setSelectedUser}
-                    placeholder="Select user..."
-                    className="mb-4"
-                /> */}
-
-                {/* Add User Button */}
-                <button
-                    onClick={handleAddUser}
-                    disabled={!selectedUser}
-                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
-                >
-                    Add User
-                </button>
             </div>
         </div>
 

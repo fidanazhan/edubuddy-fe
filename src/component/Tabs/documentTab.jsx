@@ -209,7 +209,7 @@ const FileManagement = () => {
       });
 
       if (response.status === 200 || response.status === 204) {
-        getFileByUser(currentPage);
+        getFileByUser(1);
         showToast("Successfully deleted!", "bg-red-500", "alert");
       } else {
         console.error("Failed to delete file: Unexpected response -> ", response);
