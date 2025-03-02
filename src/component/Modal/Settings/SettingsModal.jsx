@@ -1,7 +1,8 @@
 import { lazy, Suspense, useState } from "react";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 import { FaTimes, FaGlobe } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
+
 const Theme = lazy(() => import("./Theme"));
 const Language = lazy(() => import("./Language"));
 
@@ -11,36 +12,37 @@ const SettingsModal = ({ isOpen, onClose }) => {
     const settingsTabs = [
         { name: "Theme", icon: <MdOutlineWbSunny />, component: Theme },
         { name: "Language", icon: <FaGlobe />, component: Language },
-    ]
+    ];
 
     if (!isOpen) return null; // Don't render if isOpen is false
+
     return (
         <Modal
             isOpen={isOpen}
             onRequestClose={onClose} // Required for accessibility
             contentLabel="Settings Modal"
-            className="bg-white rounded-lg shadow-lg w-[60rem] p-6"
+            className="bg-white rounded-lg shadow-lg w-[60rem] h-96 p-6 flex flex-col"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
-            <div className="flex justify-between items-center">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Settings</h2>
-                <button
-                    className="p-2 text-gray-600 hover:text-gray-800"
-                    onClick={onClose}
-                >
+                <button className="p-2 text-gray-600 hover:text-gray-800" onClick={onClose}>
                     <FaTimes className="w-5 h-5" />
                 </button>
             </div>
-            <div className="flex">
+
+            {/* Main Content: Sidebar + Tab Content */}
+            <div className="flex flex-grow">
                 {/* Sidebar with Vertical Tabs */}
-                <div className="flex flex-col border-r border-gray-200 dark:border-gray-700">
+                <div className="flex flex-col h-full border-r border-gray-200 dark:border-gray-700">
                     {settingsTabs.map((tab) => (
                         <button
                             key={tab.name}
                             onClick={() => setActiveTab(tab.name)}
-                            className={`flex items-center px-2 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.name
-                                ? "text-blue-600 border-l-4 border-blue-600 dark:text-blue-400"
-                                : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                            className={`flex items-center px-4 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.name
+                                    ? "text-blue-600 border-l-4 border-blue-600 dark:text-blue-400"
+                                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 }`}
                             aria-current={activeTab === tab.name ? "page" : undefined}
                         >
@@ -51,7 +53,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Tab Content */}
-                <div className="w-auto ml-2">
+                <div className="p-4">
                     <Suspense
                         fallback={
                             <div className="flex items-center justify-center h-32">
@@ -69,11 +71,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         )}
                     </Suspense>
                 </div>
-
-
             </div>
-
-
         </Modal>
     );
 };
