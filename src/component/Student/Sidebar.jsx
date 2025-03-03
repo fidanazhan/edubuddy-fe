@@ -6,14 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
 import { CiChat1 } from "react-icons/ci";
 import Location from '../Location'
-import { useTheme } from "../../context/ThemeContext";
 // import './sidebar.css'
 
 const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
-  const { theme } = useTheme(); // Get current theme
-  
+
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
   //   queryFn: () =>
@@ -36,15 +34,15 @@ const Sidebar = ({ passIsOpen }) => {
 
   function capitalizeAndTruncate(input) {
     if (!input) return "";
-  
+
     const words = input
       .split(" ")
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
 
     const truncatedByWords = words.slice(0, 4).join(" ");
-    
-    return truncatedByWords.length > 20 
-      ? truncatedByWords.slice(0, 20).trim() + "..." 
+
+    return truncatedByWords.length > 20
+      ? truncatedByWords.slice(0, 20).trim() + "..."
       : truncatedByWords;
   }
 
@@ -79,9 +77,8 @@ const Sidebar = ({ passIsOpen }) => {
               <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
                 <MdAdd className="text-xl flex-shrink-0" />
                 <span
-                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
-                    isOpen ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
+                    }`}
                 >
                   New Chat
                 </span>
@@ -93,9 +90,8 @@ const Sidebar = ({ passIsOpen }) => {
               <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
                 <MdDashboard className="text-xl flex-shrink-0" />
                 <span
-                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
-                    isOpen ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
+                    }`}
                 >
                   Workspace
                 </span>
@@ -106,9 +102,8 @@ const Sidebar = ({ passIsOpen }) => {
             <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
               <MdOutlineSearch className="text-xl flex-shrink-0" />
               <span
-                className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
-                  isOpen ? "opacity-100" : "opacity-0"
-                }`}
+                className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
+                  }`}
               >
                 Search
               </span>

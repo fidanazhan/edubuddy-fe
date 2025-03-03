@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PromptInput from '../../component/Prompts';
 import shuffle from 'lodash/shuffle';
 import { useAuth } from '../../context/JWTContext';
-import { useTheme } from "../../context/ThemeContext";
 
 const suggestions = [
   { name: "Help me study.", content: "vocabulary for a college entrance exam" },
@@ -18,7 +17,6 @@ const suggestions = [
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { setTheme } = useTheme();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -57,34 +55,6 @@ const Dashboard = () => {
     setInputValue(content); // Update input field with selected suggestion
   };
 
-  useEffect(() => {
-    if (user) {
-      console.log("User: " + JSON.stringify(user))
-      getTheme(user);
-    }
-
-  }, [user]);
-
-  const getTheme = async (user) => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
-        headers: { 
-          "x-tenant": subdomain,
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-
-      if (response.data.theme) {
-        localStorage.setItem("theme", response.data.theme);
-        setTheme(response.data.theme);
-      }
-
-      console.log("Response: " + response.data.theme);
-    } catch (error) {
-      console.error("Error fetching theme:", error);
-    }
-  };
-  
 
   return (
     <div className="flex flex-col h-[50vh] items-center">
