@@ -53,10 +53,10 @@ const Sidebar = ({ passIsOpen }) => {
         className={`h-screen border-r transition-all duration-300 
           ${isOpen ? "w-64" : "w-14"} 
           fixed top-0 left-0 z-10 hidden lg:flex flex-col
-          bg-slate-100 dark:bg-gray-900 dark:border-gray-700`}
+          bg-slate-100 dark:bg-gray-600 dark:border-gray-900`}
       >
         {/* Header Section with Toggle Button */}
-        <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-gray-700 text-gray-900 dark:text-gray-300">
           <button
             onClick={toggleSidebar}
             className="focus:outline-none text-xl text-stone-500 dark:text-gray-300"
@@ -74,7 +74,7 @@ const Sidebar = ({ passIsOpen }) => {
         <ul className="flex-1 mt-4 ml-0">
           <Link className="mb-3" to="/dashboard">
             <div className="relative w-full">
-              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
                 <MdAdd className="text-xl flex-shrink-0" />
                 <span
                   className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
@@ -87,7 +87,7 @@ const Sidebar = ({ passIsOpen }) => {
           </Link>
           <Link className="mb-3" to="/workspace">
             <div className="relative w-full">
-              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
                 <MdDashboard className="text-xl flex-shrink-0" />
                 <span
                   className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
@@ -99,7 +99,7 @@ const Sidebar = ({ passIsOpen }) => {
             </div>
           </Link>
           <div className="relative w-full">
-            <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+            <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
               <MdOutlineSearch className="text-xl flex-shrink-0" />
               <span
                 className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
@@ -114,7 +114,7 @@ const Sidebar = ({ passIsOpen }) => {
           <div
             className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
-            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-white">Recent Chats</div>
+            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">Recent Chats</div>
             {/* <div className="list">
               {isPending
                 ? "Loading..."

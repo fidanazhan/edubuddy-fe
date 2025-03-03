@@ -20,7 +20,7 @@ const Layout = () => {
               ${sidebarIsOpen ? "ml-64" : "ml-14"}`}
       > 
         <Header selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
-        <main className="p-4 bg-gray-50 flex-1">
+        <main className="p-4 bg-gray-50 flex-1 dark:bg-gray-800 dark:text-gray-300">
           <Outlet context={{ selectedModel, setSelectedModel }} />
         </main>
       </div>

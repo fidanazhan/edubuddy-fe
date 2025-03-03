@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex items-center justify-end bg-gray-50 p-4">
+    <div className="flex items-center justify-end bg-gray-50 p-4 dark:bg-gray-800 dark:text-white">
       <div className="relative inline-block text-left" ref={dropdownRef}>
         <button
           onClick={toggleDropdown}
@@ -49,9 +49,9 @@ const Header = () => {
         </button>
 
         {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-gray-50 border rounded shadow-lg z-10">
+          <div className="absolute right-0 mt-2 w-48 bg-gray-50 border rounded shadow-lg z-10 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-900">
             <button
-              className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100"
+              className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => {
                 closeDropdown();
                 setIsSettingModalOpen(true);
@@ -63,7 +63,7 @@ const Header = () => {
 
             {user?.roles === "ADMIN" && (
               <button
-                className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100"
+                className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => {
                   closeDropdown();
                   navigate(`/admin-panel`);
@@ -75,7 +75,7 @@ const Header = () => {
             )}
 
             <button
-              className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100"
+              className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={handleLogout}
             >
               <MdLogout className="mr-2 text-gray-600" />
