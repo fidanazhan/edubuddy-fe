@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from 'axios'
+import { FaTrash } from 'react-icons/fa'
 
 const SuggestionQuestion = ({ tenantId }) => {
   const [questions, setQuestions] = useState([]);
   const [newQuestion, setNewQuestion] = useState("");
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
@@ -23,8 +26,6 @@ const SuggestionQuestion = ({ tenantId }) => {
             "Authorization": `Bearer ${token}`,
           },
       });
-
-      console.log("response: " + JSON.stringify(response.data))
       
       setQuestions(response.data);
     } catch (error) {
@@ -38,43 +39,60 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
 
     try {
-      const res = editId
-        ? await fetch(`/api/suggestions/${editId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: newQuestion }),
-          })
-        : await fetch("/api/suggestions", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: newQuestion, tenantId }),
-          });
+        const response = await axios.post(
+            "http://localhost:5000/api/suggestion-question",
+            { question: newQuestion }, // Correct request payload
+            {
+                headers: {
+                    "x-tenant": subdomain,
+                    "Authorization": `Bearer ${token}`,
+                },
+            }
+        );
 
-      if (res.ok) {
-        setNewQuestion("");
-        setEditId(null);
-        fetchQuestions();
-      }
+        if (response.status === 201) { // Check response status
+            setNewQuestion("");
+            fetchQuestions();
+        }
     } catch (error) {
-      console.error("Error saving question", error);
+        console.error("Error saving question", error);
     }
 
     setLoading(false);
   };
 
-  const handleDeleteQuestion = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this question?")) return;
+  const handleOpenDeleteModal = (question) => {
+    setSelectedQuestion(question);
+    setIsDeleteModalOpen(true);
+  };
+
+
+  const handleDeleteQuestion = async () => {
+    if (!selectedQuestion) return;
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/suggestions/${id}`, { method: "DELETE" });
-      if (res.ok) fetchQuestions();
+        const response = await axios.delete(
+            `http://localhost:5000/api/suggestion-question/${selectedQuestion._id}`,
+            {
+                headers: {
+                    "x-tenant": subdomain,
+                    "Authorization": `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            fetchQuestions(); // Refresh list
+        }
     } catch (error) {
-      console.error("Error deleting question", error);
+        console.error("Error deleting question", error);
     }
 
     setLoading(false);
-  };
+    setIsDeleteModalOpen(false);
+    setSelectedQuestion(null);
+};
 
   const handleEditQuestion = (id, question) => {
     setNewQuestion(question);
@@ -87,7 +105,7 @@ const SuggestionQuestion = ({ tenantId }) => {
         <h2 className="text-xl font-semibold mb-4">Suggestion Questions</h2>
 
         {/* Input Field */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-4">
           <input
             type="text"
             value={newQuestion}
@@ -97,47 +115,62 @@ const SuggestionQuestion = ({ tenantId }) => {
             disabled={loading}
           />
           <button
-            onClick={handleSaveQuestion}
-            className={`px-4 py-2 rounded transition ${
-              loading
-                ? "bg-gray-400 dark:bg-gray-600"
-                : editId
-                ? "bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400"
-                : "bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400"
-            } text-white`}
-            disabled={loading}
+              onClick={handleSaveQuestion}
+              className={`px-4 py-2 rounded transition ${
+                  loading
+                      ? "bg-gray-400 dark:bg-gray-600"
+                      : "bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400"
+              } text-white`}
+              disabled={loading}
           >
-            {loading ? "Saving..." : editId ? "Update" : "Add"}
+              {loading ? "Saving..." : "Add"}
           </button>
         </div>
 
         {/* List of Questions */}
-        <ul className="mt-4 space-y-3">
-          {questions.map((q) => (
-            <li
-              key={q._id}
-              className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded shadow-md"
-            >
-              <span className="text-gray-900 dark:text-gray-300">{q.question}</span>
-              <div className="space-x-2">
-                <button
-                  onClick={() => handleEditQuestion(q._id, q.question)}
-                  className="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400 rounded text-sm text-white"
-                  disabled={loading}
-                >
-                  ✏️ Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteQuestion(q._id)}
-                  className="px-2 py-1 bg-red-500 hover:bg-red-600 dark:hover:bg-red-400 rounded text-sm text-white"
-                  disabled={loading}
-                >
-                  🗑️ Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {loading ? (
+          <div className="flex flex-col items-center h-52">
+            {/* Animated Spinner */}
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <div>
+            <table className="table-auto w-full border-collapse border border-gray-200">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border border-gray-200 px-4 py-2">No</th>
+                  <th className="border border-gray-200 px-4 py-2">Question</th>
+                  <th className="border border-gray-200 px-4 py-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {questions.length > 0 ? (
+                  questions.map((q, index) => (
+                    <tr key={q._id} className="text-center">
+                      <td className="border border-gray-200 px-4 py-2 text-sm">{index + 1}</td>
+                      <td className="border border-gray-200 px-4 py-2 text-sm">{q.question}</td>
+                      <td className="border border-gray-200 px-4 py-2">
+                        <div className="flex justify-center space-x-2">
+                          <FaTrash
+                            className="text-red-400 cursor-pointer"
+                            onClick={() => handleOpenDeleteModal(q)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">
+                      No questions found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+
 
         {/* Loading Spinner */}
         {loading && (
@@ -146,6 +179,36 @@ const SuggestionQuestion = ({ tenantId }) => {
           </div>
         )}
       </div>
+
+
+      {isDeleteModalOpen && selectedQuestion && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                      Are you sure you want to delete{" "}
+                      <span className="text-red-500">"{selectedQuestion.question}"</span>?
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                      This action cannot be undone. Please confirm your decision.
+                  </p>
+                  <div className="flex justify-end gap-4">
+                      <button
+                          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                          onClick={() => setIsDeleteModalOpen(false)}
+                      >
+                          Cancel
+                      </button>
+                      <button
+                          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                          onClick={handleDeleteQuestion}
+                      >
+                          Confirm
+                      </button>
+                  </div>
+              </div>
+          </div>
+      )}
+
     </div>
   );
 };
