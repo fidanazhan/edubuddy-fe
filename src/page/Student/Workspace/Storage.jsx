@@ -103,10 +103,10 @@ const StorageWorkspace = () => {
                 </div>
             )}
 
-            {isRequestModalOpen && (
+            {isRequestModalOpen && userInfo && (
                 <RequestModal
                     title="Request Storage"
-                    type = "storage"
+                    type="storage"
                     onClose={() => setIsRequestModalOpen(false)}
                     onSubmit={handleAddRequest}
                     initialValues={userInfo}

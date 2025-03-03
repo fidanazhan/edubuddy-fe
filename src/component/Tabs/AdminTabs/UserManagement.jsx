@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { FaEye, FaEdit, FaTrash, FaUpload, FaPlus, FaLayerGroup } from "react-icons/fa";
+import { FaDownload, FaEdit, FaTrash, FaUpload, FaPlus, FaLayerGroup } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
 import { Search } from 'lucide-react'
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
+import { MdGroups2 } from "react-icons/md";
+import { HiUser, HiMiniUserGroup } from "react-icons/hi2";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -19,9 +21,10 @@ const UserManagement = () => {
   const [groups, setGroups] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedAction, setSelectedAction] = useState("");
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
+  const [filterByGroup, setFilterByGroup] = useState(false);
 
   const usersPerPage = 5;
   const subdomain = window.location.hostname.split(".")[0];
@@ -39,17 +42,21 @@ const UserManagement = () => {
   const fetchUsers = async (page = 1, limit = usersPerPage) => {
     setLoading(true);
     try {
-
       setTimeout(async () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/user`, {
-            params: { page, limit, search: searchTerm || undefined },
+            params: { 
+              page, 
+              limit, 
+              search: searchTerm || undefined, 
+              filterByGroup: filterByGroup ? "true" : undefined 
+            },
             headers: { 
               "x-tenant": subdomain,
               "Authorization": `Bearer ${token}`,
             },
           });
-  
+
           setUsers(Array.isArray(response.data.data) ? response.data.data : []);
           setTotalPages(response.data.pages || 1);
           setCurrentPage(page);
@@ -60,11 +67,10 @@ const UserManagement = () => {
         setLoading(false);
       }, 1000); 
     } catch (error) {
-        console.error("Error fetching users:", error);
-        setLoading(false);
+      console.error("Error fetching users:", error);
+      setLoading(false);
     }
   };
-
 
   const fetchRoles = async () => {
     try {
@@ -175,14 +181,53 @@ const UserManagement = () => {
   };
 
 
+  const downloadUsers = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/user/download`, {
+            params: { 
+                search: searchTerm || undefined,
+                filterByGroup: filterByGroup ? "true" : "false" 
+            },
+            headers: { 
+                "x-tenant": subdomain,
+                "Authorization": `Bearer ${token}`,
+            },
+            responseType: 'blob', // Important to handle file download
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'users.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("Error downloading users:", error);
+    }
+  };
+
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-semibold">User Management</h1>
       </div>
 
-      <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
+      <div className="flex justify-end space-x-2 mb-2 w-full mt-4">
         <div className="flex space-x-2">
+
+          {/* Download */}
+          <div className="relative inline-block text-left">
+            <button
+              onClick={() => downloadUsers()}
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-600 flex items-center"
+            >
+              <FaDownload className="mr-2" /> Download
+            </button>
+          </div>
+
+          {/* Bulk Process */}
           <div className="relative inline-block text-left">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -191,27 +236,34 @@ const UserManagement = () => {
               <FaUpload className="mr-2" /> Bulk Process
             </button>
             {isOpen && (
-              <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-lg z-10">
+              <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10">
                 <button
                   onClick={() => triggerModal("Bulk Add")}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaPlus className="mr-2 text-teal-600" /> 
-                  <span className="text-sm">Bulk Add</span>
+                  <span className="text-sm">Create User</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Update")}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaEdit className="mr-2 text-blue-600" /> 
-                  <span className="text-sm">Bulk Update</span>
+                  <span className="text-sm">Update User</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaTrash className="mr-2 text-red-600" /> 
-                  <span className="text-sm">Bulk Remove</span>
+                  <span className="text-sm">Remove User</span>
+                </button>
+                <button
+                  onClick={() => triggerModal("Bulk Remove")}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
+                >
+                  <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" /> 
+                  <span className="text-sm">Assign User To Group</span>
                 </button>
               </div>
             )}
@@ -227,7 +279,7 @@ const UserManagement = () => {
         <div className="relative w-72">
           <input
             type="text"
-            placeholder="Search files..."
+            placeholder="Search user..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {
@@ -240,6 +292,22 @@ const UserManagement = () => {
           <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
         </div>
       </div>
+
+      <div className="flex justify-end mb-2">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="filterByGroup"
+            checked={filterByGroup}
+            onChange={(e) => setFilterByGroup(e.target.checked)}
+            className="cursor-pointer"
+          />
+          <label htmlFor="filterByGroup" className="cursor-pointer">
+            Filter User By Group
+          </label>
+        </div>
+      </div>
+
 
       {loading ? (
         <div className="flex flex-col items-center h-52">

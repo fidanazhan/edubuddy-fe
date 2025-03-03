@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PromptInput from '../../component/Prompts';
 import shuffle from 'lodash/shuffle';
 import { useAuth } from '../../context/JWTContext';
+import { useTheme } from "../../context/ThemeContext";
 
 const suggestions = [
   { name: "Help me study.", content: "vocabulary for a college entrance exam" },
@@ -16,12 +18,15 @@ const suggestions = [
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const { setTheme } = useTheme();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [inputValue, setInputValue] = useState(""); // Store user input or suggestion text
 
   const randomSuggestion = shuffle(suggestions).slice(0, 3);
+  const subdomain = window.location.hostname.split(".")[0];
+  const token = localStorage.getItem("accessToken");
 
   const mutation = useMutation({
     mutationFn: (text) => {
@@ -52,6 +57,35 @@ const Dashboard = () => {
     setInputValue(content); // Update input field with selected suggestion
   };
 
+  useEffect(() => {
+    if (user) {
+      console.log("User: " + JSON.stringify(user))
+      getTheme(user);
+    }
+
+  }, [user]);
+
+  const getTheme = async (user) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+        headers: { 
+          "x-tenant": subdomain,
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.theme) {
+        localStorage.setItem("theme", response.data.theme);
+        setTheme(response.data.theme);
+      }
+
+      console.log("Response: " + response.data.theme);
+    } catch (error) {
+      console.error("Error fetching theme:", error);
+    }
+  };
+  
+
   return (
     <div className="flex flex-col h-[50vh] items-center">
       <div className="flex-1"></div>
@@ -66,6 +100,10 @@ const Dashboard = () => {
 
       <div className="flex justify-center">
         <PromptInput onSubmit={handleSubmit} value={inputValue} onChange={setInputValue} />
+      </div>
+
+      <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
+        This text changes color based on the theme.
       </div>
 
       {/* Centering the suggestion list */}

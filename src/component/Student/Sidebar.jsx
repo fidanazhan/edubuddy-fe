@@ -6,13 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
 import { CiChat1 } from "react-icons/ci";
 import Location from '../Location'
-
+import { useTheme } from "../../context/ThemeContext";
 // import './sidebar.css'
 
 const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
-
+  const { theme } = useTheme(); // Get current theme
+  
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
   //   queryFn: () =>
@@ -51,15 +52,16 @@ const Sidebar = ({ passIsOpen }) => {
     <>
       {/* Desktop Sidebar */}
       <div
-        className={`h-screen bg-slate-100 border-r transition-all duration-300
-        ${isOpen ? "w-64" : "w-14"}
-        fixed top-0 left-0 z-10 hidden lg:flex flex-col`}
+        className={`h-screen border-r transition-all duration-300 
+          ${isOpen ? "w-64" : "w-14"} 
+          fixed top-0 left-0 z-10 hidden lg:flex flex-col
+          bg-slate-100 dark:bg-gray-900 dark:border-gray-700`}
       >
         {/* Header Section with Toggle Button */}
-        <div className="flex items-center justify-between p-4 bg-slate-100 text-white">
+        <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-gray-900 text-gray-900 dark:text-white">
           <button
             onClick={toggleSidebar}
-            className="focus:outline-none text-xl text-stone-500"
+            className="focus:outline-none text-xl text-stone-500 dark:text-gray-300"
           >
             <FaBars />
           </button>
@@ -72,52 +74,52 @@ const Sidebar = ({ passIsOpen }) => {
 
         {/* Menu Items */}
         <ul className="flex-1 mt-4 ml-0">
-        <Link className="mb-3" to="/dashboard">
+          <Link className="mb-3" to="/dashboard">
+            <div className="relative w-full">
+              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+                <MdAdd className="text-xl flex-shrink-0" />
+                <span
+                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
+                    isOpen ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  New Chat
+                </span>
+              </button>
+            </div>
+          </Link>
+          <Link className="mb-3" to="/workspace">
+            <div className="relative w-full">
+              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+                <MdDashboard className="text-xl flex-shrink-0" />
+                <span
+                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
+                    isOpen ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  Workspace
+                </span>
+              </button>
+            </div>
+          </Link>
           <div className="relative w-full">
-            <button className="px-4 py-2 hover:bg-blue-100 flex items-center gap-2 w-full">
-              <MdAdd className="text-xl flex-shrink-0" />
+            <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-white">
+              <MdOutlineSearch className="text-xl flex-shrink-0" />
               <span
                 className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
                   isOpen ? "opacity-100" : "opacity-0"
                 }`}
               >
-                New Chat
+                Search
               </span>
             </button>
           </div>
-        </Link>
-        <Link className="mb-3" to="/workspace">
-          <div className="relative w-full">
-            <button className="px-4 py-2 hover:bg-blue-100 flex items-center gap-2 w-full">
-              <MdDashboard className="text-xl flex-shrink-0" />
-              <span
-                className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
-                  isOpen ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                Workspace
-              </span>
-            </button>
-          </div>
-        </Link>
-        <div className="relative w-full">
-          <button className="px-4 py-2 hover:bg-blue-100 flex items-center gap-2 w-full">
-            <MdOutlineSearch className="text-xl flex-shrink-0" />
-            <span
-              className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${
-                isOpen ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              Search
-            </span>
-          </button>
-        </div>
 
-          <hr />
+          <hr className="border-gray-300 dark:border-gray-700" />
           <div
             className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
-            <div className="px-4 mt-3 mb-4 font-semibold">Recent Chats</div>
+            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-white">Recent Chats</div>
             {/* <div className="list">
               {isPending
                 ? "Loading..."
