@@ -11,8 +11,10 @@ const configScreen = () => {
       setActiveTab('authentication');
     } else if (location.pathname === '/admin-panel/system-config/model') {
       setActiveTab('model');
-    } else if (location.pathname === '/admin-panel/rsystem-config/theme') {
+    } else if (location.pathname === '/admin-panel/system-config/theme') {
       setActiveTab('theme');
+    } else if (location.pathname === '/admin-panel/system-config/suggestion-question-template') {
+      setActiveTab('questions');
     }
   }, [location]);
 
@@ -50,6 +52,15 @@ const configScreen = () => {
               className={`hover:text-blue-500 font-semibold ${activeTab === 'theme' ? 'text-blue-600' : ''}`}
             >
               Theme
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link
+              to="/admin-panel/system-config/suggestion-question-template"
+              onClick={() => handleTabClick('Suggestion Questions')}
+              className={`hover:text-blue-500 font-semibold ${activeTab === 'questions' ? 'text-blue-600' : ''}`}
+            >
+              Suggestion Questions
             </Link>
           </li>
         </ul>
