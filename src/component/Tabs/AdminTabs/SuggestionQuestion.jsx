@@ -92,12 +92,8 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(false);
     setIsDeleteModalOpen(false);
     setSelectedQuestion(null);
-};
-
-  const handleEditQuestion = (id, question) => {
-    setNewQuestion(question);
-    setEditId(id);
   };
+
 
   return (
     <div className=" dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -123,7 +119,7 @@ const SuggestionQuestion = ({ tenantId }) => {
               } text-white`}
               disabled={loading}
           >
-              {loading ? "Saving..." : "Add"}
+            Save
           </button>
         </div>
 
@@ -173,11 +169,11 @@ const SuggestionQuestion = ({ tenantId }) => {
 
 
         {/* Loading Spinner */}
-        {loading && (
+        {/* {loading && (
           <div className="text-center mt-4">
             <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
           </div>
-        )}
+        )} */}
       </div>
 
 
