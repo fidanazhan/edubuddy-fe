@@ -72,35 +72,35 @@ const TokenUsersManagement = () => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                 {/* Monthly Token */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700">Total Token</h2>
+                        <h2 className="text-xl font-semibold">Total Token</h2>
                         <p className="text-gray-500 mt-4">1500/500000</p>
                     </div>
                     {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 3 */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-sm font-semibold text-gray-700">Token Distributed</h2>
-                        <p className="text-gray-500 mt-4 text-sm">100,000</p>
+                        <h2 className="text-xl font-semibold ">Token Distributed</h2>
+                        <p className="text-gray-500 mt-4">100,000</p>
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700">Token Balance</h2>
+                        <h2 className="text-xl font-semibold ">Token Balance</h2>
                         <p className="text-gray-500 mt-4">12500/45000</p>
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 4 */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700">Total Distributed</h2>
+                        <h2 className="text-xl font-semibold ">Total Distributed</h2>
                         <p className="text-gray-500 mt-4">Put context here</p>
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
@@ -135,9 +135,9 @@ const TokenUsersManagement = () => {
             ) : (
                 <div>
                     <div>
-                        <table className="table-auto w-full border-collapse border border-gray-200">
+                        <table className="table-auto w-full border-collapse border border-gray-200 dark:text-gray-300/80 dark:border-gray-900 dark:bg-gray-900">
                             <thead>
-                                <tr className="bg-gray-100">
+                                <tr className="bg-gray-100 dark:bg-gray-900">
                                     <th className="border border-gray-200 px-4 py-2">No</th>
                                     <th className="border border-gray-200 px-4 py-2">Name</th>
                                     <th className="border border-gray-200 px-4 py-2">Role</th>
@@ -162,7 +162,7 @@ const TokenUsersManagement = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="5" className="border border-gray-200 px-4 py-2 text-center">
+                                        <td colSpan="5" className="border border-gray-200 dark:border-gray-900 px-4 py-2 text-center">
                                             No users found.
                                         </td>
                                     </tr>
@@ -175,7 +175,7 @@ const TokenUsersManagement = () => {
                         {Array.from({ length: totalPages }, (_, index) => (
                             <button
                                 key={index + 1}
-                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-900 dark:text-gray-300 dark:border-gray-900"
                                     }`}
                                 onClick={() => handlePageChange(index + 1)}
                             >

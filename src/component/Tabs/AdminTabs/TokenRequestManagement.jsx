@@ -137,10 +137,11 @@ const TokenRequestScreen = () => {
                         {requests.map((request) => (
                             <div
                                 key={request._id}
-                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition"
+                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition
+                                           dark:bg-gray-900 dark:text-gray-300/80 dark:border-gray-900"
                             >
                                 <div className="flex-shrink-0">
-                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900">
                                         {request.status === 0 && (
                                             <>
                                                 <Hourglass className="text-blue-500" />
@@ -160,7 +161,7 @@ const TokenRequestScreen = () => {
                                 </div>
                                 <div className="ml-4 flex-1">
                                     <div className="flex items-center">
-                                        <p className="text-md text-gray-800">
+                                        <p className="text-md text-gray-800 dark:text-gray-300/80">
                                             {request.requester?.name} has requested {request?.amount} tokens.
                                         </p>
                                         <EllipsisVertical
@@ -211,7 +212,7 @@ const TokenRequestScreen = () => {
                         {Array.from({ length: totalPages }, (_, index) => (
                             <button
                                 key={index + 1}
-                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-900 dark:text-gray-300/80 dark:border-gray-900"
                                     }`}
                                 onClick={() => handlePageChange(index + 1)}
                             >

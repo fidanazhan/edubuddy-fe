@@ -23,7 +23,7 @@ const systemScreen = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <div className="w-44 bg-gray-50 p-4 border-r ">
+            <div className="w-44 bg-gray-50 p-4 border-r dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900">
                 <ul className='list-none'>
                     <li className="mb-4">
                         <Link
@@ -55,7 +55,7 @@ const systemScreen = () => {
                 </ul>
             </div>
 
-            <div className="flex-1 p-6">
+            <div className="flex-1 p-6 dark:bg-gray-800 dark:text-white dark:border-gray-900">
                 <Outlet />
             </div>
         </div>
