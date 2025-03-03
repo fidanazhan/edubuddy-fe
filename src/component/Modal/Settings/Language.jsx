@@ -14,7 +14,7 @@ const LanguageSettings = () => {
             <select
                 value={language}
                 onChange={(e) => handleLanguageChange(e.target.value)}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-lg dark:text-black/80"
             >
                 <option value="en">English</option>
                 <option value="es">Español</option>

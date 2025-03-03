@@ -21,7 +21,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             isOpen={isOpen}
             onRequestClose={onClose} // Required for accessibility
             contentLabel="Settings Modal"
-            className="bg-white rounded-lg shadow-lg w-[60rem] h-96 p-6 flex flex-col"
+            className="bg-white rounded-lg shadow-lg w-[60rem] h-96 p-6 flex flex-col dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
             {/* Modal Header */}
@@ -41,7 +41,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                             key={tab.name}
                             onClick={() => setActiveTab(tab.name)}
                             className={`flex items-center px-4 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.name
-                                ? "text-blue-600 border-l-4 border-blue-600 dark:text-blue-400"
+                                ? "text-blue-600 border-l-4 border-blue-500 dark:text-blue-500"
                                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 }`}
                             aria-current={activeTab === tab.name ? "page" : undefined}
@@ -64,7 +64,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         {settingsTabs.map(
                             (tab) =>
                                 activeTab === tab.name && (
-                                    <div key={tab.name} className="text-gray-800 dark:text-gray-600">
+                                    <div key={tab.name} className="text-gray-800 dark:text-gray-300">
                                         <tab.component />
                                     </div>
                                 )
