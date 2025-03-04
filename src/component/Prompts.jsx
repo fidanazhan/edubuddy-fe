@@ -26,11 +26,11 @@ const PromptInput = React.forwardRef(({ onSubmit}, ref) => {
       <form
         onSubmit={handleSubmit}
         ref={ref}
-        className="bg-gray-50 border-gray-200 p-4 flex items-center space-x-4"
+        className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
       >
         <div className="relative w-[60vw]">
           <textarea
-            className="w-full resize-none bg-gray-50 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 overflow-hidden pr-10"
+            className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden pr-10"
             placeholder="Message Edubuddy"
             rows="1"
             value={message}
@@ -40,7 +40,7 @@ const PromptInput = React.forwardRef(({ onSubmit}, ref) => {
           {/* Send button inside the textarea */}
           <button
             type="submit"
-            className="absolute right-2 transform -translate-y-1/2 bg-gray-50 text-black rounded-lg px-2 flex items-center justify-center"
+            className="absolute right-2 transform -translate-y-1/2 bg-gray-50 dark:bg-gray-700 text-black dark:text-gray-300 rounded-lg px-2 flex items-center justify-center"
             style={{ top: '45%' }}
             title="Send message"
           >
@@ -48,6 +48,7 @@ const PromptInput = React.forwardRef(({ onSubmit}, ref) => {
           </button>
         </div>
       </form>
+
     </div>
   );
 });
