@@ -108,7 +108,7 @@ const StorageRequestScreen = () => {
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl font-semibold">Request</h1>
             </div>
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <div className="flex border-b border-gray-200 dark:border-gray-700 text-xs">
                 {tabs.map((tab, index) => {
                     return (
                         <button
@@ -137,10 +137,11 @@ const StorageRequestScreen = () => {
                         {requests.map((request) => (
                             <div
                                 key={request._id}
-                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition"
+                                className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition
+                                            dark:bg-gray-900 dark:text-gray-300/80 dark:border-gray-900"
                             >
                                 <div className="flex-shrink-0">
-                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900">
                                         {request.status === 0 && (
                                             <>
                                                 <Hourglass className="text-blue-500" />
@@ -160,7 +161,7 @@ const StorageRequestScreen = () => {
                                 </div>
                                 <div className="ml-4 flex-1">
                                     <div className="flex items-center">
-                                        <p className="text-md text-gray-800">
+                                        <p className="text-md text-gray-800 dark:text-gray-300/80">
                                             {request.requester?.name} has requested to increase storage size by {request?.amount}MB.
                                         </p>
                                         <EllipsisVertical
@@ -204,14 +205,14 @@ const StorageRequestScreen = () => {
                             </div>
                         ))}
                         {requests.length === 0 && (
-                            <div className="text-center py-4 text-gray-600">No {activeTab} Request.</div>
+                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">No {activeTab} Request.</div>
                         )}
                     </div>
                     <div className="flex justify-center mt-4 gap-2">
                         {Array.from({ length: totalPages }, (_, index) => (
                             <button
                                 key={index + 1}
-                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-900 dark:text-gray-300/80 dark:border-gray-900"
                                     }`}
                                 onClick={() => handlePageChange(index + 1)}
                             >

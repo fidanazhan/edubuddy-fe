@@ -143,9 +143,9 @@ const StorageTransactionManagement = () => {
             ) : (
                 <div>
                     <div>
-                        <table className="table-auto w-full border-collapse border border-gray-200">
+                        <table className="table-auto w-full border-collapse border border-gray-200 dark:text-gray-300/80 dark:border-gray-900 dark:bg-gray-900">
                             <thead>
-                                <tr className="bg-gray-100">
+                                <tr className="bg-gray-100 dark:bg-gray-600 dark:text-gray-100/80">
                                     <th className="border border-gray-200 px-4 py-2">No</th>
                                     <th className="border border-gray-200 px-4 py-2">Sender</th>
                                     <th className="border border-gray-200 px-4 py-2">Receiver</th>
@@ -181,7 +181,7 @@ const StorageTransactionManagement = () => {
                         {Array.from({ length: totalPages }, (_, index) => (
                             <button
                                 key={index + 1}
-                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-900 dark:text-gray-300 dark:border-gray-900"
                                     }`}
                                 onClick={() => handlePageChange(index + 1)}
                             >

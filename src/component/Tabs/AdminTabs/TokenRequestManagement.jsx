@@ -205,7 +205,7 @@ const TokenRequestScreen = () => {
                             </div>
                         ))}
                         {requests.length === 0 && (
-                            <div className="text-center py-4 text-gray-600">No {activeTab} Request.</div>
+                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">No {activeTab} Request.</div>
                         )}
                     </div>
                     <div className="flex justify-center mt-4 gap-2">
