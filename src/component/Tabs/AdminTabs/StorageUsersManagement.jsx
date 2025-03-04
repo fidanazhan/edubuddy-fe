@@ -72,35 +72,35 @@ const StorageUsersManagement = () => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                 {/* <div>Storage Balance | Storage Used | Storage Distributed | ???</div> */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold">Total Storage</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Total Storage</h2>
                         <p className="text-gray-500 mt-4">1500/500000</p>
                     </div>
                     {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 3 */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Storage Distributed</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Storage Distributed</h2>
                         <p className="text-gray-500 mt-4">100,000</p>
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Storage Balance</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Storage Balance</h2>
                         <p className="text-gray-500 mt-4">12500/45000</p>
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 4 */}
-                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
+                <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Total Distributed</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Total Distributed</h2>
                         <p className="text-gray-500 mt-4">Put context here</p>
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
