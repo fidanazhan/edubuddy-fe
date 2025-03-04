@@ -74,7 +74,7 @@ const TokenUsersManagement = () => {
                 {/* Monthly Token */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold">Total Token</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Total Token</h2>
                         <p className="text-gray-500 mt-4">1500/500000</p>
                     </div>
                     {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
@@ -83,7 +83,7 @@ const TokenUsersManagement = () => {
                 {/* Widget 3 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Token Distributed</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Token Distributed</h2>
                         <p className="text-gray-500 mt-4">100,000</p>
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
@@ -91,7 +91,7 @@ const TokenUsersManagement = () => {
 
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Token Balance</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Token Balance</h2>
                         <p className="text-gray-500 mt-4">12500/45000</p>
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
@@ -100,7 +100,7 @@ const TokenUsersManagement = () => {
                 {/* Widget 4 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold ">Total Distributed</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Total Distributed</h2>
                         <p className="text-gray-500 mt-4">Put context here</p>
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}

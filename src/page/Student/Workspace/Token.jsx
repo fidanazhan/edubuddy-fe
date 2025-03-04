@@ -48,7 +48,7 @@ const TokenWorkspace = () => {
     return (
         <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Token Data</h2>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200/90 mb-4">Token Data</h2>
                 <button
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
                     onClick={() => setIsRequestModalOpen(true)}
@@ -64,10 +64,10 @@ const TokenWorkspace = () => {
                     <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
             ) : (
-                <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 ">
+                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700">Total Token</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Total Token</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo?.totalToken ?? "Failed to get Token"}
                             </p>
@@ -76,9 +76,9 @@ const TokenWorkspace = () => {
                         {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                     </div>
 
-                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700">Token Used</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Token Used</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo?.usedToken ?? "Failed to get Token"}
                             </p>
@@ -87,9 +87,9 @@ const TokenWorkspace = () => {
                         {/* <History className='w-20 h-20 text-gray-400' /> */}
                     </div>
 
-                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between">
+                    <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700">Token Balance</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Token Balance</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo
                                     ? balanceToken(userInfo.totalToken ?? 0, userInfo.usedToken ?? 0)
