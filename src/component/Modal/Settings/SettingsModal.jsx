@@ -21,8 +21,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
             isOpen={isOpen}
             onRequestClose={onClose} // Required for accessibility
             contentLabel="Settings Modal"
-            className="bg-white rounded-lg shadow-lg w-[60rem] h-96 p-6 flex flex-col dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            className="bg-white rounded-lg shadow-lg w-[60rem] h-96 p-6 flex flex-col z-[90] dark:bg-gray-800 dark:text-gray-300 dark:border-gray-900"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100]"
         >
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-4">
