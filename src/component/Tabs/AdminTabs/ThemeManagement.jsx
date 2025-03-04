@@ -105,8 +105,8 @@ const themeManagement = () => {
     };
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Theme Settings</h2>
+        <div className="p-6 mb-4">
+            <h1 className="text-xl font-semibold">Theme Settings</h1>
             <form onSubmit={handleFormSubmit} className="space-y-4">
 
 
@@ -119,14 +119,14 @@ const themeManagement = () => {
                     {loginLogo && (
                         <div>
                             <img
-                                src={URL.createObjectURL(loginLogo)}
+                                // src={URL.createObjectURL(loginLogo)}
                                 alt="Login Logo Preview"
                                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                             />
                         </div>
                     )}
                     <img
-                        src={URL.createObjectURL(loginLogo)}
+                        // src={URL.createObjectURL(loginLogo)}
                         alt="Login Logo Preview"
                         style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                     />
@@ -141,7 +141,7 @@ const themeManagement = () => {
                     {banner && (
                         <div>
                             <img
-                                src={URL.createObjectURL(banner)}
+                                // src={URL.createObjectURL(banner)}
                                 alt="Banner Preview"
                                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                             />
@@ -159,7 +159,7 @@ const themeManagement = () => {
                     {dashboardLogo && (
                         <div>
                             <img
-                                src={URL.createObjectURL(dashboardLogo)}
+                                // src={URL.createObjectURL(dashboardLogo)}
                                 alt="Dashboard Logo Preview"
                                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                             />
