@@ -49,12 +49,12 @@ const NotificationTab = () => {
 
   return (
     <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Notifications</h2>
+      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200/80 mb-4">Notifications</h2>
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition"
+            className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition dark:bg-gray-900 dark:border-gray-800"
           >
             <div className="flex-shrink-0">
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
@@ -62,9 +62,11 @@ const NotificationTab = () => {
               </div>
             </div>
             <div className="ml-4 flex-1">
-              
-              <p className="text-sm text-gray-600">{notification.description}</p>
-              <span className="text-xs text-gray-400">{notification.timestamp}</span>
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-300/80">
+                {notification.title}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400/90">{notification.description}</p>
+              <span className="text-xs text-gray-400 dark:text-gray-400/50">{notification.timestamp}</span>
             </div>
             <button
               className="text-gray-400 hover:text-red-500 transition ml-2"
