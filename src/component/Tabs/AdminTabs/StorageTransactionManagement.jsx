@@ -95,14 +95,14 @@ const StorageTransactionManagement = () => {
                 <input
                     type="text"
                     placeholder="Search Sender..."
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}
                 />
                 <input
                     type="text"
                     placeholder="Search Receiver..."
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     value={searchReceiverName}
                     onChange={(e) => setReceiverName(e.target.value)}
                 />
@@ -112,7 +112,7 @@ const StorageTransactionManagement = () => {
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     placeholderText="Choose start date"
                 />
                 <DatePicker
@@ -123,7 +123,7 @@ const StorageTransactionManagement = () => {
                     endDate={endDate}
                     minDate={startDate}
                     disabled={!startDate}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:text-gray-300/80"
                     placeholderText="Choose end date"
                 />
                 <button
