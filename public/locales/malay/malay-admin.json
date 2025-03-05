@@ -40,7 +40,7 @@
             "search_receiver": "Cari Penerima...",
             "choose_start": "Pilih tarikh mula",
             "choose_end": "Pilih tarikh akhir",
-            "not_found_message": "Tiada Transakti ditemui.",
+            "not_found_message": "Tiada Transaksi ditemui.",
             "table": {
                 "sender": "Penghantar",
                 "receiver": "Penerima",
@@ -51,10 +51,10 @@
             "title": "Permohonan Token",
             "pending": "Menunggu",
             "approved": "Diluluskan",
-            "Rejected": "Ditolak",
+            "rejected": "Ditolak",
             "message": "{{name}} sudah memohon {{amount}} token.",
             "reason": "Tiada sebab diberi.",
-            "request": "Dimohon pada {{date}}",
+            "date": "Dimohon pada {{date}}",
             "not_found_message": "Tiada permohonan {{status}} ditemui."
         }
     },
@@ -62,7 +62,7 @@
         "users": {
             "title": "Senarai Ruang Pengguna",
             "widget_total": "Jumlah Ruang",
-            "widget_used": "Ruand Digunakan",
+            "widget_used": "Ruang Digunakan",
             "widget_balance": "Baki Ruang",
             "widget_distributed": "Ruang Diedarkan",
             "table": {
@@ -88,10 +88,10 @@
             "title": "Permohonan Ruang",
             "pending": "Menunggu",
             "approved": "Diluluskan",
-            "Rejected": "Ditolak",
+            "rejected": "Ditolak",
             "message": "{{name}} sudah memohon untuk menaikkan saiz ruang sebanyak {{amount}}MB.",
             "reason": "Tiada sebab diberi.",
-            "request": "Dimohon pada {{date}}",
+            "date": "Dimohon pada {{date}}",
             "not_found_message": "Tiada permohonan {{status}} ditemui."
         }
     },

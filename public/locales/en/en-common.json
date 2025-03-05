@@ -1,3 +1,19 @@
 {
-    "test": "This text changes color based on the theme {{lang}}."
+    "button": {
+        "submit": "Submit",
+        "search": "Search",
+        "filter": "Filter",
+        "save": "Save",
+        "upload" : "Upload",
+        "download": "Download",
+        "bulk_process" : "Bulk Process"
+    },
+    "table": {
+        "name": "Name",
+        "role": "Role",
+        "group": "Group",
+        "amount": "Amount",
+        "date": "Date",
+        "action" : "Action"
+    }
 }

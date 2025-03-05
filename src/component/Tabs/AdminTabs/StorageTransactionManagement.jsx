@@ -3,6 +3,7 @@ import axios from "axios";
 import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from 'react-i18next';
 
 const StorageTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
@@ -13,7 +14,7 @@ const StorageTransactionManagement = () => {
     const [endDate, setEndDate] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-
+    const { t, ready } = useTranslation(["admin", "common"]);
 
     const transactionsPerPage = 10;
     const token = localStorage.getItem("accessToken");
@@ -85,23 +86,25 @@ const StorageTransactionManagement = () => {
         }
     };
 
+    if (!ready) return null;
+
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Storage Transaction History</h1>
+                <h1 className="text-xl font-semibold">{t("admin:storage.transaction.title")}</h1>
             </div>
 
             <div className="flex items-center mb-4 space-x-2">
                 <input
                     type="text"
-                    placeholder="Search Sender..."
+                    placeholder={t("admin:storage.transaction.search_sender")}
                     className="border rounded-lg px-4 py-2 w-auto"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}
                 />
                 <input
                     type="text"
-                    placeholder="Search Receiver..."
+                    placeholder={t("admin:storage.transaction.search_receiver")}
                     className="border rounded-lg px-4 py-2 w-auto"
                     value={searchReceiverName}
                     onChange={(e) => setReceiverName(e.target.value)}
@@ -113,7 +116,7 @@ const StorageTransactionManagement = () => {
                     startDate={startDate}
                     endDate={endDate}
                     className="border rounded-lg px-4 py-2 w-auto"
-                    placeholderText="Choose start date"
+                    placeholderText={t("admin:storage.transaction.choose_start")}
                 />
                 <DatePicker
                     selected={endDate}
@@ -124,14 +127,14 @@ const StorageTransactionManagement = () => {
                     minDate={startDate}
                     disabled={!startDate}
                     className="border rounded-lg px-4 py-2 w-auto"
-                    placeholderText="Choose end date"
+                    placeholderText={t("admin:token.transaction.choose_end")}
                 />
                 <button
                     className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                     type="submit"
                     onClick={handleSearch}
                 >
-                    Search
+                    {t("common:button.search")}
                 </button>
             </div>
 
@@ -147,10 +150,10 @@ const StorageTransactionManagement = () => {
                             <thead>
                                 <tr className="bg-gray-100 dark:bg-gray-600 dark:text-gray-100/80">
                                     <th className="border border-gray-200 px-4 py-2">No</th>
-                                    <th className="border border-gray-200 px-4 py-2">Sender</th>
-                                    <th className="border border-gray-200 px-4 py-2">Receiver</th>
-                                    <th className="border border-gray-200 px-4 py-2">Amount</th>
-                                    <th className="border border-gray-200 px-4 py-2">Transaction Date</th>
+                                    <th className="border border-gray-200 px-4 py-2">{t("admin:storage.transaction.table.sender")}</th>
+                                    <th className="border border-gray-200 px-4 py-2">{t("admin:storage.transaction.table.receiver")}</th>
+                                    <th className="border border-gray-200 px-4 py-2">{t("common:table.amount")}</th>
+                                    <th className="border border-gray-200 px-4 py-2">{t("admin:storage.transaction.table.date")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -169,7 +172,7 @@ const StorageTransactionManagement = () => {
                                 ) : (
                                     <tr>
                                         <td colSpan="7" className="border border-gray-200 px-4 py-2 text-center">
-                                            No users found.
+                                            {t("admin:storage.transaction.not_found_message")}
                                         </td>
                                     </tr>
                                 )}

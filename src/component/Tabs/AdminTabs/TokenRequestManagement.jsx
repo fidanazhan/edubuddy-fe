@@ -10,6 +10,7 @@ import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, Elli
 import { CheckCircle, ThumbsUp, BadgeCheck, CircleCheck, Check } from "lucide-react";
 // Rejected
 import { XCircle, ThumbsDown, Ban, X } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const TokenRequestScreen = () => {
     const { user } = useAuth();
@@ -23,11 +24,12 @@ const TokenRequestScreen = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const { t, ready } = useTranslation(["admin", "common"]);
 
     const tabs = [
-        { name: "Pending", icon: <Clock /> },
-        { name: "Approved", icon: <ThumbsUp /> },
-        { name: "Rejected", icon: <ThumbsDown /> },
+        { name: t("admin:token.request.pending"), icon: <Clock /> },
+        { name: t("admin:token.request.approved"), icon: <ThumbsUp /> },
+        { name: t("admin:token.request.rejected"), icon: <ThumbsDown /> },
     ];
 
     const formattedDate = (timestamp) => {
@@ -103,10 +105,12 @@ const TokenRequestScreen = () => {
         }
     };
 
+    if (!ready) return null;
+
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Tokens Request</h1>
+                <h1 className="text-xl font-semibold">{t("admin:token.request.title")}</h1>
             </div>
             <div className="flex border-b border-gray-200 dark:border-gray-700 text-xs">
                 {tabs.map((tab, index) => {
@@ -162,7 +166,7 @@ const TokenRequestScreen = () => {
                                 <div className="ml-4 flex-1">
                                     <div className="flex items-center">
                                         <p className="text-md text-gray-800 dark:text-gray-300/80">
-                                            {request.requester?.name} has requested {request?.amount} tokens.
+                                            {t("admin:token.request.message", {name : request.requester?.name, amount : request?.amount})}
                                         </p>
                                         <EllipsisVertical
                                             id={`anchor-reason-${request._id}`}
@@ -170,11 +174,11 @@ const TokenRequestScreen = () => {
                                         />
                                         <Tooltip
                                             anchorSelect={`#anchor-reason-${request._id}`}
-                                            content={request?.reason ? request.reason : "No reason Provided"}
+                                            content={request?.reason ? request.reason : t("admin:token.request.reason")}
                                         />
                                     </div>
                                     <span className="text-sm text-gray-400 mr-4">
-                                        Requested at {formattedDate(request.createdAt)}
+                                        {t("admin:token.request.date", {date : formattedDate(request.createdAt)})}
                                     </span>
                                 </div>
 
@@ -205,7 +209,7 @@ const TokenRequestScreen = () => {
                             </div>
                         ))}
                         {requests.length === 0 && (
-                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">No {activeTab} Request.</div>
+                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">{t("admin:token.request.not_found_message", {status: activeTab})}</div>
                         )}
                     </div>
                     <div className="flex justify-center mt-4 gap-2">

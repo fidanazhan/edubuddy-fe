@@ -6,7 +6,7 @@
         "save": "Simpan",
         "upload" : "Muat naik",
         "download": "Muat turun",
-        "bulk_process" : "banyak banyak process"
+        "bulk_process" : "Proses Pukal"
     },
     "table": {
         "name": "Nama",
@@ -14,6 +14,8 @@
         "group": "Kumpulan",
         "amount": "Jumlah",
         "date": "Tarikh",
-        "action" : "Tindakan"
+        "action" : "Tindakan",
+        "sender" : "Penghantar",
+        "receiver" : "Penerima"
     }
 }

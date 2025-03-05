@@ -51,10 +51,10 @@
             "title": "Tokens Requests",
             "pending": "Pending",
             "approved": "Approved",
-            "Rejected": "Rejected",
+            "rejected": "Rejected",
             "message": "{{name}} has requested {{amount}} tokens.",
             "reason": "No reason provided.",
-            "request": "Requested at {{date}}",
+            "date": "Requested at {{date}}",
             "not_found_message": "No {{status}} requests found."
         }
     },
@@ -88,10 +88,10 @@
             "title": "Storage Requests",
             "pending": "Pending",
             "approved": "Approved",
-            "Rejected": "Rejected",
+            "rejected": "Rejected",
             "message": "{{name}} has requested to increase storage size by {{amount}}MB.",
             "reason": "No reason provided.",
-            "request": "Requested at {{date}}",
+            "date": "Requested at {{date}}",
             "not_found_message": "No {{status}} requests found."
         }
     },
