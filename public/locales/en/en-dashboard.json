@@ -1,0 +1,5 @@
+{
+    "message1": "What I can help you with?",
+    "message2": "Message Edubuddy",
+    "test": "This text changes based on the language. Current language : {{lang}}."
+}

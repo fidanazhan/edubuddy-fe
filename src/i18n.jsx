@@ -15,7 +15,7 @@ i18n
         interpolation: {
             escapeValue: false,
         },
-        ns: ["dashboard", "workspace", "header", "sidebar", "settings", "panel"],
+        ns: ["dashboard", "workspace", "sidebar", "settings", "panel", "common"],
         defaultNS: "dashboard",
         backend: {
             loadPath: "/locales/{{lng}}/{{lng}}-{{ns}}.json",

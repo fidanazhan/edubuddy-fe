@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { FiSend } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const PromptInput = React.forwardRef(({ onSubmit}, ref) => {
   const [message, setMessage] = useState("");
@@ -31,7 +33,7 @@ const PromptInput = React.forwardRef(({ onSubmit}, ref) => {
         <div className="relative w-[60vw]">
           <textarea
             className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden pr-10"
-            placeholder="Message Edubuddy"
+            placeholder={t("message2")}
             rows="1"
             value={message}
             onChange={(e) => setMessage(e.target.value)}

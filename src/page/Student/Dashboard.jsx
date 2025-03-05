@@ -27,7 +27,7 @@ const Dashboard = () => {
   const randomSuggestion = shuffle(suggestions).slice(0, 3);
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
-  const { i18n, t, ready, language } = useTranslation("common");
+  const { i18n, t, ready, language } = useTranslation("dashboard");
 
 
   const mutation = useMutation({
@@ -70,7 +70,7 @@ const Dashboard = () => {
       </div>
 
       <div className="flex justify-center mt-10">
-        <h1 className='font-bold text-lg'>What I can help you with?</h1>
+        <h1 className='font-bold text-lg'>{t("message1")}</h1>
       </div>
 
       <div className="flex justify-center">
