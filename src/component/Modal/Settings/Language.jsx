@@ -4,7 +4,7 @@ import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
 
 const LanguageSettings = () => {
-    const { i18n } = useTranslation();
+    const { i18n, t, ready } = useTranslation("settings");
     const language = i18n.language; // ✅ Get current language
     const languages = i18n.options.supportedLngs.filter(lng => lng !== "cimode");
     const { user } = useAuth();
@@ -35,9 +35,11 @@ const LanguageSettings = () => {
         }
     };
 
+    if (!ready) return null;
+
     return (
         <div>
-            <h2 className="text-lg font-bold mb-4">Language Settings</h2>
+            <h2 className="text-lg font-bold mb-4">{t("settings.language.title")}</h2>
             <select
                 value={selectedLanguage}
                 onChange={handleLanguageChange}

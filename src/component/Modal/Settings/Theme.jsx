@@ -3,10 +3,12 @@ import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useTheme } from "../../../context/ThemeContext";
 import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const ThemeSettings = () => {
     const { theme, setTheme } = useTheme();
     const { user } = useAuth();
+    const { t, ready } = useTranslation("settings");
 
     const handleToggleTheme = (theme) => {
         postNewTheme(theme);
@@ -34,23 +36,25 @@ const ThemeSettings = () => {
         }
     };
 
+    if (!ready) return null;
+
     return (
         <>
-            <h2 className="text-lg font-bold mb-4">Theme Settings</h2>
+            <h2 className="text-lg font-bold mb-4">{t("settings.theme.title")}</h2>
             <div className="flex items-center gap-4 ">
                 <button
                     onClick={() => handleToggleTheme("light")}
                     className={`flex px-4 py-2 rounded-lg ${theme === "light" ? "bg-blue-500 dark:bg-blue-800 text-white" : "bg-gray-200"} dark:bg-gray-900 dark:text-white`}
                 >
                     <MdLightMode className="w-5 h-5 mr-2" />
-                    <span>Light Mode</span>
+                    <span>{t("settings.theme.light")}</span>
                 </button>
                 <button
                     onClick={() => handleToggleTheme("dark")}
                     className={`flex px-4 py-2 rounded-lg ${theme === "dark" ? "bg-blue-500 dark:bg-blue-800 text-white" : "bg-gray-200"}`}
                 >
                     <MdDarkMode className="w-5 h-5 mr-2" />
-                    <span>Dark Mode</span>
+                    <span>{t("settings.theme.dark")}</span>
                 </button>
             </div>
         </>

@@ -1,5 +1,17 @@
 {
-    "settings": "Settings",
+    "settings": {
+        "title": "Tetapan",
+        "theme": {
+            "tab": "Tema",
+            "title": "Tetapan Tema",
+            "light": "Mod Cerah",
+            "dark": "Mod Gelap"
+        },
+        "language": {
+            "tab": "Bahasa",
+            "title": "Tetapan Bahasa"
+        }
+    },
     "admin": "Panel Admin",
     "logout": "Log Keluar"
 }

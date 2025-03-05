@@ -63,7 +63,7 @@ const Header = () => {
               }}
             >
               <FaCogs className="mr-2 text-gray-600" />
-              <span>{t("settings")}</span>
+              <span>{t("settings.title")}</span>
             </button>
 
             {user?.roles === "ADMIN" && (
