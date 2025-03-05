@@ -6,12 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
 import { CiChat1 } from "react-icons/ci";
 import Location from '../Location'
+import { useTranslation } from "react-i18next";
 // import './sidebar.css'
 
 const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
-
+  const { t, ready } = useTranslation("sidebar");
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
   //   queryFn: () =>
@@ -45,6 +46,8 @@ const Sidebar = ({ passIsOpen }) => {
       ? truncatedByWords.slice(0, 20).trim() + "..."
       : truncatedByWords;
   }
+
+  if (!ready) return null;
 
   return (
     <>
@@ -80,7 +83,7 @@ const Sidebar = ({ passIsOpen }) => {
                   className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
                     }`}
                 >
-                  New Chat
+                  {t("chat")}
                 </span>
               </button>
             </div>
@@ -93,7 +96,7 @@ const Sidebar = ({ passIsOpen }) => {
                   className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
                     }`}
                 >
-                  Workspace
+                  {t("workspace")}
                 </span>
               </button>
             </div>
@@ -105,7 +108,7 @@ const Sidebar = ({ passIsOpen }) => {
                 className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isOpen ? "opacity-100" : "opacity-0"
                   }`}
               >
-                Search
+                {t("search")}
               </span>
             </button>
           </div>
@@ -114,7 +117,7 @@ const Sidebar = ({ passIsOpen }) => {
           <div
             className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
-            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">Recent Chats</div>
+            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">{t("recent")}</div>
             {/* <div className="list">
               {isPending
                 ? "Loading..."
