@@ -15,11 +15,11 @@ i18n
         interpolation: {
             escapeValue: false,
         },
-        ns: ["dashboard", "workspace", "sidebar", "settings", "panel", "common"],
+        ns: ["dashboard", "workspace", "sidebar", "settings", "admin", "common"],
         defaultNS: "dashboard",
         backend: {
             loadPath: "/locales/{{lng}}/{{lng}}-{{ns}}.json",
-            allowMultiLoading: true
+            allowMultiLoading: true,
         },
     });
 

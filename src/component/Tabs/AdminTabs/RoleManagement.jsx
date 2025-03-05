@@ -1,10 +1,14 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const RoleManagement = () => {
+    const { t, ready } = useTranslation(["admin", "common"]);
 
-    return(
+    if (!ready) return null;
+
+    return (
         <div>
-            Role Management
+            {t("admin:users.role.title")}
         </div>
     )
 }

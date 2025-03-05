@@ -1,0 +1,122 @@
+{
+    "dashboard": {
+        "widget_token": "Token Used",
+        "widget_storage": "Storage Used"
+    },
+    "document": {
+        "title": "Document Management"
+    },
+    "users": {
+        "user": {
+            "title": "User Management",
+            "add": "Add User",
+            "search": "Search User"
+        },
+        "group": {
+            "title": "Group Management",
+            "add": "Add Group",
+            "search": "Search Group"
+        },
+        "role": {
+            "title": "Role Management"
+        }
+    },
+    "token": {
+        "users": {
+            "title": "Users Token List",
+            "widget_total": "Total Token",
+            "widget_used": "Token Used",
+            "widget_balance": "Token Balance",
+            "widget_distributed": "Token Distributed",
+            "table": {
+                "total_token": "Total Token",
+                "used_token": "Used Token"
+            },
+            "not_found_message": "No users found."
+        },
+        "transaction": {
+            "title": "Token Transactions History",
+            "search_sender": "Search Sender...",
+            "search_receiver": "Search Receiver...",
+            "choose_start": "Choose start date",
+            "choose_end": "Choose end date",
+            "not_found_message": "No transactions found.",
+            "table" : {
+                "sender": "Sender",
+                "receiver": "Receiver",
+                "date": "Transaction Date"
+            }
+        },
+        "request": {
+            "title": "Tokens Requests",
+            "pending": "Pending",
+            "approved": "Approved",
+            "Rejected": "Rejected",
+            "message": "{{name}} has requested {{amount}} tokens.",
+            "reason": "No reason provided.",
+            "request": "Requested at {{date}}",
+            "not_found_message": "No {{status}} requests found."
+        }
+    },
+    "storage": {
+        "users": {
+            "title": "Users Storage List",
+            "widget_total": "Total Storage",
+            "widget_used": "Storage Used",
+            "widget_balance": "Storage Balance",
+            "widget_distributed": "Storage Distributed",
+            "table": {
+                "total_storage": "Total Storage",
+                "used_storage": "Used Storage"
+            },
+            "not_found_message": "No users found."
+        },
+        "transaction": {
+            "title": "Storage Transactions History",
+            "search_sender": "Search Sender...",
+            "search_receiver": "Search Receiver...",
+            "choose_start": "Choose start date",
+            "choose_end": "Choose end date",
+            "not_found_message": "No transactions found.",
+            "table" : {
+                "sender": "Sender",
+                "receiver": "Receiver",
+                "date": "Transaction Date"
+            }
+        },
+        "request": {
+            "title": "Storage Requests",
+            "pending": "Pending",
+            "approved": "Approved",
+            "Rejected": "Rejected",
+            "message": "{{name}} has requested to increase storage size by {{amount}}MB.",
+            "reason": "No reason provided.",
+            "request": "Requested at {{date}}",
+            "not_found_message": "No {{status}} requests found."
+        }
+    },
+    "system": {
+        "authentication": {
+            "title": "Authentication Configuration",
+            "access_token": "Access Token TTL (minutes)",
+            "refresh_token": "Refresh Token TTL (minutes)",
+            "max_failed": "Max Failed Login Attempts",
+            "google_login": "Google Login",
+            "microsoft_login": "Microsoft Login"
+        },
+        "model": {
+            "title": "Model Configuration",
+            "temperature": "Temperature",
+            "max_output": "Max Ouput Tokens"
+        },
+        "theme": {
+            "title": "Theme Settings",
+            "login_logo": "Login Logo"
+        },
+        "suggestion": {
+            "title": "Suggestion Questions",
+            "placeholder": "Enter a question...",
+            "not_found_message": "No questions found."
+        }
+    }
+}

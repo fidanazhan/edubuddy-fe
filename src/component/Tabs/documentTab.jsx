@@ -5,6 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import { FiUploadCloud, FiFileText, FiTrash } from "react-icons/fi";
 import StorageBar from "../../component/Workspace/Document/StorageBar";
 import Toast from '../../component/Toast/Toast'
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 5;
 const FileManagement = () => {
@@ -21,7 +22,7 @@ const FileManagement = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-
+  const { t, ready } = useTranslation(["admin", "common"]);
 
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
@@ -41,9 +42,9 @@ const FileManagement = () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/file`, {
             params: { page, limit, search: searchTerm || undefined },
-            headers: { 
+            headers: {
               "Authorization": `Bearer ${token}`,
-              "x-tenant": subdomain 
+              "x-tenant": subdomain
             },
           });
           setFiles(Array.isArray(response.data.data) ? response.data.data : []);
@@ -53,7 +54,7 @@ const FileManagement = () => {
           console.error("Error fetching users:", error);
         }
         setLoading(false);
-      }, 1000); 
+      }, 1000);
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
@@ -64,7 +65,7 @@ const FileManagement = () => {
     getFileByUser(pageNumber);
     setCurrentPage(pageNumber);
   };
-  
+
   // ----------------------------- UPLOAD FILES API -----------------------------------
 
   // Handle file upload
@@ -73,25 +74,25 @@ const FileManagement = () => {
       alert("Please select files to upload.");
       return;
     }
-  
+
     const formData = new FormData();
-    
+
     newFile.forEach((file) => {
       formData.append("files", file); // 'files' should match the backend key
     });
-  
+
     formData.append("tag", tags || "Untagged"); // 
 
     // Properly log FormData contents
     // for (let pair of formData.entries()) {
     //   console.log(pair[0] + ": ", pair[1]);
     // }
-  
+
     try {
       const response = await axios.post("http://localhost:5000/api/file/upload", formData, {
-        headers: { 
+        headers: {
           "Authorization": `Bearer ${token}`,
-          "x-tenant": subdomain 
+          "x-tenant": subdomain
         },
       });
 
@@ -102,7 +103,7 @@ const FileManagement = () => {
       // setLoading(false);
     } catch (error) {
       console.error("Upload failed:", error);
-    }finally{
+    } finally {
       // setLoading(false);
       handleRemoveFile();
       setNewFile([]);
@@ -119,7 +120,7 @@ const FileManagement = () => {
   // Handle drag-and-drop
   const handleDrop = (e) => {
     e.preventDefault(); // Prevent default browser behavior
-  
+
     const droppedFiles = Array.from(e.dataTransfer.files);
     if (droppedFiles.length > 0) {
       setNewFile((prevFiles) => [...prevFiles, ...droppedFiles]); // Append new files
@@ -131,13 +132,13 @@ const FileManagement = () => {
       const updatedFiles = prevFiles.filter((_, i) => i !== index);
       return updatedFiles;
     });
-  
+
     // Reset the file input field to allow re-uploading the same file
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
-  
+
 
   // ----------------------------- DELETE FILE API (ONE FILE ONLY) -----------------------------------
 
@@ -145,12 +146,12 @@ const FileManagement = () => {
   const deleteFile = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:5000/api/file/delete/${id}`, {
-        headers: { 
+        headers: {
           "Authorization": `Bearer ${token}`,
-          "x-tenant": subdomain 
+          "x-tenant": subdomain
         },
       });
-  
+
       if (response.status === 200 || response.status === 204) {
         getFileByUser(currentPage);
         showToast("Successfully deleted!", "bg-red-500", "alert");
@@ -160,7 +161,7 @@ const FileManagement = () => {
     } catch (error) {
       console.error("Error deleting file:", error);
       alert("Failed to delete file. Please try again.");
-    }finally{
+    } finally {
       setNewFile([]);
       handleRemoveFile();
       setTags("");
@@ -194,16 +195,16 @@ const FileManagement = () => {
     }
 
     const data = {
-      fileIds : fileIds
+      fileIds: fileIds
     }
-  
+
     try {
       const response = await fetch("http://localhost:5000/api/file/delete-multiple", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
-          "x-tenant": subdomain 
+          "x-tenant": subdomain
         },
         body: JSON.stringify(data),
       });
@@ -214,16 +215,16 @@ const FileManagement = () => {
       } else {
         console.error("Failed to delete file: Unexpected response -> ", response);
       }
-  
+
     } catch (error) {
       console.error("Error deleting files:", error);
-    } finally{
+    } finally {
       handleRemoveFile();
       setNewFile([]);
       setTags("");
       setIsDeleteModalOpen(false);
     }
-  };    
+  };
 
   // ----------------------------- SHOW TOAST -----------------------------------
 
@@ -231,21 +232,22 @@ const FileManagement = () => {
     setToast({ message, color, status });
     setTimeout(() => setToast(null), 3000);
   };
-  
+
+  if (!ready) return null;
 
   return (
     <div className="max-w-screen-lg mx-auto mt-10">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Document Management</h1>
+        <h1 className="text-xl font-semibold">{t("admin:document.title")}</h1>
       </div>
 
       {/* Upload Section */}
       <div className="flex w-full space-x-4">
         {/* File Upload Box (7/12 width) */}
         <div className="w-7/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
-            onClick={() => fileInputRef.current.click()}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}>
+          onClick={() => fileInputRef.current.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop}>
           <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
           <input
             type="file"
@@ -271,7 +273,7 @@ const FileManagement = () => {
             className="bg-blue-500 h-10 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50 flex items-center w-full justify-center"
           >
             <UploadCloud className="w-5 h-5 mr-2" />
-            Upload
+            {t("common:button.upload")}
           </button>
         </div>
       </div>
@@ -407,8 +409,8 @@ const FileManagement = () => {
                     {file.size < 1024
                       ? `${file.size} B`
                       : file.size < 1024 * 1024
-                      ? `${(file.size / 1024).toFixed(1)} KB`
-                      : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
+                        ? `${(file.size / 1024).toFixed(1)} KB`
+                        : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
                   </td>
                   <td className="px-4 py-2 text-center text-sm">{file.tag}</td>
                   <td className="px-4 py-2 text-center space-x-4 text-sm">
@@ -435,9 +437,8 @@ const FileManagement = () => {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
-            className={`px-3 py-1 rounded-lg border ${
-              currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
-            }`}
+            className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+              }`}
             onClick={() => handlePageChange(index + 1)}
           >
             {index + 1}
@@ -465,7 +466,7 @@ const FileManagement = () => {
               </button>
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                onClick={()=> {deleteFile(selectedFile._id)}}
+                onClick={() => { deleteFile(selectedFile._id) }}
               >
                 Confirm
               </button>

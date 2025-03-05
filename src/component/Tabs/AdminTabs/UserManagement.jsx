@@ -7,6 +7,7 @@ import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
 import { MdGroups2 } from "react-icons/md";
 import { HiUser, HiMiniUserGroup } from "react-icons/hi2";
+import { useTranslation } from 'react-i18next';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -25,6 +26,7 @@ const UserManagement = () => {
   const [modalType, setModalType] = useState(null);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
   const [filterByGroup, setFilterByGroup] = useState(false);
+  const { t, ready } = useTranslation(["admin", "common"]);
 
   const usersPerPage = 5;
   const subdomain = window.location.hostname.split(".")[0];
@@ -207,11 +209,12 @@ const UserManagement = () => {
     }
   };
 
+  if (!ready) return null;
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">User Management</h1>
+        <h1 className="text-xl font-semibold">{t("admin:users.user.title")}</h1>
       </div>
 
       <div className="flex justify-end space-x-2 mb-2 w-full mt-4">
@@ -223,7 +226,7 @@ const UserManagement = () => {
               onClick={() => downloadUsers()}
               className="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-600 flex items-center"
             >
-              <FaDownload className="mr-2" /> Download
+              <FaDownload className="mr-2" /> {t("common:button.download")}
             </button>
           </div>
 
@@ -233,7 +236,7 @@ const UserManagement = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 flex items-center"
             >
-              <FaUpload className="mr-2" /> Bulk Process
+              <FaUpload className="mr-2" /> {t("common:button.bulk_process")}
             </button>
             {isOpen && (
               <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10">
@@ -273,13 +276,13 @@ const UserManagement = () => {
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             onClick={() => setIsAddModalOpen(true)}
           >
-            + Add User
+            + {t("admin:user.user.add")}
           </button>
         </div>
         <div className="relative w-72">
           <input
             type="text"
-            placeholder="Search user..."
+            placeholder={t("admin:user.user.search")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {
@@ -321,12 +324,12 @@ const UserManagement = () => {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-200 px-4 py-2">No</th>
-                  <th className="border border-gray-200 px-4 py-2">Name</th>
-                  <th className="border border-gray-200 px-4 py-2">Group</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("common:table.name")}</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("common:table.group")}</th>
                   <th className="border border-gray-200 px-4 py-2">Email</th>
                   <th className="border border-gray-200 px-4 py-2">Status</th>
-                  <th className="border border-gray-200 px-4 py-2">Role</th>
-                  <th className="border border-gray-200 px-4 py-2">Action</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("common:table.role")}</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("common:table.action")}</th>
                 </tr>
               </thead>
               <tbody>

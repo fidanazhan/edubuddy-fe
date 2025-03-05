@@ -6,6 +6,7 @@ import GroupModal from '../../Admin/GroupModal'
 import axios from "axios";
 import api from "../../../api/axios";
 import GroupUserModal from "../../Admin/GroupUserModal";
+import { useTranslation } from 'react-i18next';
 
 const getTenantIdFromSubdomain = () => {
     const hostname = window.location.hostname; // e.g., tenantname.localhost
@@ -27,6 +28,7 @@ const GroupManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
+  const { t, ready } = useTranslation(["admin", "common"]);
 
   const groupsPerPage = 5;
   const token = localStorage.getItem("accessToken");
@@ -105,10 +107,12 @@ const GroupManagement = () => {
     fetchGroups()
   };
 
+  if (!ready) return null;
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold">Group Management</h1>
+        <h1 className="text-xl font-semibold">{t("admin:users.group.title")}</h1>
       </div>
 
       <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
@@ -139,13 +143,13 @@ const GroupManagement = () => {
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             onClick={() => setIsAddModalOpen(true)}
           >
-            + Add Group
+            + {t("admin:users.group.add")}
           </button>
         </div>
         <div className="relative w-72">
           <input
             type="text"
-            placeholder="Search files..."
+            placeholder={t("admin:users.group.search")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {

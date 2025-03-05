@@ -1,0 +1,122 @@
+{
+    "dashboard": {
+        "widget_token": "Token Digunakan",
+        "widget_storage": "Storage Digunakan"
+    },
+    "document": {
+        "title": "Pengurusan Dokumen"
+    },
+    "users": {
+        "user": {
+            "title": "Pengurusan Pengguna",
+            "add": "Tambah Pengguna",
+            "search": "Cari Pengguna..."
+        },
+        "group": {
+            "title": "Pengurusan Kumpulan",
+            "add": "Tambah Kumpulan",
+            "search": "Cari Kumpulan..."
+        },
+        "role": {
+            "title": "Pengurusan Peranan"
+        }
+    },
+    "token": {
+        "users": {
+            "title": "Senarai Token Pengguna",
+            "widget_total": "Jumlah Token",
+            "widget_used": "Token Digunakan",
+            "widget_balance": "Baki Token",
+            "widget_distributed": "Token Diedarkan",
+            "table": {
+                "total_token": "Jumlah Token",
+                "used_token": "Token Digunakan"
+            },
+            "not_found_message": "Tiada Pengguna ditemui."
+        },
+        "transaction": {
+            "title": "Sejarah Transaksi Token",
+            "search_sender": "Cari Penghantar...",
+            "search_receiver": "Cari Penerima...",
+            "choose_start": "Pilih tarikh mula",
+            "choose_end": "Pilih tarikh akhir",
+            "not_found_message": "Tiada Transakti ditemui.",
+            "table": {
+                "sender": "Penghantar",
+                "receiver": "Penerima",
+                "date": "Tarikh Transaksi"
+            }
+        },
+        "request": {
+            "title": "Permohonan Token",
+            "pending": "Menunggu",
+            "approved": "Diluluskan",
+            "Rejected": "Ditolak",
+            "message": "{{name}} sudah memohon {{amount}} token.",
+            "reason": "Tiada sebab diberi.",
+            "request": "Dimohon pada {{date}}",
+            "not_found_message": "Tiada permohonan {{status}} ditemui."
+        }
+    },
+    "storage": {
+        "users": {
+            "title": "Senarai Ruang Pengguna",
+            "widget_total": "Jumlah Ruang",
+            "widget_used": "Ruand Digunakan",
+            "widget_balance": "Baki Ruang",
+            "widget_distributed": "Ruang Diedarkan",
+            "table": {
+                "total_storage": "Jumlah Ruang",
+                "used_storage": "Ruang Digunakan"
+            },
+            "not_found_message": "Tiada Pengguna ditemui."
+        },
+        "transaction": {
+            "title": "Sejarah Transaksi Ruang",
+            "search_sender": "Cari Penghantar...",
+            "search_receiver": "Cari Penerima...",
+            "choose_start": "Pilih tarikh mula",
+            "choose_end": "Pilih tarikh akhir",
+            "not_found_message": "Tiada Transaksi ditemui.",
+            "table": {
+                "sender": "Penghantar",
+                "receiver": "Penerima",
+                "date": "Tarikh Transaksi"
+            }
+        },
+        "request": {
+            "title": "Permohonan Ruang",
+            "pending": "Menunggu",
+            "approved": "Diluluskan",
+            "Rejected": "Ditolak",
+            "message": "{{name}} sudah memohon untuk menaikkan saiz ruang sebanyak {{amount}}MB.",
+            "reason": "Tiada sebab diberi.",
+            "request": "Dimohon pada {{date}}",
+            "not_found_message": "Tiada permohonan {{status}} ditemui."
+        }
+    },
+    "system": {
+        "authentication": {
+            "title": "Konfigurasi Pengesahan",
+            "access_token": "Access Token TTL (minutes)",
+            "refresh_token": "Refresh Token TTL (minutes)",
+            "max_failed": "Max Failed Login Attempts",
+            "google_login": "Log Masuk Google",
+            "microsoft_login": "Log Masuk Microsoft"
+        },
+        "model": {
+            "title": "Konfigurasi Model",
+            "temperature": "Suhu",
+            "max_output": "Max Ouput Tokens"
+        },
+        "theme": {
+            "title": "Konfigurasi Tema",
+            "login_logo": "Login Logo"
+        },
+        "suggestion": {
+            "title": "Soalan Cadangan",
+            "placeholder": "Masukkan soalan...",
+            "not_found_message": "Tiada soalan ditemui."
+        }
+    }
+}
