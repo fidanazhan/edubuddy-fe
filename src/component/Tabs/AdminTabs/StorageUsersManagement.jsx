@@ -9,6 +9,7 @@ import { History, Recycle, RefreshCw, Archive, ShoppingBag } from "lucide-react"
 // Distributed
 import { Network, Share2, ArrowLeftRight, Banknote } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { useAuth } from "../../../context/JWTContext";
 
 const StorageUsersManagement = () => {
     const [users, setUsers] = useState([]);
@@ -17,6 +18,8 @@ const StorageUsersManagement = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const { t, ready } = useTranslation(["admin", "common"]);
+    const [admin, setAdmin] = useState(null);
+    const { user } = useAuth();
 
     const usersPerPage = 5;
     const subdomain = window.location.hostname.split(".")[0];
@@ -24,7 +27,26 @@ const StorageUsersManagement = () => {
     useEffect(() => {
         fetchUsers();
         setCurrentPage(1);
+        fetchAdminInfo();
     }, []);
+
+    const fetchAdminInfo = async () => {
+        try {
+
+            setTimeout(async () => {
+                try {
+                    const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+                        "x-tenant": subdomain,
+                    });
+                    setAdmin(response.data);
+                } catch (error) {
+                    console.error("Error fetching admin info:", error);
+                }
+            }, 1000);
+        } catch (error) {
+            console.error("Error fetching admin info:", error);
+        }
+    };
 
     const fetchUsers = async (page = 1, limit = usersPerPage) => {
         setLoading(true);  // Show loading immediately when search is triggered
@@ -66,6 +88,10 @@ const StorageUsersManagement = () => {
         fetchUsers(1, usersPerPage); // Trigger search query to the backend
     };
 
+    const balanceStorage = (totalStorage, usedStorage) => {
+        return totalStorage - usedStorage;
+    }
+
     if (!ready) return null;
 
     return (
@@ -76,7 +102,7 @@ const StorageUsersManagement = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
                         <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_total")}</h2>
-                        <p className="text-gray-500 mt-4">1500/500000</p>
+                        <p className="text-gray-500 mt-4">{admin?.totalStorage ?? "Failed to get Storage"}</p>
                     </div>
                     {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                 </div>
@@ -85,7 +111,7 @@ const StorageUsersManagement = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
                         <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_used")}</h2>
-                        <p className="text-gray-500 mt-4">100,000</p>
+                        <p className="text-gray-500 mt-4">{admin?.usedStorage ?? "Failed to get Storage"}</p>
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
                 </div>
@@ -93,7 +119,9 @@ const StorageUsersManagement = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
                         <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_balance")}</h2>
-                        <p className="text-gray-500 mt-4">12500/45000</p>
+                        <p className="text-gray-500 mt-4">{admin
+                                    ? balanceStorage(admin.totalStorage ?? 0, admin.usedStorage ?? 0)
+                                    : "Failed to get Storage"}</p>
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
@@ -102,7 +130,7 @@ const StorageUsersManagement = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
                         <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_distributed")}</h2>
-                        <p className="text-gray-500 mt-4">Put context here</p>
+                        <p className="text-gray-500 mt-4">{admin?.distributedStorage ?? "Failed to get Storage"}</p>
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
                 </div>
@@ -164,7 +192,7 @@ const StorageUsersManagement = () => {
                                 ) : (
                                     <tr>
                                         <td colSpan="6" className="border border-gray-200 px-4 py-2 text-center">
-                                        {t("admin:storage.users.not_found_message")}
+                                            {t("admin:storage.users.not_found_message")}
                                         </td>
                                     </tr>
                                 )}
