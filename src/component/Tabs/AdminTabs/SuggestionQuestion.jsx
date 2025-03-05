@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios'
 import { FaTrash } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next';
 
 const SuggestionQuestion = ({ tenantId }) => {
   const [questions, setQuestions] = useState([]);
@@ -12,6 +13,7 @@ const SuggestionQuestion = ({ tenantId }) => {
 
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
+  const { t, ready } = useTranslation(["admin", "common"]);
 
   useEffect(() => {
     fetchQuestions();
@@ -21,12 +23,12 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
     try {
       const response = await axios.get(`http://localhost:5000/api/suggestion-question`, {
-        headers: { 
-            "x-tenant": subdomain,
-            "Authorization": `Bearer ${token}`,
-          },
+        headers: {
+          "x-tenant": subdomain,
+          "Authorization": `Bearer ${token}`,
+        },
       });
-      
+
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions", error);
@@ -39,23 +41,23 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
 
     try {
-        const response = await axios.post(
-            "http://localhost:5000/api/suggestion-question",
-            { question: newQuestion }, // Correct request payload
-            {
-                headers: {
-                    "x-tenant": subdomain,
-                    "Authorization": `Bearer ${token}`,
-                },
-            }
-        );
-
-        if (response.status === 201) { // Check response status
-            setNewQuestion("");
-            fetchQuestions();
+      const response = await axios.post(
+        "http://localhost:5000/api/suggestion-question",
+        { question: newQuestion }, // Correct request payload
+        {
+          headers: {
+            "x-tenant": subdomain,
+            "Authorization": `Bearer ${token}`,
+          },
         }
+      );
+
+      if (response.status === 201) { // Check response status
+        setNewQuestion("");
+        fetchQuestions();
+      }
     } catch (error) {
-        console.error("Error saving question", error);
+      console.error("Error saving question", error);
     }
 
     setLoading(false);
@@ -72,21 +74,21 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
 
     try {
-        const response = await axios.delete(
-            `http://localhost:5000/api/suggestion-question/${selectedQuestion._id}`,
-            {
-                headers: {
-                    "x-tenant": subdomain,
-                    "Authorization": `Bearer ${token}`,
-                },
-            }
-        );
-
-        if (response.status === 200) {
-            fetchQuestions(); // Refresh list
+      const response = await axios.delete(
+        `http://localhost:5000/api/suggestion-question/${selectedQuestion._id}`,
+        {
+          headers: {
+            "x-tenant": subdomain,
+            "Authorization": `Bearer ${token}`,
+          },
         }
+      );
+
+      if (response.status === 200) {
+        fetchQuestions(); // Refresh list
+      }
     } catch (error) {
-        console.error("Error deleting question", error);
+      console.error("Error deleting question", error);
     }
 
     setLoading(false);
@@ -94,11 +96,12 @@ const SuggestionQuestion = ({ tenantId }) => {
     setSelectedQuestion(null);
   };
 
+  if (!ready) return null;
 
   return (
     <div className=" dark:bg-gray-900 text-gray-900 dark:text-white">
       <div className="p-6 mb-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-        <h2 className="text-xl font-semibold mb-4">Suggestion Questions</h2>
+        <h2 className="text-xl font-semibold mb-4">{t("admin:system.suggestion.title")}</h2>
 
         {/* Input Field */}
         <div className="flex gap-2 mb-4">
@@ -106,20 +109,19 @@ const SuggestionQuestion = ({ tenantId }) => {
             type="text"
             value={newQuestion}
             onChange={(e) => setNewQuestion(e.target.value)}
-            placeholder="Enter a question..."
+            placeholder={t("admin:system.suggestion.placeholder")}
             className="flex-1 px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none"
             disabled={loading}
           />
           <button
-              onClick={handleSaveQuestion}
-              className={`px-4 py-2 rounded transition ${
-                  loading
-                      ? "bg-gray-400 dark:bg-gray-600"
-                      : "bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400"
+            onClick={handleSaveQuestion}
+            className={`px-4 py-2 rounded transition ${loading
+              ? "bg-gray-400 dark:bg-gray-600"
+              : "bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400"
               } text-white`}
-              disabled={loading}
+            disabled={loading}
           >
-            Save
+            {t("common:button.save")}
           </button>
         </div>
 
@@ -135,8 +137,8 @@ const SuggestionQuestion = ({ tenantId }) => {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-200 px-4 py-2">No</th>
-                  <th className="border border-gray-200 px-4 py-2">Question</th>
-                  <th className="border border-gray-200 px-4 py-2">Action</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("admin:system.suggestion.question")}</th>
+                  <th className="border border-gray-200 px-4 py-2">{t("common:table.action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,7 +160,7 @@ const SuggestionQuestion = ({ tenantId }) => {
                 ) : (
                   <tr>
                     <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">
-                      No questions found.
+                      {t("admin:system.suggestion.not_found_message")}
                     </td>
                   </tr>
                 )}
@@ -178,31 +180,31 @@ const SuggestionQuestion = ({ tenantId }) => {
 
 
       {isDeleteModalOpen && selectedQuestion && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      Are you sure you want to delete{" "}
-                      <span className="text-red-500">"{selectedQuestion.question}"</span>?
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                      This action cannot be undone. Please confirm your decision.
-                  </p>
-                  <div className="flex justify-end gap-4">
-                      <button
-                          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-                          onClick={() => setIsDeleteModalOpen(false)}
-                      >
-                          Cancel
-                      </button>
-                      <button
-                          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                          onClick={handleDeleteQuestion}
-                      >
-                          Confirm
-                      </button>
-                  </div>
-              </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Are you sure you want to delete{" "}
+              <span className="text-red-500">"{selectedQuestion.question}"</span>?
+            </h3>
+            <p className="text-gray-600 mb-6">
+              This action cannot be undone. Please confirm your decision.
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                onClick={handleDeleteQuestion}
+              >
+                Confirm
+              </button>
+            </div>
           </div>
+        </div>
       )}
 
     </div>

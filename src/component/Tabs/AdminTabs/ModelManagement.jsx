@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const ModelManagement = () => {
     const [config, setConfig] = useState({
@@ -9,6 +10,7 @@ const ModelManagement = () => {
         topK: 0.9,
     });
     const subdomain = window.location.hostname.split(".")[0];
+    const { t, ready } = useTranslation(["admin", "common"]);
 
 
     useEffect(() => {
@@ -37,18 +39,20 @@ const ModelManagement = () => {
             .catch(error => alert("Error creating config: " + error.message));
     };
 
+    if (!ready) return null;
+
     return (
         // max-w-lg
         <div className="p-6 mb-4">
-            <h1 className="text-xl font-semibold">Model Configuration</h1>
+            <h1 className="text-xl font-semibold">{t("admin:system.model.title")}</h1>
             <div className="w-full mx-auto mt-8 p-6 bg-gray-50 shadow-lg rounded-lg">
                 <form onSubmit={handleSave}>
                     <label className="block mb-2">
-                        Temperature
+                        {t("admin:system.model.temperature")}
                         <input type="number" name="temperature" value={config.temperature} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
                     </label>
                     <label className="block mb-2">
-                        Max Output Tokens
+                        {t("admin:system.model.max_output")}
                         <input type="number" name="maxOutputTokens" value={config.maxOutputTokens} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
                     </label>
                     <label className="block mb-2">
@@ -64,7 +68,7 @@ const ModelManagement = () => {
                         type="submit"
                         className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                     >
-                        Submit
+                        {t("common:button.submit")}
                     </button>
                 </form>
 

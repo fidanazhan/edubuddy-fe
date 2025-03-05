@@ -107,16 +107,20 @@
         "model": {
             "title": "Konfigurasi Model",
             "temperature": "Suhu",
-            "max_output": "Max Ouput Tokens"
+            "max_output": "Maximum Token Output"
         },
         "theme": {
             "title": "Konfigurasi Tema",
-            "login_logo": "Login Logo"
+            "login_logo": "Logo Log Masuk"
         },
         "suggestion": {
             "title": "Soalan Cadangan",
             "placeholder": "Masukkan soalan...",
-            "not_found_message": "Tiada soalan ditemui."
+            "not_found_message": "Tiada soalan ditemui.",
+            "question": "Soalan"
         }
+    },
+    "Notification": {
+        "title": "Notifikasi"
     }
 }

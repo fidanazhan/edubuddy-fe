@@ -41,7 +41,7 @@
             "choose_start": "Choose start date",
             "choose_end": "Choose end date",
             "not_found_message": "No transactions found.",
-            "table" : {
+            "table": {
                 "sender": "Sender",
                 "receiver": "Receiver",
                 "date": "Transaction Date"
@@ -78,7 +78,7 @@
             "choose_start": "Choose start date",
             "choose_end": "Choose end date",
             "not_found_message": "No transactions found.",
-            "table" : {
+            "table": {
                 "sender": "Sender",
                 "receiver": "Receiver",
                 "date": "Transaction Date"
@@ -116,7 +116,11 @@
         "suggestion": {
             "title": "Suggestion Questions",
             "placeholder": "Enter a question...",
-            "not_found_message": "No questions found."
+            "not_found_message": "No questions found.",
+            "question": "Question"
         }
+    },
+    "notification": {
+        "title": "Notifications"
     }
 }

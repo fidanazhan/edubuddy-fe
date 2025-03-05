@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const themeManagement = () => {
     const [loginLogo, setLoginLogo] = useState("null");
@@ -8,6 +9,7 @@ const themeManagement = () => {
     const [dashboardLogo, setDashboardLogo] = useState("null");
     const token = localStorage.getItem("accessToken");
     const subdomain = window.location.hostname.split(".")[0];
+    const { t, ready } = useTranslation(["admin", "common"]);
 
     useEffect(() => {
         fetchImg();
@@ -104,14 +106,16 @@ const themeManagement = () => {
         }
     };
 
+    if (!ready) return null;
+
     return (
         <div className="p-6 mb-4">
-            <h1 className="text-xl font-semibold">Theme Settings</h1>
+            <h1 className="text-xl font-semibold">{t("admin:system.theme.title")}</h1>
             <form onSubmit={handleFormSubmit} className="space-y-4">
 
 
                 <div>
-                    <span>Login Logo</span>
+                    <span>{t("admin:system.theme.login_logo")}</span>
                     <div {...getLoginLogoDropzoneProps()} className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
                         <input {...getLoginLogoInputProps()} />
                         <p className="text-gray-500">Drag & drop a file here, or click to upload.</p>

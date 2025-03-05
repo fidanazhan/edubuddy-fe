@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const AuthenticationManagement = () => {
     const [config, setConfig] = useState({
@@ -10,6 +11,7 @@ const AuthenticationManagement = () => {
         microsoftLogin: false,
     });
     const subdomain = window.location.hostname.split(".")[0];
+    const { t, ready } = useTranslation(["admin", "common"]);
 
     useEffect(() => {
         axios.get("http://localhost:5000/api/config/tenant", {
@@ -37,22 +39,24 @@ const AuthenticationManagement = () => {
             .catch(error => alert("Error creating config: " + error.message));
     };
 
+    if (!ready) return null;
+
     return (
         // max-w-lg
         <div className="p-6 mb-4">
-            <h1 className="text-xl font-semibold">Authentication Configuration</h1>
+            <h1 className="text-xl font-semibold">{t("admin:system.authentication.title")}</h1>
             <div className="w-full mx-auto mt-8 p-6 bg-gray-50 shadow-lg rounded-lg">
                 <form onSubmit={handleSave}>
                     <label className="block mb-2">
-                        Access Token TTL (minutes)
+                        {t("admin:system.authentication.access_token")}
                         <input type="number" name="accessTokenTTL" value={config.accessTokenTTL} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
                     </label>
                     <label className="block mb-2">
-                        Refresh Token TTL (minutes)
+                        {t("admin:system.authentication.refresh_token")}
                         <input type="number" name="refreshTokenTTL" value={config.refreshTokenTTL} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
                     </label>
                     <label className="block mb-2">
-                        Max Failed Login Attempts
+                        {t("admin:system.authentication.max_failed")}
                         <input type="number" name="maxFailedLoginAttempts" value={config.maxFailedLoginAttempts} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
                     </label>
 
@@ -60,7 +64,7 @@ const AuthenticationManagement = () => {
                         <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-300 rounded-lg p-2 py-4 transition-colors duration-300 ${config.googleLogin ? 'bg-green-100 border-green-300' : ''}`}> {/* Conditional background color */}
                             <div className="flex items-center">
                                 <span>
-                                    Google Login
+                                    {t("admin:system.authentication.google_login")}
                                 </span>
                                 <label className="relative inline-flex items-center cursor-pointer ml-3">
                                     <input
@@ -81,7 +85,7 @@ const AuthenticationManagement = () => {
                         <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-300 rounded-lg p-2 py-4 transition-colors duration-300 ${config.microsoftLogin ? 'bg-green-100 border-green-300' : ''}`}> {/* Conditional background color */}
                             <div className="flex items-center">
                                 <span>
-                                    Microsoft Login
+                                    {t("admin:system.authentication.microsoft_login")}
                                 </span>
                                 <label className="relative inline-flex items-center cursor-pointer ml-3">
                                     <input
@@ -106,7 +110,7 @@ const AuthenticationManagement = () => {
                         type="submit"
                         className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                     >
-                        Submit
+                        {t("common:button.submit")}
                     </button>
                 </form>
 
