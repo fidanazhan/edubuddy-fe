@@ -1,0 +1,20 @@
+{
+    "dashboard": {
+        "widget_token": "Token Used",
+        "widget_storage": "Storage Used"
+    },
+    "token": {
+        "title": "Token Data",
+        "request": "Request token",
+        "widget_total": "Total Token",
+        "widget_used": "Token Used",
+        "widget_balance": "Token Balance"
+    },
+    "storage": {
+        "title": "Storage Data",
+        "request": "Request storage",
+        "widget_total": "Total Storage",
+        "widget_used": "Storage Used",
+        "widget_balance": "Storage Balance"
+    }
+}

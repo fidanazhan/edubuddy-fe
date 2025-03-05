@@ -1,0 +1,20 @@
+{
+    "dashboard": {
+        "widget_token": "Token Digunakan",
+        "widget_storage": "Storage Digunakan"
+    },
+    "token": {
+        "title" : "Data Token",
+        "request": "Permohonan token",
+        "widget_total": "Jumlah Token",
+        "widget_used": "Token Digunakan",
+        "widget_balance": "Baki Token"
+    },
+    "storage": {
+        "title" : "Data Ruang",
+        "request": "Permohonan ruang",
+        "widget_total": "Jumlah ruang",
+        "widget_used": "Ruang Digunkan",
+        "widget_balance": "Baki Ruang"
+    }
+}

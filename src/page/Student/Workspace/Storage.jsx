@@ -3,7 +3,7 @@ import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
 import RequestModal from "../../../component/Admin/RequestModal";
 import { FaDatabase } from "react-icons/fa";
-
+import { useTranslation } from 'react-i18next';
 
 const StorageWorkspace = () => {
     const [loading, setLoading] = useState("")
@@ -11,6 +11,7 @@ const StorageWorkspace = () => {
     const [userInfo, setUser] = useState(null);
     const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
     const subdomain = window.location.hostname.split(".")[0];
+    const { t, ready } = useTranslation("workspace");
 
     useEffect(() => {
         getUser();
@@ -46,16 +47,18 @@ const StorageWorkspace = () => {
         setIsRequestModalOpen(false);
     };
 
+    if (!ready) return null;
+
     return (
         <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200/90 mb-4">Storage Data</h2>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200/90 mb-4">{t("storage.title")}</h2>
                 <button
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
                     onClick={() => setIsRequestModalOpen(true)}
                 >
                     <FaDatabase className="w-6 h-6 inline-block mr-1" />
-                    <span className="text-sm">Request Storage</span>
+                    <span className="text-sm">{t("storage.request")}</span>
                 </button>
             </div>
 
@@ -68,7 +71,7 @@ const StorageWorkspace = () => {
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Total Storage</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_total")}</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo?.totalStorage ?? "Failed to get Storage"}
                             </p>
@@ -79,7 +82,7 @@ const StorageWorkspace = () => {
 
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Storage Used</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_used")}</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo?.usedStorage ?? "Failed to get Storage"}
                             </p>
@@ -90,7 +93,7 @@ const StorageWorkspace = () => {
 
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">Storage Balance</h2>
+                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_balance")}</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo
                                     ? balanceStorage(userInfo.totalStorage ?? 0, userInfo.usedStorage ?? 0)

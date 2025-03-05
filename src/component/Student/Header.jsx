@@ -33,6 +33,8 @@ const Header = () => {
     navigate("/login"); // Redirect to login page
   };
 
+  if (!ready) return null;
+
   return (
     <div className="flex items-center justify-end bg-gray-50 p-4 dark:bg-gray-800 dark:text-white">
       <div className="relative inline-block text-left" ref={dropdownRef}>

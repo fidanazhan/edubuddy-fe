@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Bell, CheckCircle, XCircle, X } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const initialNotifications = [
   {
@@ -46,6 +47,8 @@ const NotificationTab = () => {
         return <Bell />;
     }
   };
+
+  if (!ready) return null;
 
   return (
     <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
