@@ -149,7 +149,7 @@ const StorageRequestScreen = () => {
                                         )}
                                         {request.status === 1 && (
                                             <>
-                                                <CheckCircle className="text-green-500" />;
+                                                <CheckCircle className="text-green-500" />
                                             </>
                                         )}
                                         {request.status === 2 && (
