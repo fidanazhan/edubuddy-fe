@@ -98,14 +98,14 @@ const TokenTransactionManagement = () => {
                 <input
                     type="text"
                     placeholder={t("admin:token.transaction.seach_sender")}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}
                 />
                 <input
                     type="text"
                     placeholder={t("admin:token.transaction.search_receiver")}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     value={searchReceiverName}
                     onChange={(e) => setReceiverName(e.target.value)}
                 />
@@ -115,7 +115,7 @@ const TokenTransactionManagement = () => {
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     placeholderText={t("admin:token.transaction.choose_start")}
                 />
                 <DatePicker
@@ -126,7 +126,7 @@ const TokenTransactionManagement = () => {
                     endDate={endDate}
                     minDate={startDate}
                     disabled={!startDate}
-                    className="border rounded-lg px-4 py-2 w-auto"
+                    className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:text-gray-300/80"
                     placeholderText={t("admin:token.transaction.choose_end")}
                 />
                 <button
