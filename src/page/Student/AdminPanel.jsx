@@ -14,20 +14,22 @@ import { PiUsersThree } from "react-icons/pi";
 import { GiToken } from "react-icons/gi";
 import { TiCloudStorageOutline } from "react-icons/ti";
 import { useAuth } from '../../context/JWTContext.jsx'
+import { useTranslation } from "react-i18next";
 
 const AdminPanel = () => {
   const { user } = useAuth();
+  const { t, ready } = useTranslation("tabs");
 
   const location = useLocation();
 
   const tabs = [
-    { name: "Dashboard", path: "/admin-panel/dashboard", icon: <RxDashboard />, component: <DashboardTab /> },
-    { name: "Document", path: "/admin-panel/document", icon: <IoDocumentAttachOutline />, component: <DocumentTab /> },
-    { name: "Notification", path: "/admin-panel/notification", icon: <IoNotificationsOutline />, component: <NotificationTab /> },
-    { name: "Users", path: "/admin-panel/user-management/user", icon: <PiUsersThree />, component: <UserTab /> },
-    { name: "Token", path: "/admin-panel/token/users", icon: <GiToken />, component: <TokenTab /> },
-    { name: "Storage", path: "/admin-panel/storage/users", icon: <TiCloudStorageOutline />, component: <StorageTab /> },
-    { name: "System-Configuration", path: "/admin-panel/system-config/authentication", icon: <RxDashboard />, component: <SystemConfigTab /> },
+    { name: t("admin.dashboard"), path: "/admin-panel/dashboard", icon: <RxDashboard />, component: <DashboardTab /> },
+    { name: t("admin.document"), path: "/admin-panel/document", icon: <IoDocumentAttachOutline />, component: <DocumentTab /> },
+    { name: t("admin.notification"), path: "/admin-panel/notification", icon: <IoNotificationsOutline />, component: <NotificationTab /> },
+    { name: t("admin.users.title"), path: "/admin-panel/user-management/user", icon: <PiUsersThree />, component: <UserTab /> },
+    { name: t("admin.token.title"), path: "/admin-panel/token/users", icon: <GiToken />, component: <TokenTab /> },
+    { name: t("admin.storage.title"), path: "/admin-panel/storage/users", icon: <TiCloudStorageOutline />, component: <StorageTab /> },
+    { name: t("admin.system.title"), path: "/admin-panel/system-config/authentication", icon: <RxDashboard />, component: <SystemConfigTab /> },
   ];
 
   const parentPaths = {
@@ -36,6 +38,8 @@ const AdminPanel = () => {
     "Storage": "/admin-panel/storage",
     "System-Configuration": "/admin-panel/system-config"
   };
+
+  if (!ready) return null;
 
   return (
     <div className="w-full py-2">

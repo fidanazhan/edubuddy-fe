@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const systemScreen = () => {
     const location = useLocation(); // Get the current route location
     const [activeTab, setActiveTab] = useState(null); // Default active tab
+    const { t, ready } = useTranslation("tabs");
 
     useEffect(() => {
         // Sync activeTab with the current location
@@ -20,6 +22,8 @@ const systemScreen = () => {
         setActiveTab(tab);
     };
 
+    if (!ready) return null;
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
@@ -31,7 +35,7 @@ const systemScreen = () => {
                             onClick={() => handleTabClick('users')}
                             className={`hover:text-blue-500 font-semibold ${activeTab === 'users' ? 'text-blue-600' : ''}`}
                         >
-                            Users
+                            {t("admin.storage.users")}
                         </Link>
                     </li>
                     <li className="mb-4">
@@ -40,7 +44,7 @@ const systemScreen = () => {
                             onClick={() => handleTabClick('transaction')}
                             className={`hover:text-blue-500 font-semibold ${activeTab === 'transaction' ? 'text-blue-600' : ''}`}
                         >
-                            Transaction History
+                            {t("admin.storage.transaction")}
                         </Link>
                     </li>
                     <li className="mb-4">
@@ -49,7 +53,7 @@ const systemScreen = () => {
                             onClick={() => handleTabClick('request')}
                             className={`hover:text-blue-500 font-semibold ${activeTab === 'request' ? 'text-blue-600' : ''}`}
                         >
-                            Request
+                            {t("admin.storage.request")}
                         </Link>
                     </li>
                 </ul>

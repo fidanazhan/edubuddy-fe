@@ -4,9 +4,9 @@
         "search": "Search",
         "filter": "Filter",
         "save": "Save",
-        "upload" : "Upload",
+        "upload": "Upload",
         "download": "Download",
-        "bulk_process" : "Bulk Process"
+        "bulk_process": "Bulk Process"
     },
     "table": {
         "name": "Name",
@@ -14,6 +14,8 @@
         "group": "Group",
         "amount": "Amount",
         "date": "Date",
-        "action" : "Action"
+        "action": "Action",
+        "sender": "Sender",
+        "receiver": "Receiver"
     }
 }

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const configScreen = () => {
   const location = useLocation(); // Get the current route location
   const [activeTab, setActiveTab] = useState(null); // Default active tab
+  const { t, ready } = useTranslation("tabs");
 
   useEffect(() => {
     // Sync activeTab with the current location
@@ -22,6 +24,8 @@ const configScreen = () => {
     setActiveTab(tab);
   };
 
+  if (!ready) return null;
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -33,7 +37,7 @@ const configScreen = () => {
               onClick={() => handleTabClick('authentication')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'authentication' ? 'text-blue-600' : ''}`}
             >
-              Authentication
+              {t("admin.system.authentication")}
             </Link>
           </li>
           <li className="mb-4">
@@ -42,7 +46,7 @@ const configScreen = () => {
               onClick={() => handleTabClick('model')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'model' ? 'text-blue-600' : ''}`}
             >
-              Model
+              {t("admin.system.model")}
             </Link>
           </li>
           <li className="mb-4">
@@ -51,7 +55,7 @@ const configScreen = () => {
               onClick={() => handleTabClick('theme')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'theme' ? 'text-blue-600' : ''}`}
             >
-              Theme
+              {t("admin.system.theme")}
             </Link>
           </li>
           <li className="mb-4">
@@ -60,7 +64,7 @@ const configScreen = () => {
               onClick={() => handleTabClick('Suggestion Questions')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'questions' ? 'text-blue-600' : ''}`}
             >
-              Suggestion Questions
+              {t("admin.system.suggestion")}
             </Link>
           </li>
         </ul>

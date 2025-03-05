@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const UserScreen = () => {
   const location = useLocation(); // Get the current route location
   const [activeTab, setActiveTab] = useState(null); // Default active tab
+  const { t, ready } = useTranslation("tabs");
 
   useEffect(() => {
     // Sync activeTab with the current location
@@ -13,12 +15,14 @@ const UserScreen = () => {
       setActiveTab('group');
     } else if (location.pathname === '/admin-panel/role-management/role') {
       setActiveTab('role');
-    } 
+    }
   }, [location]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  if (!ready) return null;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -31,7 +35,7 @@ const UserScreen = () => {
               onClick={() => handleTabClick('user')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'user' ? 'text-blue-600' : ''}`}
             >
-              User
+              {t("admin.users.user")}
             </Link>
           </li>
           <li className="mb-4">
@@ -40,7 +44,7 @@ const UserScreen = () => {
               onClick={() => handleTabClick('group')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'group' ? 'text-blue-600' : ''}`}
             >
-              Group
+              {t("admin.users.group")}
             </Link>
           </li>
           <li className="mb-4">
@@ -49,7 +53,7 @@ const UserScreen = () => {
               onClick={() => handleTabClick('role')}
               className={`hover:text-blue-500 font-semibold ${activeTab === 'role' ? 'text-blue-600' : ''}`}
             >
-              Role
+              {t("admin.users.role")}
             </Link>
           </li>
         </ul>
