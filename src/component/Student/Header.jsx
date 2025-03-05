@@ -5,6 +5,7 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useAuth } from "../../context/JWTContext";
 import { useNavigate } from "react-router-dom";
 import SettingsModal from "../Modal/Settings/SettingsModal";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { user } = useAuth();
@@ -16,6 +17,8 @@ const Header = () => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
 
   const closeModal = () => setIsSettingModalOpen(false);
+
+  const { t, ready } = useTranslation("settings");
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -58,7 +61,7 @@ const Header = () => {
               }}
             >
               <FaCogs className="mr-2 text-gray-600" />
-              <span>Settings</span>
+              <span>{t("settings")}</span>
             </button>
 
             {user?.roles === "ADMIN" && (
@@ -70,7 +73,7 @@ const Header = () => {
                 }}
               >
                 <MdAdminPanelSettings className="mr-2 text-gray-600" />
-                Admin Panel
+                <span>{t("admin")}</span>
               </button>
             )}
 
@@ -79,7 +82,7 @@ const Header = () => {
               onClick={handleLogout}
             >
               <MdLogout className="mr-2 text-gray-600" />
-              Logout
+              <span>{t("logout")}</span>
             </button>
           </div>
         )}

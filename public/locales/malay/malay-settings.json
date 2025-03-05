@@ -1,7 +1,5 @@
 {
-    "dashboard": {
-        "title": "Dashboard",
-        "subtitle": "Welcome to the dashboard",
-        "test": "Text ini berubah warna mengikut tema {{lang}}."
-    }
+    "settings": "Settings",
+    "admin": "Panel Admin",
+    "logout": "Log Keluar"
 }
