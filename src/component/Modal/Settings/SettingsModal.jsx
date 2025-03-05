@@ -2,19 +2,22 @@ import { lazy, Suspense, useState } from "react";
 import Modal from "react-modal";
 import { FaTimes, FaGlobe } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
+import { useTranslation } from 'react-i18next';
 
 const Theme = lazy(() => import("./Theme"));
 const Language = lazy(() => import("./Language"));
 
 const SettingsModal = ({ isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState("Theme");
+    const { t, ready } = useTranslation("settings");
 
     const settingsTabs = [
-        { name: "Theme", icon: <MdOutlineWbSunny />, component: Theme },
-        { name: "Language", icon: <FaGlobe />, component: Language },
+        { name: t("settings.theme.tab"), icon: <MdOutlineWbSunny />, component: Theme },
+        { name: t("settings.language.tab"), icon: <FaGlobe />, component: Language },
     ];
 
     if (!isOpen) return null; // Don't render if isOpen is false
+    if (!ready) return null;
 
     return (
         <Modal
@@ -26,7 +29,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         >
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Settings</h2>
+                <h2 className="text-xl font-bold">{t("settings.title")}</h2>
                 <button className="p-2 text-gray-600 hover:text-gray-800" onClick={onClose}>
                     <FaTimes className="w-5 h-5" />
                 </button>

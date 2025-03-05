@@ -1,5 +1,17 @@
 {
-    "settings": "Settings",
+    "settings": {
+        "title": "Settings",
+        "theme": {
+            "tab": "Theme",
+            "title": "Theme Settings",
+            "light": "Light Mode",
+            "dark": "Dark Mode"
+        },
+        "language": {
+            "tab": "Language",
+            "title": "Language Settings"
+        }
+    },
     "admin": "Admin Panel",
     "logout": "Logout"
 }
