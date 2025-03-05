@@ -1,0 +1,39 @@
+{
+    "workspace": {
+        "dashboard": "Dashboard",
+        "document": "Document",
+        "notification": "Notification",
+        "token": "Token",
+        "storage": "Storage"
+    },
+    "admin": {
+        "dashboard": "Dashboard",
+        "document": "Document",
+        "notification": "Notification",
+        "users": {
+            "title": "Users",
+            "user": "User",
+            "group": "Group",
+            "role": "Role"
+        },
+        "token": {
+            "title": "Token",
+            "users": "Users",
+            "transaction": "Transaction History",
+            "request": "Request"
+        },
+        "storage": {
+            "title": "Storage",
+            "users": "Users",
+            "transaction": "Transaction History",
+            "request": "Request"
+        },
+        "system": {
+            "title": "System-Configuration",
+            "authentication": "Authentication",
+            "model": "Model",
+            "theme": "Theme",
+            "suggestion": "Suggestion Questions"
+        }
+    }
+}

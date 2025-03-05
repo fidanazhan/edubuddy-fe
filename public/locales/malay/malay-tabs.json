@@ -1,0 +1,39 @@
+{
+    "workspace": {
+        "dashboard": "Dashboard",
+        "document": "Dokumen",
+        "notification": "Notifikasi",
+        "token": "Token",
+        "storage": "Ruang"
+    },
+    "admin": {
+        "dashboard": "Dashboard",
+        "document": "Dokumen",
+        "notification": "Notifikasi",
+        "users": {
+            "title": "Pengguna",
+            "user": "Senarai Pengguna",
+            "group": "Kumpulan",
+            "role": "Peranan"
+        },
+        "token": {
+            "title": "Token",
+            "users": "Senarai Pengguna",
+            "transaction": "Sejarah Transaksi",
+            "request": "Permohonan"
+        },
+        "storage": {
+            "title": "Ruang",
+            "users": "Senarai Pengguna",
+            "transaction": "Sejarah Transaksi",
+            "request": "Permohonan"
+        },
+        "system": {
+            "title": "Sistem Konfigurasi",
+            "authentication": "Pengesahan",
+            "model": "Model",
+            "theme": "Tema",
+            "suggestion": "Soalan Cadangan"
+        }
+    }
+}

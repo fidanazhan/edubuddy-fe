@@ -48,7 +48,7 @@ const NotificationTab = () => {
     }
   };
 
-  if (!ready) return null;
+  // if (!ready) return null;
 
   return (
     <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
