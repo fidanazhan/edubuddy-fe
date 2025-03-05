@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PromptInput from '../../component/Prompts';
 import shuffle from 'lodash/shuffle';
 import { useAuth } from '../../context/JWTContext';
+import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
+import { useTranslation } from "react-i18next";
 
 const suggestions = [
   { name: "Help me study.", content: "vocabulary for a college entrance exam" },
@@ -25,6 +27,8 @@ const Dashboard = () => {
   const randomSuggestion = shuffle(suggestions).slice(0, 3);
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
+  const { i18n, t, ready, language } = useTranslation("common");
+
 
   const mutation = useMutation({
     mutationFn: (text) => {
@@ -55,6 +59,7 @@ const Dashboard = () => {
     setInputValue(content); // Update input field with selected suggestion
   };
 
+  if (!ready) return null;
 
   return (
     <div className="flex flex-col h-[50vh] items-center">
@@ -74,6 +79,10 @@ const Dashboard = () => {
 
       <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
         This text changes color based on the theme.
+      </div>
+
+      <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4 mt-4">
+        {t("test", { lang: i18n.language })}
       </div>
 
       {/* Centering the suggestion list */}

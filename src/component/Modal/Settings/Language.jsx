@@ -1,28 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../../../context/JWTContext";
+import axios from "axios";
 
 const LanguageSettings = () => {
-    const [language, setLanguage] = useState(localStorage.getItem("language") || "en");
+    const { i18n } = useTranslation();
+    const language = i18n.language; // ✅ Get current language
+    const languages = i18n.options.supportedLngs.filter(lng => lng !== "cimode");
+    const { user } = useAuth();
+    const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem("language") || language);
 
-    const handleLanguageChange = (lang) => {
-        setLanguage(lang);
-        localStorage.setItem("language", lang);
+    const handleLanguageChange = (event) => {
+        putUserLang(event.target.value);
+    };
+
+    const putUserLang = async (lang) => {
+        const token = localStorage.getItem("accessToken");
+        const subdomain = window.location.hostname.split(".")[0];
+        try {
+            const response = await axios.put(`http://localhost:5000/api/user/${user.id}/lang`, { lang }, {
+                headers: {
+                    "x-tenant": subdomain,
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.data.user.language) {
+                localStorage.setItem("language", response.data.user.language);
+                i18n.changeLanguage(response.data.user.language);
+                setSelectedLanguage(response.data.user.language);
+            }
+        } catch (error) {
+            console.error("Error posting theme:", error);
+        }
     };
 
     return (
-        <>
+        <div>
             <h2 className="text-lg font-bold mb-4">Language Settings</h2>
             <select
-                value={language}
-                onChange={(e) => handleLanguageChange(e.target.value)}
+                value={selectedLanguage}
+                onChange={handleLanguageChange}
                 className="w-full p-2 border rounded-lg dark:text-black/80"
             >
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="zh">中文</option>
+                {languages.map((lng) => (
+                    <option key={lng} value={lng}>
+                        {lng}
+                    </option>
+                ))}
             </select>
-        </>
+        </div>
     );
 };
 
