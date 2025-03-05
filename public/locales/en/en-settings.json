@@ -1,0 +1,7 @@
+{
+    "dashboard" : {
+        "title": "Dashboard",
+        "subtitle": "Welcome to the dashboard",
+        "test" : "This text changes color based on the theme {{lang}}."
+    }
+}

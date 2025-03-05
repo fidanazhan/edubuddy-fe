@@ -1,0 +1,3 @@
+{
+    "test": "This text changes color based on the theme {{lang}}."
+}

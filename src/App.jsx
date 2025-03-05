@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import LoginPage from "./layout/AuthLayout";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/index.jsx";
+import axios from "axios";
+import i18n from "./i18n";
+import { useAuth } from "./context/JWTContext"; // FIX: Call inside component
 
 function App() {
 
@@ -23,11 +26,35 @@ function App() {
     }
   }, []);
 
+  const { user } = useAuth(); // Hooks must be inside a component
+  const subdomain2 = window.location.hostname.split(".")[0];
+  const token = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const fetchLanguage = async () => {
+      if (!user) return; // Wait until user is available
+      try {
+        const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+          headers: {
+            "x-tenant": subdomain2,
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        const userLanguage = response.data.language || "en"; // Default to English
+        i18n.changeLanguage(userLanguage); // Set language dynamically
+      } catch (error) {
+        console.error("Error fetching user language:", error);
+      }
+    };
+
+    fetchLanguage();
+  }, [user]); // Re-run when user data changes
+
   return (
     <div>
       {/* <h1>Subdomain: {subdomain || "No Subdomain Detected"}</h1> */}
-    {/* //   <LoginPage /> */}
-      
+      {/* //   <LoginPage /> */}
+
       <RouterProvider router={router} />
     </div>
 
