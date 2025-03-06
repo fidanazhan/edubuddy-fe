@@ -16,6 +16,7 @@
         "date": "Tarikh",
         "action" : "Tindakan",
         "sender" : "Penghantar",
-        "receiver" : "Penerima"
+        "receiver" : "Penerima",
+        "reason" : "Sebab"
     }
 }

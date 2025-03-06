@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import Toast from "../Toast/Toast";
 
 const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain }) => {
     const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
     });
 
     const [errors, setErrors] = useState({}); // Store validation errors
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         if (initialValues) {
@@ -23,12 +25,10 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
     }, [initialValues]);
 
-
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: "" });
     };
-
 
     const validateForm = () => {
         let newErrors = {};
@@ -43,40 +43,40 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
         return Object.keys(newErrors).length === 0; // Return true if no errors
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) {
             console.log("Form is invalid: do not submit");
             return
         };
         if (validateForm()) {
-
             const payload = {
                 ...formData,
             };
-
             try {
                 const headers = {
                     'Content-Type': 'application/json',
                     'x-tenant': subdomain,
                 };
-
                 const response = await axios.post(`http://localhost:5000/api/request/${type}`, payload, { headers });
-
-
                 if (response.status === 201 || response.status === 200) {
-                    onSubmit();
-                    onClose();
+                    showToast("Request sent successfully!", "bg-green-500", "success");
+                    setTimeout(() => {
+                        onSubmit();
+                        onClose();
+                    }, 2000);
                 }
-
             } catch (error) {
                 console.error('Error:', error);
+                showToast("Request failed to be sent!", "bg-red-500", "error");
             }
         }
     };
 
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -144,6 +144,14 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                     </div>
                 </form>
             </div>
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     );
 };

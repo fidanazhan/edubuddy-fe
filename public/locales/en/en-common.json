@@ -16,6 +16,7 @@
         "date": "Date",
         "action": "Action",
         "sender": "Sender",
-        "receiver": "Receiver"
+        "receiver": "Receiver",
+        "reason": "Reason"
     }
 }
