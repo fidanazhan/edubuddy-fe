@@ -121,7 +121,7 @@ const TokenUsersManagement = () => {
                         <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">{t("admin:token.users.widget_balance")}</h2>
                         <p className="text-gray-500 mt-4">
                             {admin
-                                ? balanceToken(userInfo.totalToken ?? 0, userInfo.usedToken ?? 0)
+                                ? balanceToken(admin.totalToken ?? 0, admin.usedToken ?? 0)
                                 : "Failed to get Token"}                            </p>
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
