@@ -97,7 +97,7 @@ const SuggestionQuestion = ({ tenantId }) => {
 
   return (
     <div className=" dark:bg-gray-900 text-gray-900 dark:text-white">
-      <div className="p-6 mb-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+      <div className="p-6 mb-4 dark:bg-gray-800 text-gray-900 dark:text-white">
         <h2 className="text-xl font-semibold mb-4">Suggestion Questions</h2>
 
         {/* Input Field */}
@@ -133,7 +133,7 @@ const SuggestionQuestion = ({ tenantId }) => {
           <div>
             <table className="table-auto w-full border-collapse border border-gray-200">
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-gray-100 dark:bg-gray-600">
                   <th className="border border-gray-200 px-4 py-2">No</th>
                   <th className="border border-gray-200 px-4 py-2">Question</th>
                   <th className="border border-gray-200 px-4 py-2">Action</th>

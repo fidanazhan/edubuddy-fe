@@ -6,7 +6,6 @@ import { Search } from 'lucide-react'
 import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
 import { MdGroups2 } from "react-icons/md";
-import { HiUser, HiMiniUserGroup } from "react-icons/hi2";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -236,36 +235,39 @@ const UserManagement = () => {
               <FaUpload className="mr-2" /> Bulk Process
             </button>
             {isOpen && (
-              <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10">
-                <button
-                  onClick={() => triggerModal("Bulk Add")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
-                >
-                  <FaPlus className="mr-2 text-teal-600" /> 
-                  <span className="text-sm">Create User</span>
-                </button>
-                <button
-                  onClick={() => triggerModal("Bulk Update")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
-                >
-                  <FaEdit className="mr-2 text-blue-600" /> 
-                  <span className="text-sm">Update User</span>
-                </button>
-                <button
-                  onClick={() => triggerModal("Bulk Remove")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
-                >
-                  <FaTrash className="mr-2 text-red-600" /> 
-                  <span className="text-sm">Remove User</span>
-                </button>
-                <button
-                  onClick={() => triggerModal("Bulk Remove")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
-                >
-                  <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" /> 
-                  <span className="text-sm">Assign User To Group</span>
-                </button>
-              </div>
+
+          <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10 dark:bg-gray-800 dark:border dark:border-gray-600">
+            <button
+              onClick={() => triggerModal("Bulk Add")}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
+            >
+              <FaPlus className="mr-2 text-teal-600 dark:text-teal-400" /> 
+              <span className="text-sm text-gray-900 dark:text-gray-200">Create User</span>
+            </button>
+            <button
+              onClick={() => triggerModal("Bulk Update")}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
+            >
+              <FaEdit className="mr-2 text-blue-600 dark:text-blue-400" /> 
+              <span className="text-sm text-gray-900 dark:text-gray-200">Update User</span>
+            </button>
+            <button
+              onClick={() => triggerModal("Bulk Remove")}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
+            >
+              <FaTrash className="mr-2 text-red-600 dark:text-red-400" /> 
+              <span className="text-sm text-gray-900 dark:text-gray-200">Remove User</span>
+            </button>
+            <button
+              onClick={() => triggerModal("Bulk Remove")}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
+            >
+              <MdGroups2 className="mr-2 text-teal-600 dark:text-teal-400 h-5 w-5" /> 
+              <span className="text-sm text-gray-900 dark:text-gray-200">Assign User To Group</span>
+            </button>
+          </div>
+
+
             )}
           </div>
 
@@ -287,7 +289,7 @@ const UserManagement = () => {
                 fetchUsers(1, usersPerPage);
               }
             }}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300"
           />
           <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
         </div>
@@ -319,7 +321,7 @@ const UserManagement = () => {
           <div>
             <table className="table-auto w-full border-collapse border border-gray-200">
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-gray-100 dark:bg-gray-600">
                   <th className="border border-gray-200 px-4 py-2">No</th>
                   <th className="border border-gray-200 px-4 py-2">Name</th>
                   <th className="border border-gray-200 px-4 py-2">Group</th>
@@ -346,9 +348,9 @@ const UserManagement = () => {
                       <td className="border border-gray-200 px-1 py-2 text-sm">
                         <span
                           className={`px-2 py-1 rounded-full text-sm font-semibold ${user.status === 1
-                            ? "bg-green-200 text-green-800"
+                            ? "bg-green-200 dark:bg-green-300"
                             : user.status === 0
-                              ? "bg-red-200 text-red-800"
+                              ? "bg-red-200 dark:bg-red-300"
                               : "bg-white text-gray-800 border-gray-300"
                             }`}
                         >
@@ -378,7 +380,7 @@ const UserManagement = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="border border-gray-200 px-4 py-2 text-center">
+                    <td colSpan="7" className="border border-gray-200 px-4 py-2 text-center">
                       No users found.
                     </td>
                   </tr>
@@ -391,7 +393,7 @@ const UserManagement = () => {
               {Array.from({ length: totalPages }, (_, index) => (
                   <button
                       key={index + 1}
-                      className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
+                      className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500  text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
                           }`}
                       onClick={() => handlePageChange(index + 1)}
                   >

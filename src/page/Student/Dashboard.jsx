@@ -71,10 +71,10 @@ const Dashboard = () => {
       <div className="flex justify-center">
         <PromptInput onSubmit={handleSubmit} value={inputValue} onChange={setInputValue} />
       </div>
-
+{/* 
       <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
         This text changes color based on the theme.
-      </div>
+      </div> */}
 
       {/* Centering the suggestion list */}
       {/* <div className="flex justify-center items-center mt-10 w-full">

@@ -21,9 +21,9 @@ const UserScreen = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-44 bg-gray-50 p-4 border-r ">
+      <div className="w-44 p-4 border-r ">
         <ul className='list-none'>
           <li className="mb-4">
             <Link

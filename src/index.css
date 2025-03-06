@@ -20,3 +20,24 @@ body {
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
+
+/* Remove number input arrows in WebKit browsers (Chrome, Safari, Edge, Opera) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Remove number input arrows in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Ensure no arrows appear on hover or focus */
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+}

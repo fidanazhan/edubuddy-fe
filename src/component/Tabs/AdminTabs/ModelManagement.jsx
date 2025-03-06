@@ -41,23 +41,47 @@ const ModelManagement = () => {
         // max-w-lg
         <div className="p-6 mb-4">
             <h1 className="text-xl font-semibold">Model Configuration</h1>
-            <div className="w-full mx-auto mt-8 p-6 bg-gray-50 shadow-lg rounded-lg">
+            <div className="w-full mx-auto mt-8 p-6">
                 <form onSubmit={handleSave}>
                     <label className="block mb-2">
                         Temperature
-                        <input type="number" name="temperature" value={config.temperature} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="temperature" 
+                            value={config.temperature} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        />
                     </label>
                     <label className="block mb-2">
                         Max Output Tokens
-                        <input type="number" name="maxOutputTokens" value={config.maxOutputTokens} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="maxOutputTokens" 
+                            value={config.maxOutputTokens} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        />
                     </label>
                     <label className="block mb-2">
                         Top-P
-                        <input type="number" name="topP" value={config.topP} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="topP" 
+                            value={config.topP} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        />
                     </label>
                     <label className="block mb-2">
                         Top-K
-                        <input type="number" name="topK" value={config.topK} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="topK" 
+                            value={config.topK} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        />
                     </label>
 
                     <button

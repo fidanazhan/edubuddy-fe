@@ -3,11 +3,11 @@ import axios from "axios";
 
 const AuthenticationManagement = () => {
     const [config, setConfig] = useState({
-        accessTokenTTL: 15,
-        refreshTokenTTL: 1440,
-        maxFailedLoginAttempts: 5,
-        googleLogin: false,
-        microsoftLogin: false,
+        accessTokenTTL: "",
+        refreshTokenTTL: "",
+        maxFailedLoginAttempts: "",
+        googleLogin: null,
+        microsoftLogin: null,
     });
     const subdomain = window.location.hostname.split(".")[0];
 
@@ -41,24 +41,42 @@ const AuthenticationManagement = () => {
         // max-w-lg
         <div className="p-6 mb-4">
             <h1 className="text-xl font-semibold">Authentication Configuration</h1>
-            <div className="w-full mx-auto mt-8 p-6 bg-gray-50 shadow-lg rounded-lg">
+            <div className="w-full mx-auto mt-8 p-6">
                 <form onSubmit={handleSave}>
                     <label className="block mb-2">
                         Access Token TTL (minutes)
-                        <input type="number" name="accessTokenTTL" value={config.accessTokenTTL} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="accessTokenTTL" 
+                            value={config.accessTokenTTL} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none"
+                        />
                     </label>
                     <label className="block mb-2">
                         Refresh Token TTL (minutes)
-                        <input type="number" name="refreshTokenTTL" value={config.refreshTokenTTL} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="refreshTokenTTL" 
+                            value={config.refreshTokenTTL} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        />
                     </label>
                     <label className="block mb-2">
                         Max Failed Login Attempts
-                        <input type="number" name="maxFailedLoginAttempts" value={config.maxFailedLoginAttempts} onChange={handleChange} className="w-full p-2 border rounded mt-1" />
+                        <input 
+                            type="number" 
+                            name="maxFailedLoginAttempts" 
+                            value={config.maxFailedLoginAttempts} 
+                            onChange={handleChange} 
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none"
+                        />
                     </label>
 
                     <div className="flex w-full space-x-2 justify-around mt-4">
-                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-300 rounded-lg p-2 py-4 transition-colors duration-300 ${config.googleLogin ? 'bg-green-100 border-green-300' : ''}`}> {/* Conditional background color */}
-                            <div className="flex items-center">
+                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.googleLogin ? 'bg-green-900 border-green-500' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                            <div className={`flex items-center  ${config.googleLogin ? 'text-white' : 'text-black dark:text-white '} `}>
                                 <span>
                                     Google Login
                                 </span>
@@ -70,16 +88,16 @@ const AuthenticationManagement = () => {
                                         onChange={handleChange}
                                         className="sr-only peer"
                                     />
-                                    <div className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ${config.googleLogin ? "bg-green-200" : "bg-gray-300"}`}>
-                                        <div className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${config.googleLogin ? "translate-x-6 bg-green-700" : "translate-x-0 bg-white"}`}>
+                                    <div className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ${config.googleLogin ? "bg-green-600" : "bg-gray-600"}`}>
+                                        <div className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${config.googleLogin ? "translate-x-6 bg-green-400" : "translate-x-0 bg-gray-200"}`}>
                                         </div>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-300 rounded-lg p-2 py-4 transition-colors duration-300 ${config.microsoftLogin ? 'bg-green-100 border-green-300' : ''}`}> {/* Conditional background color */}
-                            <div className="flex items-center">
+                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.microsoftLogin ? 'bg-green-900 border-green-500' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                            <div className={`flex items-center  ${config.microsoftLogin ? 'text-white' : 'text-black dark:text-white '} `}>
                                 <span>
                                     Microsoft Login
                                 </span>
@@ -91,16 +109,15 @@ const AuthenticationManagement = () => {
                                         onChange={handleChange}
                                         className="sr-only peer"
                                     />
-                                    <div className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ${config.microsoftLogin ? "bg-green-200" : "bg-gray-300"}`}>
-                                        <div className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${config.microsoftLogin ? "translate-x-6 bg-green-700" : "translate-x-0 bg-white"}`}>
+                                    <div className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ${config.microsoftLogin ? "bg-green-600" : "bg-gray-600"}`}>
+                                        <div className={`w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${config.microsoftLogin ? "translate-x-6 bg-green-400" : "translate-x-0 bg-gray-200"}`}>
                                         </div>
                                     </div>
                                 </label>
                             </div>
                         </div>
-
-
                     </div>
+
 
                     <button
                         type="submit"
