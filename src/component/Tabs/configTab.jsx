@@ -13,8 +13,8 @@ const configScreen = () => {
       setActiveTab('authentication');
     } else if (location.pathname === '/admin-panel/system-config/model') {
       setActiveTab('model');
-    } else if (location.pathname === '/admin-panel/system-config/theme') {
-      setActiveTab('theme');
+    } else if (location.pathname === '/admin-panel/system-config/banner') {
+      setActiveTab('banner');
     } else if (location.pathname === '/admin-panel/system-config/suggestion-question-template') {
       setActiveTab('questions');
     }
@@ -27,9 +27,9 @@ const configScreen = () => {
   if (!ready) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-44 bg-gray-50 p-4 border-r ">
+      <div className="w-44 p-4 border-r ">
         <ul className='list-none'>
           <li className="mb-4">
             <Link
@@ -51,9 +51,9 @@ const configScreen = () => {
           </li>
           <li className="mb-4">
             <Link
-              to="/admin-panel/system-config/theme"
-              onClick={() => handleTabClick('theme')}
-              className={`hover:text-blue-500 font-semibold ${activeTab === 'theme' ? 'text-blue-600' : ''}`}
+              to="/admin-panel/system-config/banner"
+              onClick={() => handleTabClick('banner')}
+              className={`hover:text-blue-500 font-semibold ${activeTab === 'banner' ? 'text-blue-600' : ''}`}
             >
               {t("admin.system.theme")}
             </Link>

@@ -117,28 +117,6 @@ const GroupManagement = () => {
 
       <div className="flex justify-end space-x-2 mb-4 w-full mt-4">
         <div className="flex space-x-2">
-          {/* <div className="relative inline-block text-left">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 flex items-center"
-            >
-              <FaUpload className="mr-2" /> Bulk Process
-            </button>
-            {isOpen && (
-              <div className="absolute mt-2 w-52 bg-white shadow-lg rounded-lg z-10">
-                <button
-                  onClick={() => triggerModal("Add/Remove User")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
-                >
-                  <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" /> 
-                  <span className="text-sm"> 
-                    Add / Remove User
-                  </span>
-                </button>
-              </div>
-            )}
-          </div> */}
-
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             onClick={() => setIsAddModalOpen(true)}
@@ -157,7 +135,7 @@ const GroupManagement = () => {
                 fetchGroups(1, usersPerPage);
               }
             }}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300"
           />
           <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
         </div>
@@ -172,8 +150,8 @@ const GroupManagement = () => {
       ) : (
         <div>      
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-gray-200">
+            <table className="min-w-full shadow-md overflow-hidden">
+              <thead className="bg-gray-200 dark:bg-gray-600">
                 <tr>
                   <th className="py-2 px-4 border">Name</th>
                   <th className="py-2 px-4 border">Description</th>

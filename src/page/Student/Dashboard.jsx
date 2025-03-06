@@ -76,10 +76,10 @@ const Dashboard = () => {
       <div className="flex justify-center">
         <PromptInput onSubmit={handleSubmit} value={inputValue} onChange={setInputValue} />
       </div>
-
+{/* 
       <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
         This text changes color based on the theme.
-      </div>
+      </div> */}
 
       <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4 mt-4">
         {t("test", { lang: i18n.language })}

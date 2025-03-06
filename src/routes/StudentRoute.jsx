@@ -17,8 +17,10 @@ import AdminProtectedRoute from '../layout/AdminLayout/ProtectedAdminLayout'
 import ConfigScreen from '../component/Tabs/configTab'
 import AuthenticationManagement from '../component/Tabs/AdminTabs/AuthenticationManagement'
 import ModelManagement from '../component/Tabs/AdminTabs/ModelManagement'
-import ThemeManagement from '../component/Tabs/AdminTabs/ThemeManagement'
+import BannerManagement from '../component/Tabs/AdminTabs/BannerManagement'
 import SuggestionQuestion from '../component/Tabs/AdminTabs/SuggestionQuestion'
+
+
 const TokenTab = lazy(() => import('../component/Tabs/tokenTab'));
 const TokenUsersManagement = lazy(() => import('../component/Tabs/AdminTabs/TokenUsersManagement'));
 const TransactionManagement = lazy(() => import('../component/Tabs/AdminTabs/TransactionManagement'));
@@ -168,8 +170,8 @@ const StudentRoute = {
                   element: <ModelManagement />
                 },
                 {
-                  path: 'theme',
-                  element: <ThemeManagement />
+                  path: 'banner',
+                  element: <BannerManagement />
                 },
                 {
                   path: 'suggestion-question-template',

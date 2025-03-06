@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Trash2, UploadCloud, Search, ChevronUp, ChevronDown } from "lucide-react";
-import { BiEdit } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
 import { FiUploadCloud, FiFileText, FiTrash } from "react-icons/fi";
 import StorageBar from "../../component/Workspace/Document/StorageBar";
 import Toast from '../../component/Toast/Toast'
@@ -244,11 +244,11 @@ const FileManagement = () => {
       {/* Upload Section */}
       <div className="flex w-full space-x-4">
         {/* File Upload Box (7/12 width) */}
-        <div className="w-7/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
+        <div className="w-7/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center dark:bg-gray-600"
           onClick={() => fileInputRef.current.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}>
-          <p className="text-gray-500">Drag & drop files here, or click to upload.</p>
+          <p className="text-gray-500 dark:text-gray-200">Drag & drop files here, or click to upload.</p>
           <input
             type="file"
             ref={fileInputRef}
@@ -265,7 +265,7 @@ const FileManagement = () => {
             placeholder="Enter tag (optional)"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="border rounded w-full dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden"
           />
           <button
             onClick={handleFileUpload}
@@ -325,9 +325,9 @@ const FileManagement = () => {
                 getFileByUser(1, ITEMS_PER_PAGE);
               }
             }}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 overflow-hidden"
           />
-          <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5" />
+          <Search className="absolute top-2 right-3 text-gray-500 w-5 h-5 dark:text-gray-100" />
         </div>
         {/* <button
           onClick={() => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))}
@@ -344,10 +344,10 @@ const FileManagement = () => {
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="bg-white shadow-md rounded p-4 overflow-x-auto">
-          <table className="min-w-full table-auto">
+        <div>
+          <table className="table-auto w-full border-collapse border border-gray-200">
             <thead>
-              <tr className="border-b">
+              <tr className="bg-gray-100 dark:bg-gray-600 border-b">
                 <th className="px-4 py-2 text-left">
                   <input
                     type="checkbox"
@@ -364,12 +364,12 @@ const FileManagement = () => {
                     }
                   />
                 </th>
-                <th className="px-4 py-2 text-left w-96">File Name</th>
-                <th className="px-4 py-2 text-center">Type</th>
-                <th className="px-4 py-2 text-center">User</th>
-                <th className="px-4 py-2 text-center">Size</th>
-                <th className="px-4 py-2 text-center">Tag</th>
-                <th className="px-4 py-2 text-center">Actions</th>
+                <th className="border border-gray-200 px-4 py-2 text-left w-96">File Name</th>
+                <th className="border border-gray-200 px-4 py-2 text-center">Type</th>
+                <th className="border border-gray-200 px-4 py-2 text-center">User</th>
+                <th className="border border-gray-200 px-4 py-2 text-center">Size</th>
+                <th className="border border-gray-200 px-4 py-2 text-center">Tag</th>
+                <th className="border border-gray-200 px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -382,7 +382,7 @@ const FileManagement = () => {
                       onChange={() => toggleSelection(file._id)}
                     />
                   </td>
-                  <td className="px-4 py-2 w-96">
+                  <td className="border border-gray-200 px-4 py-2 w-96">
                     <a
                       href={file.url}
                       target="_blank"
@@ -392,10 +392,10 @@ const FileManagement = () => {
                       {file.originalName}
                     </a>
                   </td>
-                  <td className="px-4 py-2 text-center text-sm">
+                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">
                     {file.type === "application/pdf" ? "PDF" : file.type}
                   </td>
-                  <td className="px-4 py-2 text-center flex justify-center items-center">
+                  <td className="px-4 py-2 flex text-center items-center justify-center">
                     {file.uploadedBy?.profilePictureUrl && (
                       <img
                         src={file.uploadedBy.profilePictureUrl}
@@ -405,15 +405,15 @@ const FileManagement = () => {
                       />
                     )}
                   </td>
-                  <td className="px-4 py-2 text-center text-sm">
+                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">
                     {file.size < 1024
                       ? `${file.size} B`
                       : file.size < 1024 * 1024
                         ? `${(file.size / 1024).toFixed(1)} KB`
                         : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
                   </td>
-                  <td className="px-4 py-2 text-center text-sm">{file.tag}</td>
-                  <td className="px-4 py-2 text-center space-x-4 text-sm">
+                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">{file.tag}</td>
+                  <td className="border border-gray-200 px-4 py-2 text-center space-x-4 text-sm">
                     <button
                       onClick={() => {
                         setSelectedFile(file);
@@ -422,7 +422,7 @@ const FileManagement = () => {
                       className="text-red-500 hover:text-red-700"
                       title="Delete Document"
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <FaTrash className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>
@@ -437,8 +437,9 @@ const FileManagement = () => {
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
-            className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white"
-              }`}
+            className={`px-3 py-1 rounded-lg border ${
+              currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
+            }`}
             onClick={() => handlePageChange(index + 1)}
           >
             {index + 1}
