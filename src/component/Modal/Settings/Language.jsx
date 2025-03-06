@@ -40,9 +40,6 @@ const LanguageSettings = () => {
                 }
             }, 1000);
 
-
-
-
         } catch (error) {
             console.error("Error changing language:", error);
             showToast("Language changed failed!", "bg-red-500", "error");

@@ -3,6 +3,7 @@ import { useAuth } from '../../../context/JWTContext.jsx'
 import axios from 'axios';
 import { format } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
+import Toast from '../../Toast/Toast.jsx';
 
 // Pending
 import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
@@ -18,6 +19,7 @@ const TokenRequestScreen = () => {
     const [requests, setRequest] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedRequest, setSelectedRequest] = useState(null)
+    const [toast, setToast] = useState(null);
 
     const subdomain = window.location.hostname.split(".")[0];
     const requestPerPage = 10;
@@ -86,11 +88,12 @@ const TokenRequestScreen = () => {
             });
             setSelectedRequest(null);
             fetchRequest(currentPage);
+            showToast("Request approved successfully!", "bg-green-500", "success");
         } catch (error) {
             console.error("Error approving request:", error);
+            showToast("Request approval failed!", "bg-red-500", "error");
         }
     };
-
 
     const handleSubmitReject = async (request) => {
         console.log(request)
@@ -100,9 +103,16 @@ const TokenRequestScreen = () => {
             });
             setSelectedRequest(null);
             fetchRequest(currentPage);
+            showToast("Request rejected successfully!", "bg-green-500", "success");
         } catch (error) {
             console.error("Error rejecting request:", error);
+            showToast("Request rejection failed!", "bg-red-500", "error");
         }
+    };
+
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
     };
 
     if (!ready) return null;
@@ -166,7 +176,7 @@ const TokenRequestScreen = () => {
                                 <div className="ml-4 flex-1">
                                     <div className="flex items-center">
                                         <p className="text-md text-gray-800 dark:text-gray-300/80">
-                                            {t("admin:token.request.message", {name : request.requester?.name, amount : request?.amount})}
+                                            {t("admin:token.request.message", { name: request.requester?.name, amount: request?.amount })}
                                         </p>
                                         <EllipsisVertical
                                             id={`anchor-reason-${request._id}`}
@@ -178,7 +188,7 @@ const TokenRequestScreen = () => {
                                         />
                                     </div>
                                     <span className="text-sm text-gray-400 mr-4">
-                                        {t("admin:token.request.date", {date : formattedDate(request.createdAt)})}
+                                        {t("admin:token.request.date", { date: formattedDate(request.createdAt) })}
                                     </span>
                                 </div>
 
@@ -209,7 +219,7 @@ const TokenRequestScreen = () => {
                             </div>
                         ))}
                         {requests.length === 0 && (
-                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">{t("admin:token.request.not_found_message", {status: activeTab})}</div>
+                            <div className="text-center py-4 text-gray-600 dark:bg-gray-900 dark:border-gray-900">{t("admin:token.request.not_found_message", { status: activeTab })}</div>
                         )}
                     </div>
                     <div className="flex justify-center mt-4 gap-2">
@@ -225,6 +235,15 @@ const TokenRequestScreen = () => {
                         ))}
                     </div>
                 </div >
+            )}
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
             )}
 
         </div >
