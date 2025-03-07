@@ -190,7 +190,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
-              {t("common:table.submit")}
+              {t("common:button.submit")}
             </button>
           </div>
         </form>
