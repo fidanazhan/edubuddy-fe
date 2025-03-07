@@ -1,5 +1,5 @@
 {
-    "group_m": {
+    "group": {
         "add_title": "Add Group",
         "update_title": "Update Group",
         "description": "Description",
@@ -7,8 +7,9 @@
         "sucess_toast": "Sucess",
         "error_toast": "Error"
     },
-    "delete_group_m": {
-        "message1": "Are you sure you want to delete ",
+    "delete": {
+        "message1_group": "Are you sure you want to delete Group ",
+        "message1_user": "Are you sure you want to delete User ",
         "message2": "This action cannot be undone. Please confirm your decision."
     },
     "group_user": {

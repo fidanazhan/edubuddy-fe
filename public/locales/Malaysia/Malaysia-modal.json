@@ -7,9 +7,10 @@
         "sucess_toast": "Berjaya",
         "error_toast": "Gagal"
     },
-    "delete_group": {
-        "message1": "Adakah anda yakin untuk padam kumpulan ",
-        "message2": "Tindakan ini tidak boleh dikembalikan. Sila sahkan keputusan anda."
+    "delete": {
+        "message1_group": "Adakah anda yakin untuk padam kumpulan ",
+        "message1_user": "Adakah anda yakin untuk padam pengguna ",
+        "message2": "Tindakan ini tidak boleh diundur kembali. Sila sahkan keputusan anda."
     },
     "group_user": {
         "title": "Senarai Pengguna",

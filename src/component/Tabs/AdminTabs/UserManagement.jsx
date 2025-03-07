@@ -26,7 +26,7 @@ const UserManagement = () => {
   const [modalType, setModalType] = useState(null);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
   const [filterByGroup, setFilterByGroup] = useState(false);
-  const { t, ready } = useTranslation(["admin", "common"]);
+  const { t, ready } = useTranslation(["admin", "common", "modal"]);
 
   const usersPerPage = 5;
   const subdomain = window.location.hostname.split(".")[0];
@@ -245,28 +245,28 @@ const UserManagement = () => {
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaPlus className="mr-2 text-teal-600" />
-                  <span className="text-sm">Create User</span>
+                  <span className="text-sm">{t("admin:users.user.bulk_add")}</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Update")}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaEdit className="mr-2 text-blue-600" />
-                  <span className="text-sm">Update User</span>
+                  <span className="text-sm">{t("admin:users.user.bulk_update")}</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaTrash className="mr-2 text-red-600" />
-                  <span className="text-sm">Remove User</span>
+                  <span className="text-sm">{t("admin:users.user.bulk_remove")}</span>
                 </button>
                 <button
                   onClick={() => triggerModal("Bulk Remove")}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" />
-                  <span className="text-sm">Assign User To Group</span>
+                  <span className="text-sm">{t("admin:users.user.assign_group")}</span>
                 </button>
               </div>
             )}
@@ -306,7 +306,7 @@ const UserManagement = () => {
             className="cursor-pointer"
           />
           <label htmlFor="filterByGroup" className="cursor-pointer">
-            Filter User By Group
+            {t("admin:users.user.filter_check")}
           </label>
         </div>
       </div>
@@ -382,7 +382,7 @@ const UserManagement = () => {
                 ) : (
                   <tr>
                     <td colSpan="5" className="border border-gray-200 px-4 py-2 text-center">
-                      No users found.
+                      {t("admin:users.user.not_found")}
                     </td>
                   </tr>
                 )}
@@ -411,7 +411,7 @@ const UserManagement = () => {
       {/* Add User UserModal */}
       {isAddModalOpen && (
         <UserModal
-          title="Add User"
+          title= {t("admin:users.user.add")}
           onClose={() => setIsAddModalOpen(false)}
           onSubmit={handleAddUser}
           roles={roles}
@@ -423,7 +423,7 @@ const UserManagement = () => {
       {/* Update User UserModal */}
       {isUpdateModalOpen && selectedUser && (
         <UserModal
-          title="Update User"
+          title= {t("admin:users.user.bulk_update")}
           onClose={() => setIsUpdateModalOpen(false)}
           initialValues={selectedUser}
           roles={roles}
@@ -438,81 +438,24 @@ const UserManagement = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Are you sure you want to delete{" "}
+              {t("modal:delete.message1_user")}
               <span className="text-red-500">{selectedUser.name}</span>?
             </h3>
             <p className="text-gray-600 mb-6">
-              This action cannot be undone. Please confirm your decision.
+              {t("modal:delete.message2")}
             </p>
             <div className="flex justify-end gap-4">
               <button
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
-                Cancel
+                {t("common:button.cancel")}
               </button>
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                 onClick={handleDeleteUser}
               >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-
-
-
-      {/* Add User UserModal */}
-      {isAddModalOpen && (
-        <UserModal
-          title="Add User"
-          onClose={() => setIsAddModalOpen(false)}
-          onSubmit={handleAddUser}
-          roles={roles}
-          isEdit={false}
-          groups={groups}
-        />
-      )}
-
-      {/* Update User UserModal */}
-      {isUpdateModalOpen && selectedUser && (
-        <UserModal
-          title="Update User"
-          onClose={() => setIsUpdateModalOpen(false)}
-          initialValues={selectedUser}
-          roles={roles}
-          onSubmit={handleUpdateUser}
-          isEdit={true}
-          groups={groups}
-        />
-      )}
-
-      {/* Delete User UserModal */}
-      {isDeleteModalOpen && selectedUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Are you sure you want to delete{" "}
-              <span className="text-red-500">{selectedUser.name}</span>?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              This action cannot be undone. Please confirm your decision.
-            </p>
-            <div className="flex justify-end gap-4">
-              <button
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-                onClick={() => setIsDeleteModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                onClick={handleDeleteUser}
-              >
-                Confirm
+                {t("common:button.confirm")}
               </button>
             </div>
           </div>
