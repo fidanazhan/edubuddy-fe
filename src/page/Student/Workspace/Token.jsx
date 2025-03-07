@@ -108,7 +108,7 @@ const TokenWorkspace = () => {
 
             {isRequestModalOpen && userInfo && (
                 <RequestModal
-                    title="Request Token"
+                    title={t("token.request")}
                     type="token"
                     onClose={() => setIsRequestModalOpen(false)}
                     onSubmit={handleAddRequest}

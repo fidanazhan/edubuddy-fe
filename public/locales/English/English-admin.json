@@ -10,12 +10,19 @@
         "user": {
             "title": "User Management",
             "add": "Add User",
-            "search": "Search User"
+            "search": "Search User",
+            "bulk_add": "Create User",
+            "bulk_update": "Update User",
+            "bulk_remove": "Remove User",
+            "assign_group": "Assign User to Group",
+            "filter_check": "Filter User By Group",
+            "not_found": "No users found."
         },
         "group": {
             "title": "Group Management",
             "add": "Add Group",
-            "search": "Search Group"
+            "search": "Search Group",
+            "not_found": "No groups found."
         },
         "role": {
             "title": "Role Management"

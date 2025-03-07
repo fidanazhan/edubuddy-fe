@@ -1,0 +1,21 @@
+{
+    "group": {
+        "add_title": "Add Group",
+        "update_title": "Update Group",
+        "sucess_toast": "Sucess",
+        "error_toast": "Error"
+    },
+    "delete": {
+        "message1_group": "Are you sure you want to delete Group ",
+        "message1_user": "Are you sure you want to delete User ",
+        "message2": "This action cannot be undone. Please confirm your decision."
+    },
+    "group_user": {
+        "title": "User List",
+        "button_add": "Add User",
+        "not_found": "No users found"
+    },
+    "user_bulk": {
+        "download": "Download template"
+    }
+}

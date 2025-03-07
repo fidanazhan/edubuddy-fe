@@ -4,9 +4,14 @@
         "search": "Cari",
         "filter": "Tapis",
         "save": "Simpan",
-        "upload" : "Muat naik",
+        "upload": "Muat naik",
         "download": "Muat turun",
-        "bulk_process" : "Proses Pukal"
+        "bulk_process": "Proses Pukal",
+        "cancel": "Batal",
+        "confirm": "Pasti",
+        "prev": "Sebelum",
+        "next": "Seterusnya",
+        "close": "Tutup"
     },
     "table": {
         "name": "Nama",
@@ -14,9 +19,15 @@
         "group": "Kumpulan",
         "amount": "Jumlah",
         "date": "Tarikh",
-        "action" : "Tindakan",
-        "sender" : "Penghantar",
-        "receiver" : "Penerima",
-        "reason" : "Sebab"
-    }
+        "action": "Tindakan",
+        "sender": "Penghantar",
+        "receiver": "Penerima",
+        "reason": "Sebab",
+        "code": "Kod",
+        "description": "Deskripsi"
+    },
+    "optional": "Jika Mahu",
+    "active": "Aktif",
+    "not_active": "Tidak Aktif",
+    "drag": "Seret & lepas fail di sini, atau klik untuk memuat naik."
 }

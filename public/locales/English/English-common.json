@@ -6,7 +6,12 @@
         "save": "Save",
         "upload": "Upload",
         "download": "Download",
-        "bulk_process": "Bulk Process"
+        "bulk_process": "Bulk Process",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "prev": "Prev",
+        "next": "Next",
+        "close": "Close"
     },
     "table": {
         "name": "Name",
@@ -17,6 +22,12 @@
         "action": "Action",
         "sender": "Sender",
         "receiver": "Receiver",
-        "reason": "Reason"
-    }
+        "reason": "Reason",
+        "code": "Code",
+        "description": "Description"
+    },
+    "optional": "Optional",
+    "active": "Aktive",
+    "not_active": "Not Active",
+    "drag": "Drag & drop files here, or click to upload."
 }
