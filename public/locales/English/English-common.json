@@ -27,7 +27,7 @@
         "description": "Description"
     },
     "optional": "Optional",
-    "active": "Aktive",
+    "active": "Active",
     "not_active": "Not Active",
     "drag": "Drag & drop files here, or click to upload."
 }
