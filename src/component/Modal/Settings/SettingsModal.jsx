@@ -8,12 +8,12 @@ const Theme = lazy(() => import("./Theme"));
 const Language = lazy(() => import("./Language"));
 
 const SettingsModal = ({ isOpen, onClose }) => {
-    const [activeTab, setActiveTab] = useState("Theme");
+    const [activeTab, setActiveTab] = useState(1);
     const { t, ready } = useTranslation("settings");
 
     const settingsTabs = [
-        { name: t("settings.theme.tab"), icon: <MdOutlineWbSunny />, component: Theme },
-        { name: t("settings.language.tab"), icon: <FaGlobe />, component: Language },
+        { id: 1, name: t("settings.theme.tab"), icon: <MdOutlineWbSunny />, component: Theme },
+        { id: 2, name: t("settings.language.tab"), icon: <FaGlobe />, component: Language },
     ];
 
     if (!isOpen) return null; // Don't render if isOpen is false
@@ -42,12 +42,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     {settingsTabs.map((tab) => (
                         <button
                             key={tab.name}
-                            onClick={() => setActiveTab(tab.name)}
-                            className={`flex items-center px-4 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.name
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`flex items-center px-4 py-2 text-md font-medium transition-all duration-300 ${activeTab === tab.id
                                 ? "text-blue-600 border-l-4 border-blue-500 dark:text-blue-500"
                                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                                 }`}
-                            aria-current={activeTab === tab.name ? "page" : undefined}
+                            aria-current={activeTab === tab.id ? "page" : undefined}
                         >
                             {tab.icon}
                             <span className="ml-2">{tab.name}</span>
@@ -66,8 +66,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     >
                         {settingsTabs.map(
                             (tab) =>
-                                activeTab === tab.name && (
-                                    <div key={tab.name} className="text-gray-800 dark:text-gray-300">
+                                activeTab === tab.id && (
+                                    <div key={tab.id} className="text-gray-800 dark:text-gray-300">
                                         <tab.component />
                                     </div>
                                 )
