@@ -8,14 +8,14 @@ i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        lng: localStorage.getItem("language") || "en",
-        fallbackLng: "en",
-        supportedLngs: ["en", "malay"],
+        lng: localStorage.getItem("language") || "English",
+        fallbackLng: "English",
+        supportedLngs: ["English", "Malaysia"],
         debug: false,
         interpolation: {
             escapeValue: false,
         },
-        ns: ["dashboard", "workspace", "sidebar", "settings", "admin", "common"],
+        ns: ["dashboard", "workspace", "sidebar", "settings", "admin", "modal", "common"],
         defaultNS: "dashboard",
         backend: {
             loadPath: "/locales/{{lng}}/{{lng}}-{{ns}}.json",

@@ -3,6 +3,7 @@ import { useAuth } from '../../../context/JWTContext.jsx'
 import axios from 'axios';
 import { format } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
+import Toast from '../../Toast/Toast.jsx';
 
 // Pending
 import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
@@ -18,6 +19,7 @@ const StorageRequestScreen = () => {
     const [requests, setRequest] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedRequest, setSelectedRequest] = useState(null)
+    const [toast, setToast] = useState(null);
 
     const subdomain = window.location.hostname.split(".")[0];
     const requestPerPage = 10;
@@ -86,11 +88,12 @@ const StorageRequestScreen = () => {
             });
             setSelectedRequest(null);
             fetchRequest(currentPage);
+            showToast("Request approved successfully!", "bg-green-500", "success");
         } catch (error) {
             console.error("Error approving request:", error);
+            showToast("Request approval failed!", "bg-red-500", "error");
         }
     };
-
 
     const handleSubmitReject = async (request) => {
         console.log(request)
@@ -100,9 +103,16 @@ const StorageRequestScreen = () => {
             });
             setSelectedRequest(null);
             fetchRequest(currentPage);
+            showToast("Request rejected successfully!", "bg-green-500", "success");
         } catch (error) {
             console.error("Error rejecting request:", error);
+            showToast("Request rejection failed!", "bg-red-500", "error");
         }
+    };
+
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
     };
 
     if (!ready) return null;
@@ -225,6 +235,15 @@ const StorageRequestScreen = () => {
                         ))}
                     </div>
                 </div >
+            )}
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
             )}
 
         </div >

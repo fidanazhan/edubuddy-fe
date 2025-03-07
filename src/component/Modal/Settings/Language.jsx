@@ -1,17 +1,20 @@
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
+import Toast from '../../../component/Toast/Toast';
 
 const LanguageSettings = () => {
     const { i18n, t, ready } = useTranslation("settings");
-    const language = i18n.language; // ✅ Get current language
+    const language = i18n.language;
     const languages = i18n.options.supportedLngs.filter(lng => lng !== "cimode");
     const { user } = useAuth();
     const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem("language") || language);
+    const [toast, setToast] = useState(null);
 
-    const handleLanguageChange = (event) => {
-        putUserLang(event.target.value);
+    const handleLanguageChange = async (event) => {
+        const newLang = event.target.value;
+        await putUserLang(newLang);
     };
 
     const putUserLang = async (lang) => {
@@ -25,33 +28,57 @@ const LanguageSettings = () => {
                     "Content-Type": "application/json",
                 },
             });
-            if (response.data.user.language) {
-                localStorage.setItem("language", response.data.user.language);
-                i18n.changeLanguage(response.data.user.language);
-                setSelectedLanguage(response.data.user.language);
+
+            if (response.status === 201 || response.status === 200) {
+                showToast("Language changed successfully!", "bg-green-500", "success");
             }
+            setTimeout(async () => {
+                if (response.data.user.language) {
+                    localStorage.setItem("language", response.data.user.language);
+                    setSelectedLanguage(response.data.user.language);
+                    await i18n.changeLanguage(response.data.user.language);
+                }
+            }, 1000);
+
         } catch (error) {
-            console.error("Error posting theme:", error);
+            console.error("Error changing language:", error);
+            showToast("Language changed failed!", "bg-red-500", "error");
         }
+    };
+
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
     };
 
     if (!ready) return null;
 
     return (
-        <div>
+        <>
             <h2 className="text-lg font-bold mb-4">{t("settings.language.title")}</h2>
-            <select
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-                className="w-full p-2 border rounded-lg dark:text-black/80"
-            >
-                {languages.map((lng) => (
-                    <option key={lng} value={lng}>
-                        {lng}
-                    </option>
-                ))}
-            </select>
-        </div>
+            <div className="flex items-center gap-4 ">
+                <select
+                    value={selectedLanguage}
+                    onChange={handleLanguageChange}
+                    className="w-full p-2 border rounded-lg dark:text-black/80"
+                >
+                    {languages.map((lng) => (
+                        <option key={lng} value={lng}>
+                            {lng}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
+            )}
+        </>
     );
 };
 
