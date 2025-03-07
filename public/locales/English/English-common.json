@@ -7,7 +7,10 @@
         "upload": "Upload",
         "download": "Download",
         "bulk_process": "Bulk Process",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "prev": "Prev",
+        "next": "Next"
     },
     "table": {
         "name": "Name",

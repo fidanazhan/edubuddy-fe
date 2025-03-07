@@ -1,5 +1,23 @@
 {
-    "confirmation": {
-        "title": "Confirmation"
+    "group_m": {
+        "add_title": "Add Group",
+        "update_title": "Update Group",
+        "description": "Description",
+        "code": "Code",
+        "sucess_toast": "Sucess",
+        "error_toast": "Error"
+    },
+    "delete_group_m": {
+        "message1": "Are you sure you want to delete ",
+        "message2": "This action cannot be undone. Please confirm your decision."
+    },
+    "group_user": {
+        "title": "User List",
+        "button_add": "Add User",
+        "not_found": "No users found"
+    },
+    "user_bulk": {
+        "download": "Download template",
+        "drag": "Drag & drop files here, or click to upload."
     }
 }

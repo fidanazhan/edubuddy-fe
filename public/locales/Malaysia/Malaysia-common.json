@@ -7,7 +7,10 @@
         "upload": "Muat naik",
         "download": "Muat turun",
         "bulk_process": "Proses Pukal",
-        "cancel": "Batal"
+        "cancel": "Batal",
+        "confirm": "Pasti",
+        "prev": "Sebelum",
+        "next": "Seterusnya"
     },
     "table": {
         "name": "Nama",

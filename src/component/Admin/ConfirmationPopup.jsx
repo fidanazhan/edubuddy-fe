@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const ConfirmationPopup = ({ message, onConfirm, onCancel }) => {
-  const { t } = useTranslation("modal");
+  const { t } = useTranslation("common");
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -13,13 +13,13 @@ const ConfirmationPopup = ({ message, onConfirm, onCancel }) => {
             onClick={onCancel}
             className="px-4 py-2 bg-gray-300 text-black rounded-lg"
           >
-            Cancel
+            {t("button.cancel")}
           </button>
           <button
             onClick={onConfirm}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
           >
-            Confirm
+            {t("button.confirm")}
           </button>
         </div>
       </div>
