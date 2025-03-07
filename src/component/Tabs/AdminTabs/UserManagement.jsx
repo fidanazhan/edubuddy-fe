@@ -241,28 +241,28 @@ const UserManagement = () => {
             {isOpen && (
               <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10">
                 <button
-                  onClick={() => triggerModal("Bulk Add")}
+                  onClick={() => triggerModal(t("admin:users.user.bulk_add"))}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaPlus className="mr-2 text-teal-600" />
                   <span className="text-sm">{t("admin:users.user.bulk_add")}</span>
                 </button>
                 <button
-                  onClick={() => triggerModal("Bulk Update")}
+                  onClick={() => triggerModal(t("admin:users.user.bulk_update"))}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaEdit className="mr-2 text-blue-600" />
                   <span className="text-sm">{t("admin:users.user.bulk_update")}</span>
                 </button>
                 <button
-                  onClick={() => triggerModal("Bulk Remove")}
+                  onClick={() => triggerModal(t("admin:users.user.bulk_remove"))}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <FaTrash className="mr-2 text-red-600" />
                   <span className="text-sm">{t("admin:users.user.bulk_remove")}</span>
                 </button>
                 <button
-                  onClick={() => triggerModal("Bulk Remove")}
+                  onClick={() => triggerModal(t("admin:users.user.assign_group"))}
                   className="w-full text-left px-4 py-2 hover:bg-gray-200 flex items-center"
                 >
                   <MdGroups2 className="mr-2 text-teal-600 h-5 w-5" />
@@ -411,7 +411,7 @@ const UserManagement = () => {
       {/* Add User UserModal */}
       {isAddModalOpen && (
         <UserModal
-          title= {t("admin:users.user.add")}
+          title={t("admin:users.user.add")}
           onClose={() => setIsAddModalOpen(false)}
           onSubmit={handleAddUser}
           roles={roles}
@@ -423,7 +423,7 @@ const UserManagement = () => {
       {/* Update User UserModal */}
       {isUpdateModalOpen && selectedUser && (
         <UserModal
-          title= {t("admin:users.user.bulk_update")}
+          title={t("admin:users.user.bulk_update")}
           onClose={() => setIsUpdateModalOpen(false)}
           initialValues={selectedUser}
           roles={roles}

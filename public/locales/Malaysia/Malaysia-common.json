@@ -10,7 +10,8 @@
         "cancel": "Batal",
         "confirm": "Pasti",
         "prev": "Sebelum",
-        "next": "Seterusnya"
+        "next": "Seterusnya",
+        "close": "Tutup"
     },
     "table": {
         "name": "Nama",
@@ -27,5 +28,6 @@
     },
     "optional": "Jika Mahu",
     "active": "Aktif",
-    "not_active": "Tidak Aktif"
+    "not_active": "Tidak Aktif",
+    "drag": "Seret & lepas fail di sini, atau klik untuk memuat naik."
 }

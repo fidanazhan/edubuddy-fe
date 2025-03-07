@@ -10,7 +10,8 @@
         "cancel": "Cancel",
         "confirm": "Confirm",
         "prev": "Prev",
-        "next": "Next"
+        "next": "Next",
+        "close": "Close"
     },
     "table": {
         "name": "Name",
@@ -27,5 +28,6 @@
     },
     "optional": "Optional",
     "active": "Aktive",
-    "not_active": "Not Active"
+    "not_active": "Not Active",
+    "drag": "Drag & drop files here, or click to upload."
 }

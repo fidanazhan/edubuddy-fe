@@ -16,7 +16,6 @@
         "not_found": "Tiada pengguna ditemui"
     },
     "user_bulk": {
-        "download": "Muat turun template",
-        "drag": "Seret & lepas fail di sini, atau klik untuk memuat naik."
+        "download": "Muat turun template"
     }
 }

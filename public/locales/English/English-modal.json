@@ -16,7 +16,6 @@
         "not_found": "No users found"
     },
     "user_bulk": {
-        "download": "Download template",
-        "drag": "Drag & drop files here, or click to upload."
+        "download": "Download template"
     }
 }
