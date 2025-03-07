@@ -21,7 +21,8 @@
         "group": {
             "title": "Pengurusan Kumpulan",
             "add": "Tambah Kumpulan",
-            "search": "Cari Kumpulan..."
+            "search": "Cari Kumpulan...",
+            "not_found": "Tiada Kumpulan ditemui."
         },
         "role": {
             "title": "Pengurusan Peranan"

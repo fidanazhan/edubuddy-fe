@@ -2,8 +2,6 @@
     "group": {
         "add_title": "Add Group",
         "update_title": "Update Group",
-        "description": "Description",
-        "code": "Code",
         "sucess_toast": "Sucess",
         "error_toast": "Error"
     },

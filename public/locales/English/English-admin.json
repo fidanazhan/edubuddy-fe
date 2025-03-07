@@ -21,7 +21,8 @@
         "group": {
             "title": "Group Management",
             "add": "Add Group",
-            "search": "Search Group"
+            "search": "Search Group",
+            "not_found": "No groups found."
         },
         "role": {
             "title": "Role Management"

@@ -21,7 +21,11 @@
         "action": "Action",
         "sender": "Sender",
         "receiver": "Receiver",
-        "reason": "Reason"
+        "reason": "Reason",
+        "code": "Code",
+        "description": "Description"
     },
-    "optional": "Optional"
+    "optional": "Optional",
+    "active": "Aktive",
+    "not_active": "Not Active"
 }

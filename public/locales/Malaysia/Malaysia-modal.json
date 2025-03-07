@@ -2,8 +2,6 @@
     "group": {
         "add_title": "Tambah Kumpulan",
         "update_title": "Kemas kini Kumpulan",
-        "description": "Deskripsi",
-        "code": "kod",
         "sucess_toast": "Berjaya",
         "error_toast": "Gagal"
     },
