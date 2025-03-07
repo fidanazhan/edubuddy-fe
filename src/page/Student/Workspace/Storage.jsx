@@ -108,7 +108,7 @@ const StorageWorkspace = () => {
 
             {isRequestModalOpen && userInfo && (
                 <RequestModal
-                    title="Request Storage"
+                    title={t("storage.request")}
                     type="storage"
                     onClose={() => setIsRequestModalOpen(false)}
                     onSubmit={handleAddRequest}

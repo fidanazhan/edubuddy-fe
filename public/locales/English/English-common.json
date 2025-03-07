@@ -6,7 +6,8 @@
         "save": "Save",
         "upload": "Upload",
         "download": "Download",
-        "bulk_process": "Bulk Process"
+        "bulk_process": "Bulk Process",
+        "cancel": "Cancel"
     },
     "table": {
         "name": "Name",
@@ -18,5 +19,6 @@
         "sender": "Sender",
         "receiver": "Receiver",
         "reason": "Reason"
-    }
+    },
+    "optional": "Optional"
 }

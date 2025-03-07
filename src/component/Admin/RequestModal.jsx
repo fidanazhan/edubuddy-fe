@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 import Toast from "../Toast/Toast";
+import { useTranslation } from "react-i18next";
 
 const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain }) => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
     const [errors, setErrors] = useState({}); // Store validation errors
     const [toast, setToast] = useState(null);
+    const { t } = useTranslation(["modal", "common"])
 
     useEffect(() => {
         if (initialValues) {
@@ -85,7 +87,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                 <form onSubmit={handleSubmit}>
                     {/* Name Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Name</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.name")}</label>
                         {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                         <input
                             type="text"
@@ -99,7 +101,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
                     {/* Amount Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Amount</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.amount")}</label>
                         <input
                             type="number"
                             name="amount"
@@ -113,7 +115,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
                     {/* Reason Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Reason<span className="ml-2 text-gray-500 text-sm">(Optional)</span></label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.reason")}<span className="ml-2 text-gray-500 text-sm">({t("common:optional")})</span></label>
                         <input
                             type="text"
                             name="reason"
@@ -133,13 +135,13 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                             className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
                             onClick={onClose}
                         >
-                            Cancel
+                            {t("common:button.cancel")}
                         </button>
                         <button
                             type="submit"
                             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                         >
-                            Submit
+                            {t("common:button.submit")}
                         </button>
                     </div>
                 </form>

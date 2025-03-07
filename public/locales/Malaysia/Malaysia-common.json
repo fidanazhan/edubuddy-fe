@@ -4,9 +4,10 @@
         "search": "Cari",
         "filter": "Tapis",
         "save": "Simpan",
-        "upload" : "Muat naik",
+        "upload": "Muat naik",
         "download": "Muat turun",
-        "bulk_process" : "Proses Pukal"
+        "bulk_process": "Proses Pukal",
+        "cancel": "Batal"
     },
     "table": {
         "name": "Nama",
@@ -14,9 +15,10 @@
         "group": "Kumpulan",
         "amount": "Jumlah",
         "date": "Tarikh",
-        "action" : "Tindakan",
-        "sender" : "Penghantar",
-        "receiver" : "Penerima",
-        "reason" : "Sebab"
-    }
+        "action": "Tindakan",
+        "sender": "Penghantar",
+        "receiver": "Penerima",
+        "reason": "Sebab"
+    },
+    "optional": "Jika Mahu"
 }
