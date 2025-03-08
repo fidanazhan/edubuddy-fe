@@ -22,21 +22,20 @@ const LoginPage = () => {
     const subdomain = hostname.split('.')[0];
     const fetchTenantExist = async (subdomain) => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tenant/exist/?subdomain=${subdomain}`, {
+        const response = await axios.get(`http://localhost:5000/api/tenant/exist/`, {
           headers: { "x-tenant": subdomain },
         });
-        if (response.status === 200 && response.data.tenant) {
+        console.log(response.data)
+        const config = response.data
+        if (response.status === 200 && response.data) {
           console.log(`Subdomain ${subdomain} exists!`);
-          setLogin(response.data.config?.img?.loginLogoUrl || null);
-          setBanner(response.data.config?.img?.bannerUrl || null);
-        } else {
-          console.log(`Subdomain ${subdomain} did not exist!`);
-          navigate("/forbidden", { replace: true }); // Redirect using useNavigate
+          setLogin(config.img?.loginLogoUrl || null);
+          setBanner(config.img?.bannerUrl || null);
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           console.log(`Subdomain ${subdomain} did not exist!`);
-          navigate("/forbidden", { replace: true }); // Redirect on 404
+          navigate("/notfound", { replace: true }); // Redirect on 404
         } else {
           console.error("Error fetching tenant:", error);
         }
