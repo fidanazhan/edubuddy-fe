@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import ReactMarkdown from "react-markdown"; 
+import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
+import Markdown from "./Output";
+import ChatResponse from "../../component/ChatResponse";
 
 const Chat = () => {
   const { id } = useParams();
@@ -22,46 +24,51 @@ const Chat = () => {
   useEffect(() => {
     console.log("Updated messages:", messages);
   }, [messages]);
-  
+
 
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
-    const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
-      method: "GET",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data)
-      // Transform API response into the expected format and ensure line breaks
-      const formattedMessages = await Promise.all(data.history.map((item) => ({
-        role: item.role, // "user" or "assistant"
-        content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
-      })));
+    if (location.state?.isNew) {
+      console.log("Sending first question")
+      fetchCalled.current = true; // ✅ Prevent duplicate call
+      setIsFirstMessageInSession(true);
+      sendMessage(location.state.firstMessage);
+      window.history.replaceState({}, document.title);
+    }
+    else {
+      const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
 
-      // Replace \n with Markdown-style line breaks (two spaces and then a newline)
-      const formattedWithLineBreaks = await Promise.all(formattedMessages.map((msg) => ({
-        ...msg,
-        content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
-      })));
-      console.log(formattedWithLineBreaks)
-      setMessages(formattedWithLineBreaks);
-      
-      // Check if it's a new session by detecting if it was redirected from the dashboard
-      if (location.state?.isNew) {
-        console.log("Sending first question")
-        fetchCalled.current = true; // ✅ Prevent duplicate call
-        setIsFirstMessageInSession(true);
-        sendMessage(location.state.firstMessage);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        // Transform API response into the expected format and ensure line breaks
+        const formattedMessages = await Promise.all(data.history.map((item) => ({
+          role: item.role, // "user" or "assistant"
+          content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
+        })));
+
+        // Replace \n with Markdown-style line breaks (two spaces and then a newline)
+        const formattedWithLineBreaks = await Promise.all(formattedMessages.map((msg) => ({
+          ...msg,
+          content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
+        })));
+        console.log(formattedWithLineBreaks)
+        setMessages(formattedWithLineBreaks);
+
+        // Check if it's a new session by detecting if it was redirected from the dashboard
+
       }
     }
   };
 
-  
+
 
   // 2️⃣ Send User Message (PUT)
   const sendMessage = async (message) => {
@@ -70,7 +77,7 @@ const Chat = () => {
 
     const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
       method: "PUT",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
@@ -101,7 +108,7 @@ const Chat = () => {
 
     setIsFirstMessageInSession(false); // Mark session as active
   };
-  
+
 
   return (
     <div className="flex flex-col mx-auto h-[calc(100vh-100px)] overflow-hidden">
@@ -111,16 +118,17 @@ const Chat = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} mb-3`}
             >
               <div
-                className={`p-3 rounded-lg ${
-                  msg.role === "user"
-                    ? "bg-gray-200 text-black w-4/5"
-                    : "bg-white text-gray-900 w-full"
-                } max-w-xl`}
+                className={`p-3 rounded-lg ${msg.role === "user"
+                  ? "bg-gray-200 text-black w-4/5"
+                  : "bg-white text-gray-900 w-full"
+                  } max-w-xl`}
               >
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown>
+                {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
+                <Markdown>{msg.content}</Markdown>
+                <ChatResponse answer={msg.content} />
               </div>
             </div>
           ))}
@@ -150,8 +158,8 @@ const Chat = () => {
       </form>
     </div>
   );
-  
-  
+
+
 }
 
 export default Chat;

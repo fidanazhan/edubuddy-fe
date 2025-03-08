@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
@@ -13,6 +13,9 @@ const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
   const { t, ready } = useTranslation("sidebar");
+  const [chats, setChats] = useState([]);
+  const subdomain = window.location.hostname.split(".")[0];
+  const token = localStorage.getItem("accessToken");
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
   //   queryFn: () =>
@@ -22,6 +25,25 @@ const Sidebar = ({ passIsOpen }) => {
   //       },
   //     }).then((res) => res.json()),
   // });
+
+  useEffect(() => {
+    fetchChats()
+  }, []);
+
+  const fetchChats = async () => {
+    const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-tenant": subdomain,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json()
+      setChats(data)
+    }
+  }
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -118,18 +140,12 @@ const Sidebar = ({ passIsOpen }) => {
             className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
             <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">{t("recent")}</div>
-            {/* <div className="list">
-              {isPending
-                ? "Loading..."
-                : error
-                  ? "Something went wrong!"
-                  : data?.map((chat) => (
-                    <Link to={`/chats/${chat._id}`} key={chat._id} className="py-2 px-4 text-sm flex items-center gap-2 text-gray-600 font-semibold">
-                      <CiChat1 className="text-gray-500 mr-1 text-md" strokeWidth={1} />
-                      {capitalizeAndTruncate(chat.title)}
-                    </Link>
-                  ))}
-            </div> */}
+            {chats?.map((chat) => (
+              <Link to={`/chats/${chat._id}`} key={chat._id} className="py-2 px-4 text-sm flex items-center gap-2 text-gray-600 font-semibold dark:text-gray-300/80">
+                <CiChat1 className="text-gray-500 mr-1 text-md " strokeWidth={1} />
+                {capitalizeAndTruncate(chat.title)}
+              </Link>
+            ))}
           </div>
         </ul>
 
