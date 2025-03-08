@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import ReactMarkdown from "react-markdown"; 
+import rehypeRaw from 'rehype-raw';
 
 const Chat = () => {
   const { id } = useParams();
@@ -29,25 +31,28 @@ const Chat = () => {
     if (response.ok) {
       const data = await response.json();
 
-      // Transform API response into the expected format
+      // Transform API response into the expected format and ensure line breaks
       const formattedMessages = data.history.map((item) => ({
         role: item.role, // "user" or "assistant"
         content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
       }));
 
-      setMessages(formattedMessages);
+      // Replace \n with Markdown-style line breaks (two spaces and then a newline)
+      const formattedWithLineBreaks = formattedMessages.map((msg) => ({
+        ...msg,
+        content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
+      }));
 
-      console.log("Location State: " + JSON.stringify(location.state))
+      setMessages(formattedWithLineBreaks);
 
-      // ✅ Check if it's a new session by detecting if it was redirected from the dashboard
+      // Check if it's a new session by detecting if it was redirected from the dashboard
       if (location.state?.isNew) {
-        console.log("Masuk sini")
         setIsFirstMessageInSession(true);
         sendMessage(location.state.firstMessage);
       }
     }
   };
-  
+
   
 
   // 2️⃣ Send User Message (PUT)
@@ -88,42 +93,54 @@ const Chat = () => {
   
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
-      {/* Header */}
-      <div className="bg-blue-600 text-white p-4 text-center text-lg font-semibold">
-        Chat {id}
-      </div>
-
+    <div className="flex flex-col mx-auto h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg, index) => (
-          <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+      <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "80vh" }}>
+        <div className="flex-1 mx-auto space-y-4 ">
+          {messages.map((msg, index) => (
             <div
-              className={`p-3 max-w-xs rounded-lg ${
-                msg.role === "user" ? "bg-blue-500 text-white" : "bg-white text-gray-900 border"
-              }`}
+              key={index}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
-              {msg.content}
+              <div
+                className={`p-3 rounded-lg ${
+                  msg.role === "user"
+                    ? "bg-gray-200 text-black w-4/5"
+                    : "bg-white text-gray-900 w-full"
+                } max-w-xl`}
+              >
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
 
       {/* Input Box */}
-      <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="p-4 border-t bg-white flex">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage();
+        }}
+        className="p-4 border-t bg-white flex items-center"
+        style={{ height: "20vh" }}
+      >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+        <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white hover:bg-blue-600">
           Send
         </button>
       </form>
     </div>
   );
-};
+  
+  
+}
 
 export default Chat;
