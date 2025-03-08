@@ -118,7 +118,7 @@ const Chat = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} mb-3`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
@@ -128,7 +128,7 @@ const Chat = () => {
               >
                 {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
                 <Markdown>{msg.content}</Markdown>
-                <ChatResponse answer={msg.content} />
+                {/* <ChatResponse answer={msg.content} /> */}
               </div>
             </div>
           ))}
