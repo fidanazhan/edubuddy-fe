@@ -21,10 +21,10 @@ const NotFoundPage = () => {
                     <CircleSlash2 className="w-16 h-16 text-red-500 mx-auto" />
                 </motion.div>
                 <h1 className="text-3xl font-semibold text-red-600 mt-4">
-                    University Not Found
+                    Tenant Not Found
                 </h1>
                 <p className="text-gray-600 mt-2">
-                    The university <b>{subdomain}</b> you searching for does not exist in our system.
+                    The tenant <b>{subdomain}</b> you searching for does not exist in our system.
                 </p>
                 <p className="mt-2">
                     Please check the link carefully for spelling error.
