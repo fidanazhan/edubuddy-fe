@@ -15,11 +15,11 @@ const Chat = () => {
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (id && !fetchCalled.current) {
-      fetchCalled.current = true; // ✅ Ensures it only runs once
+    if (id) {
       fetchChatHistory();
     }
   }, [id]);
+
 
   useEffect(() => {
     console.log("Updated messages:", messages);
@@ -29,7 +29,7 @@ const Chat = () => {
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
 
-    if (location.state?.isNew) {
+    if (location.state?.isNew && !fetchCalled.current) {
       console.log("Sending first question")
       fetchCalled.current = true; // ✅ Prevent duplicate call
       setIsFirstMessageInSession(true);
@@ -113,7 +113,7 @@ const Chat = () => {
   return (
     <div className="flex flex-col mx-auto h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
-      <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "80vh" }}>
+      <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
         <div className="flex-1 mx-auto space-y-4 ">
           {messages.map((msg, index) => (
             <div
@@ -122,9 +122,9 @@ const Chat = () => {
             >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "bg-gray-200 text-black w-4/5"
-                  : "bg-white text-gray-900 w-full"
-                  } max-w-xl`}
+                  ? "bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
+                  : "bg-white dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
+                  } max-w-xl `}
               >
                 {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
                 {/* <Markdown>{msg.content}</Markdown> */}
@@ -142,15 +142,15 @@ const Chat = () => {
           e.preventDefault();
           sendMessage();
         }}
-        className="p-4 border-t bg-white flex items-center"
-        style={{ height: "20vh" }}
+        className="p-4 border-t bg-white flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
+        style={{ height: "15vh" }}
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80 rounded-lg"
         />
         <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white hover:bg-blue-600">
           Send

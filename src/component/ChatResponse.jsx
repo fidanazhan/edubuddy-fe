@@ -108,6 +108,7 @@ const ChatResponse = ({ answer }) => {
           }],
         ]}
         components={components}
+        className="font-arial sm:text-sm md:text-md lg:text-lg"
       >
         {answer}
       </ReactMarkdown>

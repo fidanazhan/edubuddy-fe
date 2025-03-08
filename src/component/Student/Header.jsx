@@ -36,7 +36,7 @@ const Header = () => {
   if (!ready) return null;
 
   return (
-    <div className="flex items-center justify-end bg-gray-50 p-4 dark:bg-gray-800 dark:text-white">
+    <div className="flex items-center justify-end bg-gray-50 p-4 dark:bg-gray-800 dark:text-gray-300/80">
       <div className="relative inline-block text-left" ref={dropdownRef}>
         <button
           onClick={toggleDropdown}
