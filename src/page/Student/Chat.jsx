@@ -127,8 +127,8 @@ const Chat = () => {
                   } max-w-xl`}
               >
                 {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
-                <Markdown>{msg.content}</Markdown>
-                {/* <ChatResponse answer={msg.content} /> */}
+                {/* <Markdown>{msg.content}</Markdown> */}
+                <ChatResponse answer={msg.content} />
               </div>
             </div>
           ))}
