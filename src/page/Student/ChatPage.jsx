@@ -30,33 +30,34 @@ const ChatPage = ({ isPending, error, data }) => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: () => {
-            return fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}?userId=user_2rzHVJFMuvGHRd07bO8oT0FzX4o`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((res) => res.json());
-        },
-        onSuccess: () => {
-            console.log("GET request succeeded");
-            queryClient
-                .invalidateQueries({ queryKey: ["chat", data._id] })
-                .then(() => {
-                    formRef.current.reset();
-                    setAnswer("");
-                    setQuestion("");
-                    setImg({
-                        isLoading: false,
-                        error: "",
-                        dbData: {},
-                        aiData: {},
-                    });
-                });
-        },
-        onError: (err) => {
-            console.log(err);
-        },
+      mutationFn: async (text) => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chats/generate-stream`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user?.id, // Ensure user is available
+            prompt: text,
+          }),
+        });
+    
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to create chat");
+        }
+        return data.id; // Ensure ID is returned
+      },
+      onSuccess: (id) => {
+        if (id) {
+          queryClient.invalidateQueries({ queryKey: ["userChats"] });
+          navigate(`/chats/${id}`);
+        } else {
+          console.error("Chat ID is missing, cannot navigate.");
+        }
+      },
     });
+    
 
     const add = async (text, isInitial) => {
         if (!isInitial) setQuestion(text);

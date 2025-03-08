@@ -1,108 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { useOutletContext, useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import PromptInput from '../../component/Prompts';
-import shuffle from 'lodash/shuffle';
-import { useAuth } from '../../context/JWTContext';
-import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
-import { useTranslation } from "react-i18next";
-
-const suggestions = [
-  { name: "Help me study.", content: "vocabulary for a college entrance exam" },
-  { name: "Show me a code snippet", content: "of a website's sticky header" },
-  { name: "Give me ideas", content: "for what to do this evening" },
-  { name: "Give me recipe", content: "for dinner" },
-  { name: "Explain to me", content: "the proper way to present my project" },
-  { name: "Teach me", content: "the moral conduct of using AI" },
-];
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
+  const [text, setText] = useState("");
   const navigate = useNavigate();
 
-  const [inputValue, setInputValue] = useState(""); // Store user input or suggestion text
-
-  const randomSuggestion = shuffle(suggestions).slice(0, 3);
-  const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
-  const { i18n, t, ready, language } = useTranslation("dashboard");
 
-
-  const mutation = useMutation({
-    mutationFn: (text) => {
-      return fetch(`${import.meta.env.VITE_API_URL}/api/chats`, {
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter" && text.trim() !== "") {
+      const response = await fetch("http://localhost:5000/api/chats", {
         method: "POST",
-        headers: {
+        headers: { 
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          userId: "user_2rzHVJFMuvGHRd07bO8oT0FzX4o" || undefined,
-          text
-        }),
-      }).then((res) => res.json());
-    },
-    onSuccess: (id) => {
-      queryClient.invalidateQueries({ queryKey: ["userChats"] });
-      navigate(`/chats/${id}`);
-    },
-  });
-
-  const handleSubmit = (e, message) => {
-    e.preventDefault();
-    if (!message.trim()) return;
-    mutation.mutate(message);
+        body: JSON.stringify({ text }),
+      });
+  
+      const { chatId } = await response.json();
+      if (chatId) {
+        navigate(`/chats/${chatId}`, { state: { isNew: true } }); // ✅ Pass flag
+      }
+    }
   };
-
-  const handleSuggestionClick = (content) => {
-    setInputValue(content); // Update input field with selected suggestion
-  };
-
-  if (!ready) return null;
 
   return (
-    <div className="flex flex-col h-[50vh] items-center">
-      <div className="flex-1"></div>
-
-      <div className="flex justify-center mt-10">
-        <h1 className='font-bold text-4xl gradient-text'>Hello, {user?.name.split(" ")[0]}</h1>
+    <div className="flex h-screen items-center justify-center">
+      <div className="w-full max-w-xl">
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Ask something..."
+          className="w-full p-4 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autoFocus
+        />
       </div>
-
-      <div className="flex justify-center mt-10">
-        <h1 className='font-bold text-lg'>{t("message1")}</h1>
-      </div>
-
-      <div className="flex justify-center">
-        <PromptInput onSubmit={handleSubmit} value={inputValue} onChange={setInputValue} />
-      </div>
-{/* 
-      <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
-        This text changes color based on the theme.
-      </div> */}
-
-      <div className="bg-white text-black dark:bg-gray-900 dark:text-white p-4 mt-4">
-        {t("test", { lang: i18n.language })}
-      </div>
-
-      {/* Centering the suggestion list */}
-      {/* <div className="flex justify-center items-center mt-10 w-full">
-        <ul className="w-full max-w-md text-center">
-          <div className="font-bold text-md mb-3">Suggested</div>
-          {randomSuggestion.map((suggestion, index) => (
-            <li 
-              key={index} 
-              className="mb-4 p-2 border rounded-lg shadow-sm cursor-pointer hover:bg-gray-100"
-              onClick={() => handleSuggestionClick(suggestion.content)}
-            >
-              <h3 className="font-semibold">{suggestion.name}</h3>
-              <p className="text-gray-600">{suggestion.content}</p>
-            </li>
-          ))}
-        </ul>
-      </div> */}
     </div>
   );
-}
+};
 
 export default Dashboard;
