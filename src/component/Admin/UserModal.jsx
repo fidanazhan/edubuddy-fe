@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import { useTranslation } from "react-i18next";
 
 const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
 
   const [errors, setErrors] = useState({}); // Store validation errors
   const token = localStorage.getItem("accessToken");
+  const { t, ready } = useTranslation(["common", "modal"]);
 
   useEffect(() => {
     if (initialValues) {
@@ -72,9 +74,9 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
       try {
 
         const tenantHost = window.location.hostname.split(".")[0];
-        const headers = { 
-          'Content-Type': 'application/json', 
-          'x-tenant': tenantHost, 
+        const headers = {
+          'Content-Type': 'application/json',
+          'x-tenant': tenantHost,
           "Authorization": `Bearer ${token}`,
         };
 
@@ -104,7 +106,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.name")}</label>
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             <input
               type="text"
@@ -141,14 +143,14 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               onChange={(e) => handleInputChange("status", e.target.value)}
               className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 cursor-pointer"
             >
-              <option value="1">Active</option>
-              <option value="0">Not Active</option>
+              <option value="1">{t("common:active")}</option>
+              <option value="0">{t("common:not_active")}</option>
             </select>
           </div>
 
           {/* Role Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Role</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.role")}</label>
             {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
             <Select
               options={roles.map((role) => ({ value: role.code, label: role.name }))}
@@ -162,7 +164,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
 
           {/* Group Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Group</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.group")}</label>
             {errors.groups && <p className="text-red-500 text-sm">{errors.groups}</p>}
             <Select
               isMulti
@@ -182,13 +184,13 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
               onClick={onClose}
             >
-              Cancel
+              {t("common:button.cancel")}
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
-              Submit
+              {t("common:button.submit")}
             </button>
           </div>
         </form>

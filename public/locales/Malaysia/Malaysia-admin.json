@@ -10,12 +10,19 @@
         "user": {
             "title": "Pengurusan Pengguna",
             "add": "Tambah Pengguna",
-            "search": "Cari Pengguna..."
+            "search": "Cari Pengguna...",
+            "bulk_add": "Tambah Pengguna",
+            "bulk_update": "Kemas kini Pengguna",
+            "bulk_remove": "Keluarkan Pengguna",
+            "assign_group": "Masukkan Pengguna ke dalam kumpulan",
+            "filter_check": "Tapis Pengguna mengikut kumpulan",
+            "not_found": "Tiada Pengguna ditemui."
         },
         "group": {
             "title": "Pengurusan Kumpulan",
             "add": "Tambah Kumpulan",
-            "search": "Cari Kumpulan..."
+            "search": "Cari Kumpulan...",
+            "not_found": "Tiada Kumpulan ditemui."
         },
         "role": {
             "title": "Pengurusan Peranan"

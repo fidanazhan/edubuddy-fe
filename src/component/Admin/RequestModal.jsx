@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import Toast from "../Toast/Toast";
+import { useTranslation } from "react-i18next";
 
 const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain }) => {
     const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
     });
 
     const [errors, setErrors] = useState({}); // Store validation errors
+    const [toast, setToast] = useState(null);
+    const { t } = useTranslation(["modal", "common"])
 
     useEffect(() => {
         if (initialValues) {
@@ -23,12 +27,10 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
     }, [initialValues]);
 
-
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: "" });
     };
-
 
     const validateForm = () => {
         let newErrors = {};
@@ -43,40 +45,40 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
         return Object.keys(newErrors).length === 0; // Return true if no errors
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) {
             console.log("Form is invalid: do not submit");
             return
         };
         if (validateForm()) {
-
             const payload = {
                 ...formData,
             };
-
             try {
                 const headers = {
                     'Content-Type': 'application/json',
                     'x-tenant': subdomain,
                 };
-
                 const response = await axios.post(`http://localhost:5000/api/request/${type}`, payload, { headers });
-
-
                 if (response.status === 201 || response.status === 200) {
-                    onSubmit();
-                    onClose();
+                    showToast("Request sent successfully!", "bg-green-500", "success");
+                    setTimeout(() => {
+                        onSubmit();
+                        onClose();
+                    }, 2000);
                 }
-
             } catch (error) {
                 console.error('Error:', error);
+                showToast("Request failed to be sent!", "bg-red-500", "error");
             }
         }
     };
 
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -85,7 +87,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                 <form onSubmit={handleSubmit}>
                     {/* Name Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Name</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.name")}</label>
                         {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                         <input
                             type="text"
@@ -99,7 +101,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
                     {/* Amount Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Amount</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.amount")}</label>
                         <input
                             type="number"
                             name="amount"
@@ -113,7 +115,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
 
                     {/* Reason Field */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1 text-gray-900">Reason<span className="ml-2 text-gray-500 text-sm">(Optional)</span></label>
+                        <label className="block text-sm font-medium mb-1 text-gray-900">{t("common:table.reason")}<span className="ml-2 text-gray-500 text-sm">({t("common:optional")})</span></label>
                         <input
                             type="text"
                             name="reason"
@@ -133,17 +135,25 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                             className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
                             onClick={onClose}
                         >
-                            Cancel
+                            {t("common:button.cancel")}
                         </button>
                         <button
                             type="submit"
                             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                         >
-                            Submit
+                            {t("common:button.submit")}
                         </button>
                     </div>
                 </form>
             </div>
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     );
 };

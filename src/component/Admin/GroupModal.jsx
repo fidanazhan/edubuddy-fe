@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import { useTranslation } from "react-i18next";
 
-const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
+const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -11,6 +12,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
 
   const [errors, setErrors] = useState({}); // Store validation errors
   const token = localStorage.getItem("accessToken");
+  const { t, ready } = useTranslation(["common", "modal"]);
 
   useEffect(() => {
     if (initialValues) {
@@ -22,13 +24,11 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
     }
 
   }, [initialValues]);
-  
 
   const handleInputChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
-
 
   const validateForm = () => {
     let newErrors = {};
@@ -55,10 +55,10 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
       };
 
       try {
-        
+
         const tenantHost = window.location.hostname.split(".")[0];
-        const headers = { 
-          'Content-Type': 'application/json', 
+        const headers = {
+          'Content-Type': 'application/json',
           'x-tenant': tenantHost,
           "Authorization": `Bearer ${token}`,
         };
@@ -74,13 +74,13 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
           onSubmit();
           onClose();
         }
-  
+
       } catch (error) {
         console.error('Error:', error);
       }
     }
   };
-  
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -89,7 +89,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.name")}</label>
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             <input
               type="text"
@@ -103,7 +103,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
 
           {/* Description Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.description")}</label>
             {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             <textarea
               type="text"
@@ -117,7 +117,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
 
           {/* Code Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Code</label>
+            <label className="block text-sm font-medium mb-1">{t("common:table.code")}</label>
             {errors.code && <p className="text-red-500 text-sm">{errors.code}</p>}
             <input
               type="text"
@@ -136,13 +136,13 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit}) => {
               className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
               onClick={onClose}
             >
-              Cancel
+              {t("common:button.cancel")}
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
-              Submit
+              {t("common:button.submit")}
             </button>
           </div>
         </form>

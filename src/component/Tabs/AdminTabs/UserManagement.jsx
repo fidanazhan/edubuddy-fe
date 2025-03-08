@@ -25,7 +25,7 @@ const UserManagement = () => {
   const [modalType, setModalType] = useState(null);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
   const [filterByGroup, setFilterByGroup] = useState(false);
-  const { t, ready } = useTranslation(["admin", "common"]);
+  const { t, ready } = useTranslation(["admin", "common", "modal"]);
 
   const usersPerPage = 5;
   const subdomain = window.location.hostname.split(".")[0];
@@ -46,13 +46,13 @@ const UserManagement = () => {
       setTimeout(async () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/user`, {
-            params: { 
-              page, 
-              limit, 
-              search: searchTerm || undefined, 
-              filterByGroup: filterByGroup ? "true" : undefined 
+            params: {
+              page,
+              limit,
+              search: searchTerm || undefined,
+              filterByGroup: filterByGroup ? "true" : undefined
             },
-            headers: { 
+            headers: {
               "x-tenant": subdomain,
               "Authorization": `Bearer ${token}`,
             },
@@ -66,7 +66,7 @@ const UserManagement = () => {
           setUsers([]);
         }
         setLoading(false);
-      }, 1000); 
+      }, 1000);
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
@@ -147,10 +147,10 @@ const UserManagement = () => {
     setIsAddModalOpen(false);
   };
 
-    const handleUpdateUser = () => {
-        fetchUsers()
-        setIsUpdateModalOpen(false);
-    };
+  const handleUpdateUser = () => {
+    fetchUsers()
+    setIsUpdateModalOpen(false);
+  };
 
   const triggerModal = (type) => {
     setModalType(type);
@@ -184,27 +184,27 @@ const UserManagement = () => {
 
   const downloadUsers = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/user/download`, {
-            params: { 
-                search: searchTerm || undefined,
-                filterByGroup: filterByGroup ? "true" : "false" 
-            },
-            headers: { 
-                "x-tenant": subdomain,
-                "Authorization": `Bearer ${token}`,
-            },
-            responseType: 'blob', // Important to handle file download
-        });
+      const response = await axios.get(`http://localhost:5000/api/user/download`, {
+        params: {
+          search: searchTerm || undefined,
+          filterByGroup: filterByGroup ? "true" : "false"
+        },
+        headers: {
+          "x-tenant": subdomain,
+          "Authorization": `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important to handle file download
+      });
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'users.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'users.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
-        console.error("Error downloading users:", error);
+      console.error("Error downloading users:", error);
     }
   };
 
@@ -241,32 +241,32 @@ const UserManagement = () => {
 
           <div className="absolute mt-2 w-56 bg-white shadow-lg rounded-lg z-10 dark:bg-gray-800 dark:border dark:border-gray-600">
             <button
-              onClick={() => triggerModal("Bulk Add")}
+              onClick={() => triggerModal(t("admin:users.user.bulk_add"))}
               className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
             >
-              <FaPlus className="mr-2 text-teal-600 dark:text-teal-400" /> 
-              <span className="text-sm text-gray-900 dark:text-gray-200">Create User</span>
+              <FaPlus className="mr-2 text-teal-600 dark:text-teal-400" />
+              <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.bulk_add")}</span>
             </button>
             <button
-              onClick={() => triggerModal("Bulk Update")}
+              onClick={() => triggerModal(t("admin:users.user.bulk_update"))}
               className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
             >
-              <FaEdit className="mr-2 text-blue-600 dark:text-blue-400" /> 
-              <span className="text-sm text-gray-900 dark:text-gray-200">Update User</span>
+              <FaEdit className="mr-2 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.bulk_update")}</span>
             </button>
             <button
-              onClick={() => triggerModal("Bulk Remove")}
+              onClick={() => triggerModal(t("admin:users.user.bulk_remove"))}
               className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
             >
-              <FaTrash className="mr-2 text-red-600 dark:text-red-400" /> 
-              <span className="text-sm text-gray-900 dark:text-gray-200">Remove User</span>
+              <FaTrash className="mr-2 text-red-600 dark:text-red-400" />
+              <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.bulk_remove")}</span>
             </button>
             <button
-              onClick={() => triggerModal("Bulk Remove")}
+              onClick={() => triggerModal(t("admin:users.user.assign_group"))}
               className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
             >
-              <MdGroups2 className="mr-2 text-teal-600 dark:text-teal-400 h-5 w-5" /> 
-              <span className="text-sm text-gray-900 dark:text-gray-200">Assign User To Group</span>
+              <MdGroups2 className="mr-2 text-teal-600 dark:text-teal-400 h-5 w-5" />
+              <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.assign_group")}</span>
             </button>
           </div>
 
@@ -278,13 +278,13 @@ const UserManagement = () => {
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             onClick={() => setIsAddModalOpen(true)}
           >
-            + {t("admin:user.user.add")}
+            + {t("admin:users.user.add")}
           </button>
         </div>
         <div className="relative w-72">
           <input
             type="text"
-            placeholder={t("admin:user.user.search")}
+            placeholder={t("admin:users.user.search")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => {
@@ -308,7 +308,7 @@ const UserManagement = () => {
             className="cursor-pointer"
           />
           <label htmlFor="filterByGroup" className="cursor-pointer">
-            Filter User By Group
+            {t("admin:users.user.filter_check")}
           </label>
         </div>
       </div>
@@ -384,7 +384,7 @@ const UserManagement = () => {
                 ) : (
                   <tr>
                     <td colSpan="7" className="border border-gray-200 px-4 py-2 text-center">
-                      No users found.
+                      {t("admin:users.user.not_found")}
                     </td>
                   </tr>
                 )}
@@ -393,84 +393,27 @@ const UserManagement = () => {
           </div>
 
           <div className="flex justify-center mt-4 gap-2">
-              {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                      key={index + 1}
-                      className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500  text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
-                          }`}
-                      onClick={() => handlePageChange(index + 1)}
-                  >
-                      {index + 1}
-                  </button>
-              ))}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`px-3 py-1 rounded-lg border ${currentPage === index + 1 ? "bg-blue-500  text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
+                  }`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
-      </div>
+        </div>
 
       )}
-
-
-
-      {/* Add User UserModal */}
-      {isAddModalOpen && (
-          <UserModal
-              title="Add User"
-              onClose={() => setIsAddModalOpen(false)}
-              onSubmit={handleAddUser}
-              roles={roles}
-              isEdit={false}
-              groups={groups}
-          />
-      )}
-
-      {/* Update User UserModal */}
-      {isUpdateModalOpen && selectedUser && (
-          <UserModal
-              title="Update User"
-              onClose={() => setIsUpdateModalOpen(false)}
-              initialValues={selectedUser}
-              roles={roles}
-              onSubmit={handleUpdateUser}
-              isEdit={true}
-              groups={groups}
-          />
-      )}
-
-      {/* Delete User UserModal */}
-      {isDeleteModalOpen && selectedUser && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      Are you sure you want to delete{" "}
-                      <span className="text-red-500">{selectedUser.name}</span>?
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                      This action cannot be undone. Please confirm your decision.
-                  </p>
-                  <div className="flex justify-end gap-4">
-                      <button
-                          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-                          onClick={() => setIsDeleteModalOpen(false)}
-                      >
-                          Cancel
-                      </button>
-                      <button
-                          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                          onClick={handleDeleteUser}
-                      >
-                          Confirm
-                      </button>
-                  </div>
-              </div>
-          </div>
-      )}
-
 
 
 
       {/* Add User UserModal */}
       {isAddModalOpen && (
         <UserModal
-          title="Add User"
+          title={t("admin:users.user.add")}
           onClose={() => setIsAddModalOpen(false)}
           onSubmit={handleAddUser}
           roles={roles}
@@ -482,10 +425,10 @@ const UserManagement = () => {
       {/* Update User UserModal */}
       {isUpdateModalOpen && selectedUser && (
         <UserModal
-          title="Update User"
+          title={t("admin:users.user.bulk_update")}
           onClose={() => setIsUpdateModalOpen(false)}
           initialValues={selectedUser}
-          roles={roles} 
+          roles={roles}
           onSubmit={handleUpdateUser}
           isEdit={true}
           groups={groups}
@@ -497,24 +440,24 @@ const UserManagement = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-96 p-6 transform transition-all duration-300 scale-100">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Are you sure you want to delete{" "}
+              {t("modal:delete.message1_user")}
               <span className="text-red-500">{selectedUser.name}</span>?
             </h3>
             <p className="text-gray-600 mb-6">
-              This action cannot be undone. Please confirm your decision.
+              {t("modal:delete.message2")}
             </p>
             <div className="flex justify-end gap-4">
               <button
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
-                Cancel
+                {t("common:button.cancel")}
               </button>
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                 onClick={handleDeleteUser}
               >
-                Confirm
+                {t("common:button.confirm")}
               </button>
             </div>
           </div>
@@ -524,8 +467,8 @@ const UserManagement = () => {
       {/* Modal Component */}
       {modalType && isBulkProcessModalOpen && (
 
-        <UserBulkProcessModal 
-          onClose={() => setIsBulkProcessModalOpen(false)} 
+        <UserBulkProcessModal
+          onClose={() => setIsBulkProcessModalOpen(false)}
           modalProcess={modalType}
         />
       )}

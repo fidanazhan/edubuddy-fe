@@ -1,0 +1,33 @@
+{
+    "button": {
+        "submit": "Submit",
+        "search": "Search",
+        "filter": "Filter",
+        "save": "Save",
+        "upload": "Upload",
+        "download": "Download",
+        "bulk_process": "Bulk Process",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "prev": "Prev",
+        "next": "Next",
+        "close": "Close"
+    },
+    "table": {
+        "name": "Name",
+        "role": "Role",
+        "group": "Group",
+        "amount": "Amount",
+        "date": "Date",
+        "action": "Action",
+        "sender": "Sender",
+        "receiver": "Receiver",
+        "reason": "Reason",
+        "code": "Code",
+        "description": "Description"
+    },
+    "optional": "Optional",
+    "active": "Active",
+    "not_active": "Not Active",
+    "drag": "Drag & drop files here, or click to upload."
+}

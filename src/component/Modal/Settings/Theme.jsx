@@ -1,14 +1,16 @@
-// import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useTheme } from "../../../context/ThemeContext";
 import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import Toast from '../../../component/Toast/Toast';
 
 const ThemeSettings = () => {
     const { theme, setTheme } = useTheme();
     const { user } = useAuth();
     const { t, ready } = useTranslation("settings");
+    const [toast, setToast] = useState(null);
 
     const handleToggleTheme = (theme) => {
         postNewTheme(theme);
@@ -31,9 +33,20 @@ const ThemeSettings = () => {
                 localStorage.setItem("theme", response.data.theme);
                 setTheme(response.data.user.theme);
             }
+
+            if (response.status === 201 || response.status === 200) {
+                showToast("Theme changed successfully!", "bg-green-500", "success");
+            }
+
         } catch (error) {
-            console.error("Error posting theme:", error);
+            console.error("Error changing theme:", error);
+            showToast("Theme changed failed!", "bg-red-500", "error");
         }
+    };
+
+    const showToast = (message, color, status) => {
+        setToast({ message, color, status });
+        setTimeout(() => setToast(null), 3000);
     };
 
     if (!ready) return null;
@@ -57,6 +70,16 @@ const ThemeSettings = () => {
                     <span>{t("settings.theme.dark")}</span>
                 </button>
             </div>
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    color={toast.color}
+                    status={toast.status}
+                    onClose={() => setToast(null)}
+                />
+            )}
+
         </>
     );
 };
