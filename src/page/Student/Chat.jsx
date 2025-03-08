@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown"; 
 import rehypeRaw from 'rehype-raw';
@@ -9,14 +9,20 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isFirstMessageInSession, setIsFirstMessageInSession] = useState(false);
-
+  const fetchCalled = useRef(false);
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (id) {
+    if (id && !fetchCalled.current) {
+      fetchCalled.current = true; // ✅ Ensures it only runs once
       fetchChatHistory();
     }
   }, [id]);
+
+  useEffect(() => {
+    console.log("Updated messages:", messages);
+  }, [messages]);
+  
 
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
@@ -30,23 +36,25 @@ const Chat = () => {
 
     if (response.ok) {
       const data = await response.json();
-
+      console.log(data)
       // Transform API response into the expected format and ensure line breaks
-      const formattedMessages = data.history.map((item) => ({
+      const formattedMessages = await Promise.all(data.history.map((item) => ({
         role: item.role, // "user" or "assistant"
         content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
-      }));
+      })));
 
       // Replace \n with Markdown-style line breaks (two spaces and then a newline)
-      const formattedWithLineBreaks = formattedMessages.map((msg) => ({
+      const formattedWithLineBreaks = await Promise.all(formattedMessages.map((msg) => ({
         ...msg,
         content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
-      }));
-
+      })));
+      console.log(formattedWithLineBreaks)
       setMessages(formattedWithLineBreaks);
-
+      
       // Check if it's a new session by detecting if it was redirected from the dashboard
       if (location.state?.isNew) {
+        console.log("Sending first question")
+        fetchCalled.current = true; // ✅ Prevent duplicate call
         setIsFirstMessageInSession(true);
         sendMessage(location.state.firstMessage);
       }
@@ -58,7 +66,7 @@ const Chat = () => {
   // 2️⃣ Send User Message (PUT)
   const sendMessage = async (message) => {
     const newMessage = { role: "user", content: message || input };
-    setMessages([...messages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
 
     const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
       method: "PUT",
@@ -66,7 +74,7 @@ const Chat = () => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify({ text: message || input }),
+      body: JSON.stringify({ question: message || input }),
     });
 
     setInput(""); // Clear input after sending
@@ -76,15 +84,18 @@ const Chat = () => {
       const decoder = new TextDecoder();
       let accumulatedText = "";
 
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         accumulatedText += decoder.decode(value, { stream: true });
-        setMessages((prev) => [
-          ...prev.slice(0, -1), // Replace last assistant message to simulate real-time
-          { role: "assistant", content: accumulatedText },
-        ]);
+        setMessages((prev) =>
+          prev.map((msg, index) =>
+            index === prev.length - 1 ? { ...msg, content: accumulatedText } : msg
+          )
+        );
       }
     }
 

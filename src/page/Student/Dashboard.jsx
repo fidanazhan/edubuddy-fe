@@ -11,16 +11,16 @@ const Dashboard = () => {
     if (e.key === "Enter" && text.trim() !== "") {
       const response = await fetch("http://localhost:5000/api/chats", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ text }),
       });
-  
+
       const { chatId } = await response.json();
       if (chatId) {
-        navigate(`/chats/${chatId}`, { state: { isNew: true } }); // ✅ Pass flag
+        navigate(`/chats/${chatId}`, { state: { isNew: true, firstMessage: text } }); // ✅ Pass flag
       }
     }
   };
