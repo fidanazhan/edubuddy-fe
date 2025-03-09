@@ -4,7 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
-import { CiChat1 } from "react-icons/ci";
+import { CiChat1, CiTrash } from "react-icons/ci";
 import Location from '../Location'
 import { useTranslation } from "react-i18next";
 // import './sidebar.css'
@@ -42,6 +42,21 @@ const Sidebar = ({ passIsOpen }) => {
     if (response.ok) {
       const data = await response.json()
       setChats(data)
+    }
+  }
+
+  const deleteChat = async (chatId) => {
+    const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        "x-tenant": subdomain,
+      },
+    });
+    if (response.ok) {
+      setChats((prevChats) => prevChats.filter(chat => chat._id !== chatId));
+      fetchChats();
     }
   }
 
@@ -140,12 +155,30 @@ const Sidebar = ({ passIsOpen }) => {
             className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
             <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">{t("recent")}</div>
-            {chats?.map((chat) => (
-              <Link to={`/chats/${chat._id}`} key={chat._id} className="py-2 px-4 text-sm flex items-center gap-2 text-gray-600 font-semibold dark:text-gray-300/80">
-                <CiChat1 className="text-gray-500 mr-1 text-md " strokeWidth={1} />
-                {capitalizeAndTruncate(chat.title)}
-              </Link>
-            ))}
+            {Array.isArray(chats) ? (
+              chats.map((chat) => (
+                <div
+                  key={chat._id}
+                  className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80"
+                >
+                  {/* Chat Link */}
+                  <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-1">
+                    <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
+                    {capitalizeAndTruncate(chat.title)}
+                  </Link>
+
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => deleteChat(chat._id)}
+                    className="text-gray-400 hover:text-red-500 transition"
+                  >
+                    <CiTrash size={18} />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 px-4">No recent chats</p>
+            )}
           </div>
         </ul>
 

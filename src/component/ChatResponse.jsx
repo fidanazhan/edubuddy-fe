@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import ReactMarkdown from 'react-markdown';
 
 import remarkMath from 'remark-math'; // For math formulas
@@ -140,9 +140,4 @@ const ChatResponse2 = ({ answer }) => {
   );
 };
 
-export const ChatReponse = memo(
-  ChatResponse2,
-  (prevProps, nextProps) => prevProps.children === nextProps.children
-);
-
-export default ChatReponse;
+export default ChatResponse2;

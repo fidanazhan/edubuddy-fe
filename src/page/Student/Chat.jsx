@@ -4,10 +4,12 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
 import Markdown from "./Output";
 import ChatResponse from "../../component/ChatResponse";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isFirstMessageInSession, setIsFirstMessageInSession] = useState(false);
@@ -37,33 +39,47 @@ const Chat = () => {
       window.history.replaceState({}, document.title);
     }
     else {
-      const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
+      try {
+        const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data)
-        // Transform API response into the expected format and ensure line breaks
-        const formattedMessages = await Promise.all(data.history.map((item) => ({
-          role: item.role, // "user" or "assistant"
-          content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
-        })));
+        if (response.ok && response.status === 200) {
+          const data = await response.json();
+          // console.log(data)
+          // Transform API response into the expected format and ensure line breaks
+          const formattedMessages = await Promise.all(data.history.map((item) => ({
+            role: item.role, // "user" or "assistant"
+            content: item.parts.map((part) => part.text).join(" "), // Extract text from parts
+          })));
 
-        // Replace \n with Markdown-style line breaks (two spaces and then a newline)
-        const formattedWithLineBreaks = await Promise.all(formattedMessages.map((msg) => ({
-          ...msg,
-          content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
-        })));
-        // console.log(formattedWithLineBreaks)
-        setMessages(formattedWithLineBreaks);
+          // Replace \n with Markdown-style line breaks (two spaces and then a newline)
+          const formattedWithLineBreaks = await Promise.all(formattedMessages.map((msg) => ({
+            ...msg,
+            content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
+          })));
+          // console.log(formattedWithLineBreaks)
+          setMessages(formattedWithLineBreaks);
 
-        // Check if it's a new session by detecting if it was redirected from the dashboard
+          // Check if it's a new session by detecting if it was redirected from the dashboard
 
+        }
+        if (response && response.status === 404) {
+          console.log(`Chat did not exist!`);
+          navigate("/dashboard", { replace: true }); // Redirect on 404
+        }
+      }
+      catch (error) {
+        if (error.response && error.response.status === 404) {
+          console.log(`Chat did not exist!`);
+          navigate("/dashboard", { replace: true }); // Redirect on 404
+        } else {
+          console.error("Error fetching chat:", error);
+        }
       }
     }
   };
