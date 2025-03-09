@@ -16,6 +16,27 @@ const Chat = () => {
   const fetchCalled = useRef(false);
   const token = localStorage.getItem("accessToken");
 
+  const inputRef = useRef(null); // Store input field reference
+
+  const handleInputChange = (e) => {
+    if (inputRef.current) {
+      inputRef.current.value = e.target.value; // Update ref's value
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const message = inputRef.current?.value.trim();
+    if (!message) return;
+
+    sendMessage(message);
+
+    // Clear input field directly
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   useEffect(() => {
     if (id) {
       fetchChatHistory();
@@ -154,20 +175,18 @@ const Chat = () => {
 
       {/* Input Box */}
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage();
-        }}
+        onSubmit={handleSubmit}
         className="p-4 border-t bg-white flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
         style={{ height: "15vh" }}
       >
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          ref={inputRef} // Directly reference input
+          onChange={handleInputChange}
           placeholder="Type your message..."
           className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80 rounded-lg"
         />
+
         <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white hover:bg-blue-600">
           Send
         </button>
