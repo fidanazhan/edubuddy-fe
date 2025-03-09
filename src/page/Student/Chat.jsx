@@ -217,6 +217,32 @@ const Chat = () => {
           Send
         </button>
       </form>
+
+      {/* <div className="flex flex-col h-5/6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
+          style={{ height: "15vh" }}
+        >
+          <div className="relative w-[60vw]">
+            <input
+              type="text"
+              ref={inputRef}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden pr-10"
+            />
+
+            <button
+              type="submit"
+              className="absolute right-2 transform -translate-y-1/2 bg-gray-50 dark:bg-gray-700 text-black dark:text-gray-300 rounded-lg px-2 flex items-center justify-center"
+              style={{ top: '50%' }}
+              title="Send message">
+              <FiSend className="w-5 h-5" />
+            </button>
+          </div>
+        </form>
+      </div> */}
     </div>
   );
 
