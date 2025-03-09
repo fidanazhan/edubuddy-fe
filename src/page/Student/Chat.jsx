@@ -5,6 +5,7 @@ import rehypeRaw from 'rehype-raw';
 import Markdown from "./Output";
 import ChatResponse from "../../component/ChatResponse";
 import { useNavigate } from "react-router-dom";
+import { ThumbsUp, ThumbsDown, Share2, RefreshCcw } from "lucide-react";
 
 const Chat = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const Chat = () => {
   const [isFirstMessageInSession, setIsFirstMessageInSession] = useState(false);
   const fetchCalled = useRef(false);
   const token = localStorage.getItem("accessToken");
-
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const inputRef = useRef(null);
 
   const handleInputChange = (e) => {
@@ -41,21 +42,26 @@ const Chat = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = ""; // Reset input when id changes
+    }
+  }, [id]);
 
   // useEffect(() => {
   //   // console.log("Updated messages:", messages);
   // }, [messages]);
 
-
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
 
     if (location.state?.isNew && !fetchCalled.current) {
-      // console.log("Sending first question")
-      fetchCalled.current = true; // ✅ Prevent duplicate call
+      fetchCalled.current = true; // Prevent duplicate call
       setIsFirstMessageInSession(true);
       sendMessage(location.state.firstMessage);
-      window.history.replaceState({}, document.title);
+
+      // ✅ Clear location.state to prevent resending on re-renders
+      navigate(location.pathname, { replace: true, state: {} });
     }
     else {
       try {
@@ -152,16 +158,40 @@ const Chat = () => {
             <div
               key={index}
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              onMouseEnter={() => setHoveredIndex(msg.role !== "user" ? index : null)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
                   ? "bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
                   : "bg-white dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  } max-w-xl `}
+                  } max-w-xl`}
               >
-                {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
-                {/* <Markdown>{msg.content}</Markdown> */}
+                {/* Message Content */}
                 <ChatResponse answer={msg.content} />
+
+                {/* Reserved space BELOW the message for icons */}
+                {msg.role !== "user" && (
+                  <div className="h-8 flex">
+                    <div
+                      className={`flex gap-2 bg-gray-200 dark:bg-gray-800 p-1 rounded-lg shadow transition-opacity duration-1000 ${hoveredIndex === index ? "opacity-100" : "opacity-0"
+                        }`}
+                    >
+                      <button className="p-1 hover:text-blue-500">
+                        <ThumbsUp size={18} />
+                      </button>
+                      <button className="p-1 hover:text-red-500">
+                        <ThumbsDown size={18} />
+                      </button>
+                      <button className="p-1 hover:text-green-500">
+                        <Share2 size={18} />
+                      </button>
+                      <button className="p-1 hover:text-yellow-500">
+                        <RefreshCcw size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}

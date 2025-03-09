@@ -61,6 +61,10 @@ const Sidebar = ({ passIsOpen }) => {
       if (!response.ok) throw new Error("Failed to fetch chats");
       return response.json();
     },
+    staleTime: Infinity,         // Data never becomes stale
+    refetchInterval: false,      // Disables automatic polling
+    refetchOnWindowFocus: false, // Prevents refetching on tab focus
+    refetchOnReconnect: false,   // Prevents refetching on network reconnect
   });
 
   // const deleteChat = async (chatId) => {
