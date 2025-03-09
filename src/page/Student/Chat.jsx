@@ -11,12 +11,11 @@ const Chat = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
   const [isFirstMessageInSession, setIsFirstMessageInSession] = useState(false);
   const fetchCalled = useRef(false);
   const token = localStorage.getItem("accessToken");
 
-  const inputRef = useRef(null); // Store input field reference
+  const inputRef = useRef(null);
 
   const handleInputChange = (e) => {
     if (inputRef.current) {
@@ -31,7 +30,6 @@ const Chat = () => {
 
     sendMessage(message);
 
-    // Clear input field directly
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -109,7 +107,7 @@ const Chat = () => {
 
   // 2️⃣ Send User Message (PUT)
   const sendMessage = async (message) => {
-    const newMessage = { role: "user", content: message || input };
+    const newMessage = { role: "user", content: message || inputRef.current?.value.trim() };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
 
     const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
@@ -118,10 +116,8 @@ const Chat = () => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify({ question: message || input }),
+      body: JSON.stringify({ question: message || inputRef.current?.value.trim() }),
     });
-
-    setInput(""); // Clear input after sending
 
     if (response.body) {
       const reader = response.body.getReader();
@@ -181,7 +177,7 @@ const Chat = () => {
       >
         <input
           type="text"
-          ref={inputRef} // Directly reference input
+          ref={inputRef}
           onChange={handleInputChange}
           placeholder="Type your message..."
           className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80 rounded-lg"
