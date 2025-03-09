@@ -144,30 +144,34 @@ const Chat = () => {
 
 
   return (
-    <div className="flex flex-col mx-auto h-[calc(100vh-100px)] overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
       <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
-        <div className="flex-1 mx-auto space-y-4 ">
+        <div className="w-4/6 mx-auto flex-1 space-y-4"> 
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-            >
+            <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start w-full"}`}>
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
-                  : "bg-white dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  } max-w-xl `}
+                  ? "mt-0 bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
+                  : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
+                  }`}
               >
-                {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
-                {/* <Markdown>{msg.content}</Markdown> */}
+
+              {msg.role == "user" && (
+                <p>{msg.content}</p>
+              )}
+
+              {msg.role != "user" && (
                 <ChatResponse answer={msg.content} />
+              )}
+
               </div>
             </div>
           ))}
         </div>
-
       </div>
+
+
 
       {/* Input Box */}
       <form

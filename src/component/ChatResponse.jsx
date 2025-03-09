@@ -46,14 +46,14 @@ const ChatResponse2 = ({ answer }) => {
             style={dracula}
             language={match[1]}
             PreTag="div"
-            className="px-4 py-3 text-sm overflow-x-auto"
+            className="px-4 py-3 codeFont overflow-x-auto"
             {...props}
           >
             {codeString}
           </SyntaxHighlighter>
         </div>
       ) : (
-        <code className="text-sm bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md" {...props}>
+        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md" {...props}>
           {codeString}
         </code>
       );
@@ -64,7 +64,7 @@ const ChatResponse2 = ({ answer }) => {
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li className="py-1" {...props}>
+      <li className="ml-8 mt-2" {...props}>
         {children}
       </li>
     ),
@@ -118,6 +118,11 @@ const ChatResponse2 = ({ answer }) => {
         {children}
       </h6>
     ),
+    p: ({ children, ...props }) => (
+      <p className="mt-4" {...props}>
+        {children}
+      </p>
+    ),
   };
   return (
     <>
@@ -132,7 +137,7 @@ const ChatResponse2 = ({ answer }) => {
           }],
         ]}
         components={components}
-        className="font-arial sm:text-sm md:text-md lg:text-lg text-lg"
+        className="chatResponse sm:text-sm md:text-md lg:text-lg text-lg"
       >
         {answer}
       </ReactMarkdown>
