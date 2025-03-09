@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import ReactMarkdown from 'react-markdown';
 
 import remarkMath from 'remark-math'; // For math formulas
@@ -15,23 +16,45 @@ import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeAddClasses from 'rehype-add-classes'; // For adding classes to elements
 import './chatResponse.css';
 
-const ChatResponse = ({ answer }) => {
+const ChatResponse2 = ({ answer }) => {
   const components = {
     code: ({ inline, className, children, ...props }) => {
       const match = /language-(\w+)/.exec(className || "");
+
+      // Convert children array (React elements) into a plain string
+      const codeString = React.Children.map(children, child =>
+        typeof child === "string" ? child : child.props.children
+      ).join("").trim();
+
       return !inline && match ? (
-        <pre
-          {...props}
-          className={`${className} text-sm w-[80dvw] md:max-w-[500px] overflow-x-scroll bg-zinc-100 p-3 rounded-lg mt-2 dark:bg-zinc-800`}
-        >
-          <code className={match[1]}>{children}</code>
-        </pre>
+        <div className="relative bg-[#282a36] rounded-lg overflow-hidden">
+          {/* Top Bar */}
+          <div className="flex justify-between items-center bg-[#343746] px-4 py-2 text-xs text-gray-300">
+            <span>{match[1]}</span>
+            <div className="flex gap-2">
+              <button
+                className="hover:text-white transition"
+                onClick={() => navigator.clipboard.writeText(codeString)}
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          {/* Code Block */}
+          <SyntaxHighlighter
+            style={dracula}
+            language={match[1]}
+            PreTag="div"
+            className="px-4 py-3 text-sm overflow-x-auto"
+            {...props}
+          >
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
       ) : (
-        <code
-          className={`${className} text-sm bg-zinc-100 dark:bg-zinc-800 py-0.5 px-1 rounded-md`}
-          {...props}
-        >
-          {children}
+        <code className="text-sm bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md" {...props}>
+          {codeString}
         </code>
       );
     },
@@ -97,7 +120,7 @@ const ChatResponse = ({ answer }) => {
     ),
   };
   return (
-    <div>
+    <>
       <ReactMarkdown
         remarkPlugins={[remarkMath, remarkGfm]}
         rehypePlugins={[
@@ -105,15 +128,21 @@ const ChatResponse = ({ answer }) => {
           rehypeHighlight,
           [rehypeAddClasses, {
             table: 'markdown-table',
+            pre: "custom-pre"
           }],
         ]}
         components={components}
-        className="font-arial sm:text-sm md:text-md lg:text-lg"
+        className="font-arial sm:text-sm md:text-md lg:text-lg text-lg"
       >
         {answer}
       </ReactMarkdown>
-    </div>
+    </>
   );
 };
 
-export default ChatResponse;
+export const ChatReponse = memo(
+  ChatResponse2,
+  (prevProps, nextProps) => prevProps.children === nextProps.children
+);
+
+export default ChatReponse;

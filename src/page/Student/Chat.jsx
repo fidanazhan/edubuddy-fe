@@ -21,16 +21,16 @@ const Chat = () => {
   }, [id]);
 
 
-  useEffect(() => {
-    console.log("Updated messages:", messages);
-  }, [messages]);
+  // useEffect(() => {
+  //   // console.log("Updated messages:", messages);
+  // }, [messages]);
 
 
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
 
     if (location.state?.isNew && !fetchCalled.current) {
-      console.log("Sending first question")
+      // console.log("Sending first question")
       fetchCalled.current = true; // ✅ Prevent duplicate call
       setIsFirstMessageInSession(true);
       sendMessage(location.state.firstMessage);
@@ -47,7 +47,7 @@ const Chat = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         // Transform API response into the expected format and ensure line breaks
         const formattedMessages = await Promise.all(data.history.map((item) => ({
           role: item.role, // "user" or "assistant"
@@ -59,7 +59,7 @@ const Chat = () => {
           ...msg,
           content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
         })));
-        console.log(formattedWithLineBreaks)
+        // console.log(formattedWithLineBreaks)
         setMessages(formattedWithLineBreaks);
 
         // Check if it's a new session by detecting if it was redirected from the dashboard

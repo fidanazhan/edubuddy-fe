@@ -73,3 +73,11 @@ ul {
 li {
     margin-bottom: 5px;
 }
+
+.custom-pre {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
