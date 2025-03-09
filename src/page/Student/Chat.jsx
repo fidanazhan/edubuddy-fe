@@ -5,6 +5,7 @@ import rehypeRaw from 'rehype-raw';
 import Markdown from "./Output";
 import ChatResponse from "../../component/ChatResponse";
 import { useNavigate } from "react-router-dom";
+import { ThumbsUp, ThumbsDown, Share2, RefreshCcw } from "lucide-react";
 
 const Chat = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const Chat = () => {
   const [isFirstMessageInSession, setIsFirstMessageInSession] = useState(false);
   const fetchCalled = useRef(false);
   const token = localStorage.getItem("accessToken");
-
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const inputRef = useRef(null);
 
   const handleInputChange = (e) => {
@@ -41,21 +42,26 @@ const Chat = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = ""; // Reset input when id changes
+    }
+  }, [id]);
 
   // useEffect(() => {
   //   // console.log("Updated messages:", messages);
   // }, [messages]);
 
-
   // 1️⃣ Fetch Chat History (GET)
   const fetchChatHistory = async () => {
 
     if (location.state?.isNew && !fetchCalled.current) {
-      // console.log("Sending first question")
-      fetchCalled.current = true; // ✅ Prevent duplicate call
+      fetchCalled.current = true; // Prevent duplicate call
       setIsFirstMessageInSession(true);
       sendMessage(location.state.firstMessage);
-      window.history.replaceState({}, document.title);
+
+      // ✅ Clear location.state to prevent resending on re-renders
+      navigate(location.pathname, { replace: true, state: {} });
     }
     else {
       try {
@@ -149,22 +155,21 @@ const Chat = () => {
       <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
         <div className="w-4/6 mx-auto flex-1 space-y-4"> 
           {messages.map((msg, index) => (
-            <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start w-full"}`}>
+            <div
+              key={index}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              onMouseEnter={() => setHoveredIndex(msg.role !== "user" ? index : null)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "mt-0 bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
-                  : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  }`}
+                  ? "bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
+                  : "bg-white dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
+                  } max-w-xl `}
               >
-
-              {msg.role == "user" && (
-                <p>{msg.content}</p>
-              )}
-
-              {msg.role != "user" && (
+                {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
+                {/* <Markdown>{msg.content}</Markdown> */}
                 <ChatResponse answer={msg.content} />
-              )}
-
               </div>
             </div>
           ))}
@@ -191,6 +196,32 @@ const Chat = () => {
           Send
         </button>
       </form>
+
+      {/* <div className="flex flex-col h-5/6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
+          style={{ height: "15vh" }}
+        >
+          <div className="relative w-[60vw]">
+            <input
+              type="text"
+              ref={inputRef}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden pr-10"
+            />
+
+            <button
+              type="submit"
+              className="absolute right-2 transform -translate-y-1/2 bg-gray-50 dark:bg-gray-700 text-black dark:text-gray-300 rounded-lg px-2 flex items-center justify-center"
+              style={{ top: '50%' }}
+              title="Send message">
+              <FiSend className="w-5 h-5" />
+            </button>
+          </div>
+        </form>
+      </div> */}
     </div>
   );
 

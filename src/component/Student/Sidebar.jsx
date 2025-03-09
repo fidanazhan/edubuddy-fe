@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
-import { CiChat1, CiTrash } from "react-icons/ci";
+import { CiChat1, CiTrash, CiMenuKebab } from "react-icons/ci";
+import { RiPencilLine } from "react-icons/ri";
 import Location from '../Location'
 import { useTranslation } from "react-i18next";
 // import './sidebar.css'
@@ -16,7 +17,8 @@ const Sidebar = ({ passIsOpen }) => {
   // const [chats, setChats] = useState([]);
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
-
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
   const queryClient = useQueryClient();
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
@@ -61,6 +63,10 @@ const Sidebar = ({ passIsOpen }) => {
       if (!response.ok) throw new Error("Failed to fetch chats");
       return response.json();
     },
+    staleTime: Infinity,         // Data never becomes stale
+    refetchInterval: false,      // Disables automatic polling
+    refetchOnWindowFocus: false, // Prevents refetching on tab focus
+    refetchOnReconnect: false,   // Prevents refetching on network reconnect
   });
 
   // const deleteChat = async (chatId) => {
@@ -116,6 +122,29 @@ const Sidebar = ({ passIsOpen }) => {
       ? truncatedByWords.slice(0, 20).trim() + "..."
       : truncatedByWords;
   }
+
+  const toggleMenu = (chatId, event) => {
+    event.stopPropagation(); // Prevent event bubbling
+
+    setOpenMenuId((prev) => (prev === chatId ? null : chatId));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !event.target.closest("[data-menu-button]") // Ensure the clicked element is not a menu button
+      ) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (!ready) return null;
 
@@ -185,28 +214,54 @@ const Sidebar = ({ passIsOpen }) => {
 
           <hr className="border-gray-300 dark:border-gray-700" />
           <div
-            className={`overflow-hidden whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
+            className={`whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
           >
             <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">{t("recent")}</div>
             {Array.isArray(chats) ? (
               chats.map((chat) => (
                 <div
                   key={chat._id}
-                  className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80"
+                  className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
                 >
-                  {/* Chat Link */}
                   <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-1">
                     <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
                     {capitalizeAndTruncate(chat.title)}
                   </Link>
 
-                  {/* Delete Button */}
                   <button
-                    onClick={() => deleteChat(chat._id)}
-                    className="text-gray-400 hover:text-red-500 transition"
+                    data-menu-button="true"
+                    onClick={(event) => toggleMenu(chat._id, event)}
+                    className="text-gray-400 hover:text-gray-600"
                   >
-                    <CiTrash size={18} />
+                    <CiMenuKebab size={18} />
                   </button>
+
+                  {openMenuId === chat._id && (
+                    <div
+                      ref={menuRef}
+                      className="absolute left-full ml-2 top-1 transform 
+                                  bg-white dark:bg-gray-600 shadow-lg rounded-md w-32 z-50"
+                    >
+                      <button
+                        onClick={() => renameChat(chat._id)}
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <div className="flex">
+                          <RiPencilLine className="w-5 h-5" /> <p className="text-md ml-2">Rename</p>
+                        </div>
+                      </button>
+                      <hr className="border-gray-300 dark:border-gray-400" />
+                      <button
+                        onClick={() => deleteChat(chat._id)}
+                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <div className="flex">
+                          <CiTrash className="w-5 h-5" /> <p className="text-md ml-2">Delete</p>
+                        </div>
+                      </button>
+                    </div>
+                  )}
+
                 </div>
               ))
             ) : (
