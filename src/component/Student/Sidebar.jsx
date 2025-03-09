@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
@@ -18,6 +18,7 @@ const Sidebar = ({ passIsOpen }) => {
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
   const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
   const queryClient = useQueryClient();
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
@@ -122,9 +123,28 @@ const Sidebar = ({ passIsOpen }) => {
       : truncatedByWords;
   }
 
-  const toggleMenu = (chatId) => {
-    setOpenMenuId(openMenuId === chatId ? null : chatId);
+  const toggleMenu = (chatId, event) => {
+    event.stopPropagation(); // Prevent event bubbling
+
+    setOpenMenuId((prev) => (prev === chatId ? null : chatId));
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !event.target.closest("[data-menu-button]") // Ensure the clicked element is not a menu button
+      ) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (!ready) return null;
 
@@ -209,14 +229,17 @@ const Sidebar = ({ passIsOpen }) => {
                   </Link>
 
                   <button
-                    onClick={() => toggleMenu(chat._id)}
+                    data-menu-button="true"
+                    onClick={(event) => toggleMenu(chat._id, event)}
                     className="text-gray-400 hover:text-gray-600"
                   >
                     <CiMenuKebab size={18} />
                   </button>
 
                   {openMenuId === chat._id && (
-                    <div className="absolute left-full ml-2 top-1 transform 
+                    <div
+                      ref={menuRef}
+                      className="absolute left-full ml-2 top-1 transform 
                                   bg-white dark:bg-gray-600 shadow-lg rounded-md w-32 z-50"
                     >
                       <button
