@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IoChatboxSharp } from "react-icons/io5";
 import { CiChat1, CiTrash } from "react-icons/ci";
 import Location from '../Location'
@@ -13,9 +13,11 @@ const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
   const { t, ready } = useTranslation("sidebar");
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
+
+  const queryClient = useQueryClient();
   // const { isPending, error, data } = useQuery({
   //   queryKey: ["userChats"],
   //   queryFn: () =>
@@ -26,24 +28,55 @@ const Sidebar = ({ passIsOpen }) => {
   //     }).then((res) => res.json()),
   // });
 
-  useEffect(() => {
-    fetchChats()
-  }, []);
+  // useEffect(() => {
+  //   fetchChats()
+  // }, []);
 
-  const fetchChats = async () => {
-    const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-        "x-tenant": subdomain,
-      },
-    });
-    if (response.ok) {
-      const data = await response.json()
-      setChats(data)
-    }
-  }
+  // const fetchChats = async () => {
+  //   const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${token}`,
+  //       "x-tenant": subdomain,
+  //     },
+  //   });
+  //   if (response.ok) {
+  //     const data = await response.json()
+  //     setChats(data)
+  //   }
+  // }
+
+  const { data: chats, isLoading, isError } = useQuery({
+    queryKey: ["userChats"],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+          "x-tenant": subdomain,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch chats");
+      return response.json();
+    },
+  });
+
+  // const deleteChat = async (chatId) => {
+  //   const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${token}`,
+  //       "x-tenant": subdomain,
+  //     },
+  //   });
+  //   if (response.ok) {
+  //     setChats((prevChats) => prevChats.filter(chat => chat._id !== chatId));
+  //     fetchChats();
+  //   }
+  // }
 
   const deleteChat = async (chatId) => {
     const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
@@ -55,10 +88,10 @@ const Sidebar = ({ passIsOpen }) => {
       },
     });
     if (response.ok) {
-      setChats((prevChats) => prevChats.filter(chat => chat._id !== chatId));
-      fetchChats();
+      queryClient.invalidateQueries(["userChats"]); // Force refetch after deleting
     }
-  }
+  };
+
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

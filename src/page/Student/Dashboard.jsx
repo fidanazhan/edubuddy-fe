@@ -1,14 +1,33 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Dashboard = () => {
   const [text, setText] = useState("");
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const token = localStorage.getItem("accessToken");
 
-  const handleKeyDown = async (e) => {
-    if (e.key === "Enter" && text.trim() !== "") {
+  // const handleKeyDown = async (e) => {
+  //   if (e.key === "Enter" && text.trim() !== "") {
+  //     const response = await fetch("http://localhost:5000/api/chats", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify({ text }),
+  //     });
+
+  //     const { chatId } = await response.json();
+  //     if (chatId) {
+  //       navigate(`/chats/${chatId}`, { state: { isNew: true, firstMessage: text } }); // ✅ Pass flag
+  //     }
+  //   }
+  // };
+
+  const createChatMutation = useMutation({
+    mutationFn: async (text) => {
       const response = await fetch("http://localhost:5000/api/chats", {
         method: "POST",
         headers: {
@@ -18,10 +37,19 @@ const Dashboard = () => {
         body: JSON.stringify({ text }),
       });
 
-      const { chatId } = await response.json();
-      if (chatId) {
-        navigate(`/chats/${chatId}`, { state: { isNew: true, firstMessage: text } }); // ✅ Pass flag
-      }
+      if (!response.ok) throw new Error("Failed to create chat");
+
+      return response.json(); // Returns { chatId }
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["userChats"]); // Refresh sidebar
+      navigate(`/chats/${data.chatId}`, { state: { isNew: true, firstMessage: text } });
+    },
+  });
+
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter" && text.trim() !== "") {
+      createChatMutation.mutate(text);
     }
   };
 
