@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useAuth } from "../context/JWTContext";
+import api from '../api/axios'
 
 const ThemeContext = createContext();
 
@@ -23,7 +24,7 @@ export const ThemeProvider = ({ children }) => {
       const subdomain = window.location.hostname.split(".")[0];
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+        const response = await api.get(`/api/user/${user.id}`, {
           headers: {
             "x-tenant": subdomain,
             "Authorization": `Bearer ${token}`,

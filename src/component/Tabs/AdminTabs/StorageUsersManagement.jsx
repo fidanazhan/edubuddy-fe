@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
+import api from '../../../api/axios'
 // Balance
 import { Wallet, DollarSign, BanknoteIcon } from "lucide-react";
 // Used
@@ -35,7 +36,7 @@ const StorageUsersManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+                    const response = await api.get(`/api/user/${user.id}`, {
                         "x-tenant": subdomain,
                     });
                     setAdmin(response.data);
@@ -54,7 +55,7 @@ const StorageUsersManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user`, {
+                    const response = await api.get(`/api/user`, {
                         params: { page, limit, search: searchTerm || undefined },
                         headers: { "x-tenant": subdomain },
                     });

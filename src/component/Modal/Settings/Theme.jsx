@@ -5,6 +5,7 @@ import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Toast from '../../../component/Toast/Toast';
+import api from '../../../api/axios'
 
 const ThemeSettings = () => {
     const { theme, setTheme } = useTheme();
@@ -20,7 +21,7 @@ const ThemeSettings = () => {
         const token = localStorage.getItem("accessToken");
         const subdomain = window.location.hostname.split(".")[0];
         try {
-            const response = await axios.put(`http://localhost:5000/api/user/${user.id}/theme`, { theme }, {
+            const response = await api.put(`/api/user/${user.id}/theme`, { theme }, {
                 headers: {
                     "x-tenant": subdomain,
                     "Authorization": `Bearer ${token}`,

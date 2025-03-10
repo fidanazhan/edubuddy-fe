@@ -65,7 +65,7 @@ const Chat = () => {
     }
     else {
       try {
-        const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+        const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -116,7 +116,7 @@ const Chat = () => {
     const newMessage = { role: "user", content: message || inputRef.current?.value.trim() };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
 
-    const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

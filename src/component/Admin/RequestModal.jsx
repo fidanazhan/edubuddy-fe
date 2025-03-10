@@ -3,6 +3,7 @@ import axios from "axios";
 import Select from "react-select";
 import Toast from "../Toast/Toast";
 import { useTranslation } from "react-i18next";
+import api from '../../api/axios'
 
 const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain }) => {
     const [formData, setFormData] = useState({
@@ -60,7 +61,7 @@ const RequestModal = ({ title, type, onClose, onSubmit, initialValues, subdomain
                     'Content-Type': 'application/json',
                     'x-tenant': subdomain,
                 };
-                const response = await axios.post(`http://localhost:5000/api/request/${type}`, payload, { headers });
+                const response = await api.post(`/api/request/${type}`, payload, { headers });
                 if (response.status === 201 || response.status === 200) {
                     showToast("Request sent successfully!", "bg-green-500", "success");
                     setTimeout(() => {

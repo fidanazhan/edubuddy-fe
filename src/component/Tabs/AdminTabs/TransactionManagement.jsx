@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const TokenTransactionManagement = () => {
     const [transactions, setTransactions] = useState([]);
@@ -36,7 +37,7 @@ const TokenTransactionManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/transaction/token`, {
+                    const response = await api.get(`/api/transaction/token`, {
                         params: {
                             page, limit, searchSender: searchSenderName || undefined, searchReceiver: searchReceiverName || undefined,
                             startDate: startDate || undefined, endDate: endDate || startDate || undefined

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios'
 import { FaTrash } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const SuggestionQuestion = ({ tenantId }) => {
   const [questions, setQuestions] = useState([]);
@@ -22,7 +23,7 @@ const SuggestionQuestion = ({ tenantId }) => {
   const fetchQuestions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/suggestion-question`, {
+      const response = await api.get(`/api/suggestion-question`, {
         headers: {
           "x-tenant": subdomain,
           "Authorization": `Bearer ${token}`,
@@ -41,8 +42,8 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/suggestion-question",
+      const response = await api.post(
+        "/api/suggestion-question",
         { question: newQuestion }, // Correct request payload
         {
           headers: {
@@ -74,8 +75,8 @@ const SuggestionQuestion = ({ tenantId }) => {
     setLoading(true);
 
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/suggestion-question/${selectedQuestion._id}`,
+      const response = await api.delete(
+        `/api/suggestion-question/${selectedQuestion._id}`,
         {
           headers: {
             "x-tenant": subdomain,

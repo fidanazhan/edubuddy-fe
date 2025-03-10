@@ -80,13 +80,13 @@ const BannerModal = ({onClose, modalProcess, onSuccess }) => {
     let apiEndpoint = "";
     switch (modalProcess) {
       case "Login Banner":
-        apiEndpoint = `http://localhost:5000/api/config/upload/login-logo`;
+        apiEndpoint = `/api/config/upload/login-logo`;
         break;
       case "Banner":
-        apiEndpoint = `http://localhost:5000/api/config/upload/banner`;
+        apiEndpoint = `/api/config/upload/banner`;
         break;
       case "Logo":
-        apiEndpoint = `http://localhost:5000/api/config/upload/dashboard-logo`;
+        apiEndpoint = `/api/config/upload/dashboard-logo`;
         break;
       default:
         console.error("Invalid picture type:", modalProcess);
@@ -95,7 +95,7 @@ const BannerModal = ({onClose, modalProcess, onSuccess }) => {
     }
   
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch(import.meta.env.VITE_API_URL + apiEndpoint, {
         headers: { 
             "x-tenant": subdomain,
             "Authorization": `Bearer ${token}`,

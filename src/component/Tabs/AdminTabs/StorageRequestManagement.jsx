@@ -4,6 +4,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
 import Toast from '../../Toast/Toast.jsx';
+import api from '../../../api/axios.jsx'
 
 // Pending
 import { Clock, Hourglass, Loader2, MoreHorizontal, Bell, EllipsisVertical, EllipsisVerticalIcon } from "lucide-react";
@@ -56,7 +57,7 @@ const StorageRequestScreen = () => {
                             null;
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/request/storage/status`, {
+                    const response = await api.get(`/api/request/storage/status`, {
                         params: { page, limit, status },
                         headers: { "x-tenant": subdomain },
                     });
@@ -83,7 +84,7 @@ const StorageRequestScreen = () => {
     const handleSubmitApprove = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/request/storage/approve`, request, {
+            await api.put(`/api/request/storage/approve`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);
@@ -98,7 +99,7 @@ const StorageRequestScreen = () => {
     const handleSubmitReject = async (request) => {
         console.log(request)
         try {
-            await axios.put(`http://localhost:5000/api/request/storage/reject`, request, {
+            await api.put(`/api/request/storage/reject`, request, {
                 headers: { "x-tenant": subdomain },
             });
             setSelectedRequest(null);

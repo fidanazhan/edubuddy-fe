@@ -5,6 +5,7 @@ import { MdInfoOutline } from "react-icons/md";
 import { AiOutlineTrademarkCircle } from 'react-icons/ai'
 import BannerModal from '../../Admin/BannerModal';
 import { IoMdClose } from "react-icons/io";
+import api from '../../../api/axios'
 
 const bannerManagement = () => {
     const [loginLogo, setLoginLogo] = useState(null);
@@ -27,7 +28,7 @@ const bannerManagement = () => {
     const fetchImg = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/api/config/theme`, {
+            const response = await api.get(`/api/config/theme`, {
                 headers: { "x-tenant": subdomain },
             });
             if (response.data.loginLogoUrl) {
@@ -83,13 +84,13 @@ const bannerManagement = () => {
         let apiEndpoint = "";
         switch (imageToDelete) {
             case "login banner":
-                apiEndpoint = `http://localhost:5000/api/config/delete/login-logo`;
+                apiEndpoint = `/api/config/delete/login-logo`;
                 break;
             case "banner":
-                apiEndpoint = `http://localhost:5000/api/config/delete/banner`;
+                apiEndpoint = `/api/config/delete/banner`;
                 break;
             case "logo":
-                apiEndpoint = `http://localhost:5000/api/config/delete/dashboard-logo`;
+                apiEndpoint = `/api/config/delete/dashboard-logo`;
                 break;
             default:
                 console.error("Invalid picture type:", imageToDelete);
@@ -98,7 +99,7 @@ const bannerManagement = () => {
         }
     
         try {
-            const response = await fetch(apiEndpoint, {
+            const response = await fetch(import.meta.env.VITE_API_URL + apiEndpoint, {
                 headers: {
                     "x-tenant": subdomain,
                     "Authorization": `Bearer ${token}`,

@@ -6,7 +6,7 @@ import googleLogo from '../../assets/images/google-logo.svg';
 import microsoftLogo from '../../assets/images/microsoft-logo.svg';
 import USMLogo from '../../assets/images/USM-logo.png';
 import axios from "axios";
-
+import api from '../../api/axios'
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -17,12 +17,13 @@ const LoginPage = () => {
   const [loginImage, setLogin] = useState(null);
   const [bannerImage, setBanner] = useState(null);
 
+
   useEffect(() => {
     const hostname = window.location.hostname;
     const subdomain = hostname.split('.')[0];
     const fetchTenantExist = async (subdomain) => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tenant/exist/`, {
+        const response = await api.get(`/api/tenant/exist/`, {
           headers: { "x-tenant": subdomain },
         });
         console.log(response.data)
@@ -75,12 +76,12 @@ const LoginPage = () => {
 
     // Dynamically handle localhost vs production
     const baseURL = process.env.NODE_ENV === 'production'
-      ? `https://${subdomain}.yourdomain.com/api/auth/google`
+      ? `${import.meta.env.VITE_API_URL}/api/auth/google`
       : `http://localhost:5000/api/auth/google`;
 
     console.log("Subdomain: " + subdomain)
 
-    window.location.href = `${baseURL}?subdomain=${subdomain}`;
+    window.location.href = `${baseURL}?subdomain=${subdomain}`
   };
 
   if (isLoading) {
@@ -130,7 +131,7 @@ const LoginPage = () => {
               </button>
               <button
                 className="flex items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
-                onClick={() => (window.location.href = "http://localhost:5000/api/auth/google")}
+                onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`)}
               >
                 <img src={microsoftLogo} alt="Microsoft Logo" className="w-6 h-6 mr-5" />
                 Sign In With Microsoft

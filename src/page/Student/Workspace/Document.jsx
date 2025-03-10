@@ -5,6 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import { FiUploadCloud, FiFileText, FiTrash } from "react-icons/fi";
 import StorageBar from "../../../component/Workspace/Document/StorageBar";
 import Toast from '../../../component/Toast/Toast'
+import api from '../../../api/axios'
 
 const ITEMS_PER_PAGE = 5;
 const FileManagement = () => {
@@ -37,7 +38,7 @@ const FileManagement = () => {
 
       setTimeout(async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/file`, {
+          const response = await api.get(`/api/file`, {
             params: { page, limit, search: searchTerm || undefined },
             headers: { 
               "Authorization": `Bearer ${token}`,
@@ -84,7 +85,7 @@ const FileManagement = () => {
     // }
   
     try {
-      const response = await axios.post("http://localhost:5000/api/file/upload", formData, {
+      const response = await api.post("/api/file/upload", formData, {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "x-tenant": subdomain 
@@ -138,7 +139,7 @@ const FileManagement = () => {
   // Handle file deletion
   const deleteFile = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/file/delete/${id}`, {
+      const response = await api.delete(`/api/file/delete/${id}`, {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "x-tenant": subdomain 
@@ -183,7 +184,7 @@ const FileManagement = () => {
     }
   
     try {
-      const response = await fetch("http://localhost:5000/api/file/delete-multiple", {
+      const response = await fetch(import.meta.env.API_VITE_URL + "/api/file/delete-multiple", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

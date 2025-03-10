@@ -4,6 +4,7 @@ import axios from "axios";
 import RequestModal from "../../../component/Admin/RequestModal";
 import { FaDatabase } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const StorageWorkspace = () => {
     const [loading, setLoading] = useState("")
@@ -22,7 +23,7 @@ const StorageWorkspace = () => {
         try {
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+                    const response = await api.get(`/api/user/${user.id}`, {
                         headers: {
                             "x-tenant": subdomain
                         },

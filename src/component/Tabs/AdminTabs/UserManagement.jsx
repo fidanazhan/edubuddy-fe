@@ -7,6 +7,7 @@ import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
 import { MdGroups2 } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -45,7 +46,7 @@ const UserManagement = () => {
     try {
       setTimeout(async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/user`, {
+          const response = await api.get(`/api/user`, {
             params: {
               page,
               limit,
@@ -75,7 +76,7 @@ const UserManagement = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/role/select`, {
+      const response = await api.get(`/api/role/select`, {
         headers: { "x-tenant": subdomain },
       });
 
@@ -87,7 +88,7 @@ const UserManagement = () => {
 
   const fetchGroup = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/group/tenant/select`, {
+      const response = await api.get(`/api/group/tenant/select`, {
         headers: { "x-tenant": subdomain },
       });
 
@@ -113,7 +114,7 @@ const UserManagement = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:5000/api/user/bulk-upload", {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/user/bulk-upload", {
         headers: { "x-tenant": subdomain },
         method: "POST",
         body: formData,
@@ -164,7 +165,7 @@ const UserManagement = () => {
     setIsDeleteModalOpen(false);
 
     try {
-      await axios.delete(`http://localhost:5000/api/user/${selectedUser._id}`, {
+      await api.delete(`/api/user/${selectedUser._id}`, {
         headers: { "x-tenant": subdomain },
       });
       setUsers(users.filter((user) => user.id !== selectedUser.id));  // Remove the user from the list
@@ -184,7 +185,7 @@ const UserManagement = () => {
 
   const downloadUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/download`, {
+      const response = await api.get(`/api/user/download`, {
         params: {
           search: searchTerm || undefined,
           filterByGroup: filterByGroup ? "true" : "false"

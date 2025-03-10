@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
+import api from '../../api/axios'
 
 const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups }) => {
   const [formData, setFormData] = useState({
@@ -52,8 +53,8 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
   };
 
   const getTenantIdFromSubdomain = () => {
-    const hostname = window.location.hostname; // e.g., tenantname.localhost
-    const subdomain = hostname.split('.')[0]; // Get the part before ".localhost"
+    const hostname = window.location.hostname; 
+    const subdomain = hostname.split('.')[0];
     return subdomain; // This will return "tenantname"
   };
 
@@ -82,9 +83,9 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
 
         let response;
         if (isEdit) {
-          response = await axios.put(`http://localhost:5000/api/user/${initialValues._id}`, payload, { headers });
+          response = await api.put(`/api/user/${initialValues._id}`, payload, { headers });
         } else {
-          response = await axios.post("http://localhost:5000/api/user", payload, { headers });
+          response = await api.post("/api/user", payload, { headers });
         }
 
         if (response.status === 201 || response.status === 200) {

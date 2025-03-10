@@ -10,6 +10,7 @@ import { History, Recycle, RefreshCw, Archive, ShoppingBag } from "lucide-react"
 import { Network, Share2, ArrowLeftRight, Banknote } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from "../../../context/JWTContext";
+import api from '../../../api/axios'
 
 const TokenUsersManagement = () => {
     const [users, setUsers] = useState([]);
@@ -35,7 +36,7 @@ const TokenUsersManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+                    const response = await api.get(`/api/user/${user.id}`, {
                         "x-tenant": subdomain,
                     });
                     setAdmin(response.data);
@@ -54,7 +55,7 @@ const TokenUsersManagement = () => {
 
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user`, {
+                    const response = await api.get(`/api/user`, {
                         params: { page, limit, search: searchTerm || undefined },
                         headers: { "x-tenant": subdomain },
                     });

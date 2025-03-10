@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Select from "react-select";
 import { useTranslation } from "react-i18next";
+import api from '../../api/axios'
 
 const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
   const [formData, setFormData] = useState({
@@ -65,9 +65,9 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
 
         let response;
         if (isEdit) {
-          response = await axios.put(`http://localhost:5000/api/group/${initialValues._id}`, payload, { headers });
+          response = await api.put(`/api/group/${initialValues._id}`, payload, { headers });
         } else {
-          response = await axios.post("http://localhost:5000/api/group", payload, { headers });
+          response = await api.post("/api/group", payload, { headers });
         }
 
         if (response.status === 201 || response.status === 200) {

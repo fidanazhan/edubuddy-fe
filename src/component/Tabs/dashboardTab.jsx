@@ -3,6 +3,7 @@ import { TiCloudStorageOutline } from "react-icons/ti";
 import { GiToken } from "react-icons/gi";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/JWTContext';
+import api from '../../api/axios'
 
 const DashboardTab = () => {
   const { t, ready } = useTranslation("admin");
@@ -19,7 +20,7 @@ const DashboardTab = () => {
 
       setTimeout(async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+          const response = await api.get(`/api/user/${user.id}`, {
             "x-tenant": subdomain,
           });
           setAdmin(response.data);

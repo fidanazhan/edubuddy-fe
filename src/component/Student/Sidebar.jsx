@@ -85,7 +85,7 @@ const Sidebar = ({ passIsOpen }) => {
   // }
 
   const deleteChat = async (chatId) => {
-    const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${chatId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

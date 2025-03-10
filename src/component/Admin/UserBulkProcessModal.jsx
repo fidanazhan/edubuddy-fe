@@ -67,13 +67,13 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
     let apiEndpoint = "";
     switch (modalProcess) { // Use modalProcess instead of modalType (assuming modalProcess holds the type)
       case "Bulk Add":
-        apiEndpoint = "http://localhost:5000/api/user/bulk-add";
+        apiEndpoint = "/api/user/bulk-add";
         break;
       case "Bulk Update":
-        apiEndpoint = "http://localhost:5000/api/user/bulk-update";
+        apiEndpoint = "/api/user/bulk-update";
         break;
       case "Bulk Delete":
-        apiEndpoint = "http://localhost:5000/api/user/bulk-delete";
+        apiEndpoint = "/api/user/bulk-delete";
         break;
       default:
         console.error("Invalid modal process type");
@@ -82,7 +82,7 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
     }
 
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch(import.meta.env.VITE_API_URL + apiEndpoint, {
         headers: { "x-tenant": subdomain }, // Ensure subdomain is defined somewhere
         method: "POST",
         body: formData,

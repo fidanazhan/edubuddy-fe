@@ -4,6 +4,7 @@ import axios from "axios";
 import RequestModal from "../../../component/Admin/RequestModal";
 import { GiToken } from "react-icons/gi";
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const TokenWorkspace = () => {
     const [loading, setLoading] = useState("")
@@ -22,7 +23,7 @@ const TokenWorkspace = () => {
         try {
             setTimeout(async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+                    const response = await api.get(`/api/user/${user.id}`, {
                         headers: {
                             "x-tenant": subdomain
                         },

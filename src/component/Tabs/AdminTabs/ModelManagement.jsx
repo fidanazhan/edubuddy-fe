@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
+import api from '../../../api/axios'
 
 const ModelManagement = () => {
     const [config, setConfig] = useState({
@@ -14,7 +15,7 @@ const ModelManagement = () => {
 
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/modelConfig/tenant", {
+        api.get("/api/modelConfig/tenant", {
             headers: { "x-tenant": subdomain },
         })
             .then(response => setConfig(response.data))
@@ -30,7 +31,7 @@ const ModelManagement = () => {
     };
 
     const handleSave = () => {
-        axios.put("http://localhost:5000/api/modelConfig/", config, {
+        api.put("/api/modelConfig/", config, {
             headers: { "x-tenant": subdomain },
         })
             .then(() => {

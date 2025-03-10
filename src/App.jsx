@@ -5,6 +5,7 @@ import router from "./routes/index.jsx";
 import axios from "axios";
 import i18n from "./i18n";
 import { useAuth } from "./context/JWTContext"; // FIX: Call inside component
+import api from './api/axios.jsx'
 
 function App() {
 
@@ -34,7 +35,7 @@ function App() {
     const fetchLanguage = async () => {
       if (!user) return; // Wait until user is available
       try {
-        const response = await axios.get(`http://localhost:5000/api/user/${user.id}`, {
+        const response = await api.get(`/api/user/${user.id}`, {
           headers: {
             "x-tenant": subdomain2,
             "Authorization": `Bearer ${token}`,

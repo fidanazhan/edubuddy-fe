@@ -3,6 +3,7 @@ import { useAuth } from "../../../context/JWTContext";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Toast from '../../../component/Toast/Toast';
+import api from '../../../api/axios'
 
 const LanguageSettings = () => {
     const { i18n, t, ready } = useTranslation("settings");
@@ -21,7 +22,7 @@ const LanguageSettings = () => {
         const token = localStorage.getItem("accessToken");
         const subdomain = window.location.hostname.split(".")[0];
         try {
-            const response = await axios.put(`http://localhost:5000/api/user/${user.id}/lang`, { lang }, {
+            const response = await api.put(`/api/user/${user.id}/lang`, { lang }, {
                 headers: {
                     "x-tenant": subdomain,
                     "Authorization": `Bearer ${token}`,

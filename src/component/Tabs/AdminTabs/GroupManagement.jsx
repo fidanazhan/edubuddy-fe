@@ -9,8 +9,8 @@ import GroupUserModal from "../../Admin/GroupUserModal";
 import { useTranslation } from 'react-i18next';
 
 const getTenantIdFromSubdomain = () => {
-  const hostname = window.location.hostname; // e.g., tenantname.localhost
-  const subdomain = hostname.split('.')[0]; // Get the part before ".localhost"
+  const hostname = window.location.hostname;
+  const subdomain = hostname.split('.')[0]; 
   return subdomain; // This will return "tenantname"
 };
 
@@ -93,7 +93,7 @@ const GroupManagement = () => {
     setIsDeleteModalOpen(false);
 
     try {
-      await axios.delete(`http://localhost:5000/api/group/${selectedGroup._id}`, {
+      await api.delete(`/api/group/${selectedGroup._id}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "x-tenant": tenantId

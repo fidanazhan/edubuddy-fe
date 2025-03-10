@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from '../../api/axios'
 
 const Dashboard = () => {
   const [text, setText] = useState("");
@@ -28,7 +29,7 @@ const Dashboard = () => {
 
   const createChatMutation = useMutation({
     mutationFn: async (text) => {
-      const response = await fetch("http://localhost:5000/api/chats", {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/chats", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
