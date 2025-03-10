@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { chatEvents } from "../../page/Student/eventEmitter";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { MdDashboard, MdAdd, MdOutlineSearch } from "react-icons/md";
@@ -49,7 +50,7 @@ const Sidebar = ({ passIsOpen }) => {
   //   }
   // }
 
-  const { data: chats, isLoading, isError } = useQuery({
+  const { data: chats, isLoading, isError, refetch } = useQuery({
     queryKey: ["userChats"],
     queryFn: async () => {
       const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/userchats`, {
@@ -68,6 +69,15 @@ const Sidebar = ({ passIsOpen }) => {
     refetchOnWindowFocus: false, // Prevents refetching on tab focus
     refetchOnReconnect: false,   // Prevents refetching on network reconnect
   });
+
+  useEffect(() => {
+    const refreshHandler = () => refetch();
+    chatEvents.on("refreshChats", refreshHandler);
+
+    return () => {
+      chatEvents.off("refreshChats", refreshHandler);
+    };
+  }, [refetch]);
 
   // const deleteChat = async (chatId) => {
   //   const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {

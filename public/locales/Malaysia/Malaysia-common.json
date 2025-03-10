@@ -24,7 +24,8 @@
         "receiver": "Penerima",
         "reason": "Sebab",
         "code": "Kod",
-        "description": "Deskripsi"
+        "description": "Deskripsi",
+        "permission": "Permisi"
     },
     "optional": "Jika Mahu",
     "active": "Aktif",

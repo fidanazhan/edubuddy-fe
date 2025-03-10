@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { chatEvents } from "./eventEmitter";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw';
 import Markdown from "./Output";
@@ -143,6 +144,7 @@ const Chat = () => {
           )
         );
       }
+      chatEvents.emit("refreshChats"); // ✅ Notify Sidebar to refresh
     }
 
     setIsFirstMessageInSession(false); // Mark session as active
@@ -153,7 +155,7 @@ const Chat = () => {
     <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
       <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
-        <div className="w-4/6 mx-auto flex-1 space-y-4"> 
+        <div className="w-4/6 mx-auto flex-1 space-y-4">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -167,7 +169,7 @@ const Chat = () => {
                   : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
                   } max-w-xl`}
               >
-                
+
                 {msg.role == "user" && (
                   <p>{msg.content}</p>
                 )}

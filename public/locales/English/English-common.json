@@ -24,7 +24,8 @@
         "receiver": "Receiver",
         "reason": "Reason",
         "code": "Code",
-        "description": "Description"
+        "description": "Description",
+        "permission": "Permission"
     },
     "optional": "Optional",
     "active": "Active",
