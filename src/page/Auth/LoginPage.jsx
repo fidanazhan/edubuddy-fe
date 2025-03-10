@@ -77,7 +77,7 @@ const LoginPage = () => {
     // Dynamically handle localhost vs production
     const baseURL = process.env.NODE_ENV === 'production'
       ? `${import.meta.env.VITE_API_URL}/api/auth/google`
-      : `http://localhost:5000/api/auth/google`;
+      : `${import.meta.env.VITE_API_URL}/api/auth/google`;
 
     console.log("Subdomain: " + subdomain)
 
