@@ -152,24 +152,52 @@ const Chat = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
-      <div className="flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
+      <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
         <div className="w-4/6 mx-auto flex-1 space-y-4"> 
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start w-full"}`}
               onMouseEnter={() => setHoveredIndex(msg.role !== "user" ? index : null)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "bg-gray-200 text-black w-4/5 dark:bg-gray-600 dark:text-gray-100/80"
-                  : "bg-white dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  } max-w-xl `}
+                  ? "bg-gray-200 text-black w-10/12 dark:bg-gray-600 dark:text-gray-100/80"
+                  : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
+                  } max-w-xl`}
               >
-                {/* <ReactMarkdown rehypePlugins={[rehypeRaw]}>{msg.content}</ReactMarkdown> */}
-                {/* <Markdown>{msg.content}</Markdown> */}
-                <ChatResponse answer={msg.content} />
+                
+                {msg.role == "user" && (
+                  <p>{msg.content}</p>
+                )}
+
+                {msg.role != "user" && (
+                  <ChatResponse answer={msg.content} />
+                )}
+
+                {/* Reserved space BELOW the message for icons */}
+                {msg.role !== "user" && (
+                  <div className="h-9 flex">
+                    <div
+                      className={`flex gap-2 dark:bg-gray-800 p-1 px-4 transition-opacity duration-1000 ${hoveredIndex === index ? "opacity-100" : "opacity-0"
+                        }`}
+                    >
+                      <button className="p-1 hover:text-blue-500">
+                        <ThumbsUp size={18} />
+                      </button>
+                      <button className="p-1 hover:text-red-500">
+                        <ThumbsDown size={18} />
+                      </button>
+                      <button className="p-1 hover:text-green-500">
+                        <Share2 size={18} />
+                      </button>
+                      <button className="p-1 hover:text-yellow-500">
+                        <RefreshCcw size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -181,8 +209,8 @@ const Chat = () => {
       {/* Input Box */}
       <form
         onSubmit={handleSubmit}
-        className="p-4 border-t bg-white flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
-        style={{ height: "15vh" }}
+        className="p-4 flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
+        style={{ height: "10vh" }}
       >
         <input
           type="text"

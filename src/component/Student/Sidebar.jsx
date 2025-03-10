@@ -52,7 +52,7 @@ const Sidebar = ({ passIsOpen }) => {
   const { data: chats, isLoading, isError } = useQuery({
     queryKey: ["userChats"],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
+      const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/userchats`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -214,9 +214,13 @@ const Sidebar = ({ passIsOpen }) => {
 
           <hr className="border-gray-300 dark:border-gray-700" />
           <div
-            className={`whitespace-nowrap transition-all duration-200 ease-in-out ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"}`}
+            className={`custom-scrollbar custom-scrollbar-sidebar-height whitespace-nowrap transition-all duration-200 ease-in-out overflow-y-auto max-h-60 ${
+              isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"
+            }`}
           >
-            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">{t("recent")}</div>
+            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">
+              {t("recent")}
+            </div>
             {Array.isArray(chats) ? (
               chats.map((chat) => (
                 <div
@@ -228,7 +232,7 @@ const Sidebar = ({ passIsOpen }) => {
                     {capitalizeAndTruncate(chat.title)}
                   </Link>
 
-                  <button
+                  {/* <button
                     data-menu-button="true"
                     onClick={(event) => toggleMenu(chat._id, event)}
                     className="text-gray-400 hover:text-gray-600"
@@ -260,14 +264,14 @@ const Sidebar = ({ passIsOpen }) => {
                         </div>
                       </button>
                     </div>
-                  )}
-
+                  )} */}
                 </div>
               ))
             ) : (
               <p className="text-gray-500 px-4">No recent chats</p>
             )}
           </div>
+
         </ul>
 
 

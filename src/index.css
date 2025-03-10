@@ -41,3 +41,53 @@ input[type="number"]:focus {
     -moz-appearance: textfield;
     appearance: none;
 }
+
+/* Custom scrollbar for webkit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Set width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light background for the track */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d6d5d5; /* Dark color for the scrollbar thumb */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8; /* Darker thumb color on hover */
+}
+
+/* For small screens */
+.custom-scrollbar-sidebar-height {
+  max-height: 40vh; /* 40% of viewport height */
+}
+
+/* For medium-sized screens (tablets) */
+@media (min-width: 600px) {
+  .custom-scrollbar-sidebar-height {
+    max-height: 50vh; /* 50% of viewport height */
+  }
+}
+
+/* For large screens (desktops) */
+@media (min-width: 1024px) {
+  .custom-scrollbar-sidebar-height {
+    max-height: 50vh; /* 60% of viewport height */
+  }
+}
+
+@media (min-width: 1280px) {
+  .custom-scrollbar-sidebar-height {
+    max-height: 60vh; /* 60% of viewport height */
+  }
+}
+
+@media (min-width: 1536px) {
+  .custom-scrollbar-sidebar-height {
+    max-height: 75vh; /* 60% of viewport height */
+  }
+}
