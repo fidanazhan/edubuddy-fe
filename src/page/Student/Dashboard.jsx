@@ -63,7 +63,8 @@ const Dashboard = () => {
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask something..."
-          className="w-full p-4 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-4 text-black/80 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500
+                      dark:text-white/80 dark:bg-gray-600 dark:border-gray-500"
           autoFocus
         />
       </div>

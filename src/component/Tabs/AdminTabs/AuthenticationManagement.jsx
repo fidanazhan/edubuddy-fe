@@ -44,43 +44,43 @@ const AuthenticationManagement = () => {
 
     return (
         // max-w-lg
-        <div className="p-6 mb-4">
+        <div className="p-6 mb-4 ">
             <h1 className="text-xl font-semibold">{t("admin:system.authentication.title")}</h1>
-            <div className="w-full mx-auto mt-8 p-6 bg-gray-50 shadow-lg rounded-lg">
+            <div className="w-full mx-auto mt-8 p-6 bg-gray-50 rounded-lg dark:border-gray-800 dark:bg-gray-800">
                 <form onSubmit={handleSave}>
                     <label className="block mb-2">
                         {t("admin:system.authentication.access_token")}
-                        <input 
-                            type="number" 
-                            name="accessTokenTTL" 
-                            value={config.accessTokenTTL} 
-                            onChange={handleChange} 
+                        <input
+                            type="number"
+                            name="accessTokenTTL"
+                            value={config.accessTokenTTL}
+                            onChange={handleChange}
                             className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none"
                         />
                     </label>
                     <label className="block mb-2">
                         {t("admin:system.authentication.refresh_token")}
-                        <input 
-                            type="number" 
-                            name="refreshTokenTTL" 
-                            value={config.refreshTokenTTL} 
-                            onChange={handleChange} 
-                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none" 
+                        <input
+                            type="number"
+                            name="refreshTokenTTL"
+                            value={config.refreshTokenTTL}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none"
                         />
                     </label>
                     <label className="block mb-2">
                         {t("admin:system.authentication.max_failed")}
-                        <input 
-                            type="number" 
-                            name="maxFailedLoginAttempts" 
-                            value={config.maxFailedLoginAttempts} 
-                            onChange={handleChange} 
+                        <input
+                            type="number"
+                            name="maxFailedLoginAttempts"
+                            value={config.maxFailedLoginAttempts}
+                            onChange={handleChange}
                             className="w-full p-2 border rounded mt-1 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700 dark:text-gray-300 appearance-none"
                         />
                     </label>
 
                     <div className="flex w-full space-x-2 justify-around mt-4">
-                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.googleLogin ? 'bg-green-900 border-green-500' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.googleLogin ? 'bg-green-900 border-green-500 dark:bg-green-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
                             <div className={`flex items-center  ${config.googleLogin ? 'text-white' : 'text-black dark:text-white '} `}>
                                 <span>
                                     {t("admin:system.authentication.google_login")}
@@ -101,7 +101,7 @@ const AuthenticationManagement = () => {
                             </div>
                         </div>
 
-                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.microsoftLogin ? 'bg-green-900 border-green-500' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                        <div className={`flex justify-center items-center w-1/2 max-w-lg mb-4 border border-gray-600 rounded-lg p-2 py-4 transition-colors duration-300 ${config.microsoftLogin ? 'bg-green-900 border-green-500 dark:bg-green-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
                             <div className={`flex items-center  ${config.microsoftLogin ? 'text-white' : 'text-black dark:text-white '} `}>
                                 <span>
                                     {t("admin:system.authentication.microsoft_login")}
