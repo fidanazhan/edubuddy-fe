@@ -71,18 +71,12 @@ const LoginPage = () => {
   }, [login, navigate]);
 
   const loginProcess = () => {
-    const hostname = window.location.hostname;
-    const subdomain = hostname.split('.')[0];
-
-    // Dynamically handle localhost vs production
-    const baseURL = process.env.NODE_ENV === 'production'
-      ? `${import.meta.env.VITE_API_URL}/api/auth/google`
-      : `${import.meta.env.VITE_API_URL}/api/auth/google`;
-
-    console.log("Subdomain: " + subdomain)
-
-    window.location.href = `${baseURL}?subdomain=${subdomain}`
+    const subdomain = window.location.hostname.split('.')[0];  // Extract subdomain from hostname
+    const baseURL = `${import.meta.env.VITE_API_URL}/api/auth/google?subdomain=${subdomain}`;
+    console.log("Redirecting to:", baseURL);
+    window.location.href = baseURL;
   };
+  
 
   if (isLoading) {
     return (
