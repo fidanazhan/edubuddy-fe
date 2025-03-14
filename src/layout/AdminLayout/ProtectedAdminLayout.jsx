@@ -1,10 +1,21 @@
+import { useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/JWTContext.jsx";
 
 const AdminProtectedRoute = () => {
   const { user, loading } = useAuth();
+  const [isLargeScreen, setIsLargeScreen] = useState(true); // Default to true to avoid flicker
 
-  // If data is still loading, display a loading spinner or prevent access
+  useEffect(() => {
+    const checkScreenSize = () => setIsLargeScreen(window.innerWidth >= 768);
+
+    checkScreenSize(); // Check on mount
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Show loading spinner while checking auth state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -16,8 +27,14 @@ const AdminProtectedRoute = () => {
     );
   }
 
+  // Redirect non-admin users
   if (!user || user.roles !== "ADMIN") {
-    return <Navigate to="/forbidden" replace />; // Redirect non-admins to forbidden page
+    return <Navigate to="/forbidden" replace />;
+  }
+
+  // Redirect admin users if they are on mobile (screen width < 768px)
+  if (!isLargeScreen) {
+    return <Navigate to="/forbidden" replace />;
   }
 
   return <Outlet />;
