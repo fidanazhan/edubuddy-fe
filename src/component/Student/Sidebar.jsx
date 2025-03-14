@@ -10,45 +10,17 @@ import { RiPencilLine } from "react-icons/ri";
 import Location from '../Location'
 import { useTranslation } from "react-i18next";
 // import './sidebar.css'
+import ChatModal from "../Admin/ChatModal";
 
 const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
   const [isMobileOpen, setIsMobileOpen] = useState(false); // For mobile devices
   const { t, ready } = useTranslation("sidebar");
-  // const [chats, setChats] = useState([]);
   const subdomain = window.location.hostname.split(".")[0];
   const token = localStorage.getItem("accessToken");
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const menuRef = useRef(null);
   const queryClient = useQueryClient();
-  // const { isPending, error, data } = useQuery({
-  //   queryKey: ["userChats"],
-  //   queryFn: () =>
-  //     fetch(`${import.meta.env.VITE_API_URL}/api/chats/userchats?userId=user_2rzHVJFMuvGHRd07bO8oT0FzX4o`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then((res) => res.json()),
-  // });
-
-  // useEffect(() => {
-  //   fetchChats()
-  // }, []);
-
-  // const fetchChats = async () => {
-  //   const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": `Bearer ${token}`,
-  //       "x-tenant": subdomain,
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     setChats(data)
-  //   }
-  // }
+  const [isChatModelOpen, setIsChatModelOpen] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null)
 
   const { data: chats, isLoading, isError, refetch } = useQuery({
     queryKey: ["userChats"],
@@ -79,21 +51,6 @@ const Sidebar = ({ passIsOpen }) => {
     };
   }, [refetch]);
 
-  // const deleteChat = async (chatId) => {
-  //   const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": `Bearer ${token}`,
-  //       "x-tenant": subdomain,
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     setChats((prevChats) => prevChats.filter(chat => chat._id !== chatId));
-  //     fetchChats();
-  //   }
-  // }
-
   const deleteChat = async (chatId) => {
     const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${chatId}`, {
       method: "DELETE",
@@ -107,7 +64,6 @@ const Sidebar = ({ passIsOpen }) => {
       queryClient.invalidateQueries(["userChats"]); // Force refetch after deleting
     }
   };
-
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -132,29 +88,6 @@ const Sidebar = ({ passIsOpen }) => {
       ? truncatedByWords.slice(0, 20).trim() + "..."
       : truncatedByWords;
   }
-
-  // const toggleMenu = (chatId, event) => {
-  //   event.stopPropagation(); // Prevent event bubbling
-
-  //   setOpenMenuId((prev) => (prev === chatId ? null : chatId));
-  // };
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       menuRef.current &&
-  //       !menuRef.current.contains(event.target) &&
-  //       !event.target.closest("[data-menu-button]") // Ensure the clicked element is not a menu button
-  //     ) {
-  //       setOpenMenuId(null);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
 
   if (!ready) return null;
 
@@ -242,12 +175,14 @@ const Sidebar = ({ passIsOpen }) => {
                     {capitalizeAndTruncate(chat.title)}
                   </Link>
 
-                  {/* Delete button aligned to the right */}
                   <button
-                    onClick={() => deleteChat(chat._id)}
-                    className="text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full"
+                    onClick={() => {
+                      setSelectedChat(chat);
+                      setIsChatModelOpen(true);
+                    }}
+                    className="text-gray-400 hover:text-gray-600"
                   >
-                    <CiTrash className="w-5 h-5" />
+                    <CiMenuKebab size={18} />
                   </button>
                 </div>
               ))
@@ -258,12 +193,13 @@ const Sidebar = ({ passIsOpen }) => {
 
         </ul >
         {/* Footer Section */}
-        <div
+        < div
           className={`p-4 text-sm text-gray-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
-            }`}
+            }`
+          }
         >
           {/* <Location /> */}
-        </div>
+        </div >
       </div >
 
 
@@ -370,6 +306,19 @@ const Sidebar = ({ passIsOpen }) => {
           <div className="p-4 text-sm text-gray-500">© 2025 BordUp™</div>
         </div>
       </div >
+
+      {isChatModelOpen && selectedChat && (
+        <ChatModal
+          title={t("admin:users.user.bulk_update")}
+          onClose={() => setIsChatModelOpen(false)}
+          initialValues={selectedChat}
+          onSubmit={() => {setIsChatModelOpen(false)}}
+          token={token}
+          subdomain = {subdomain}
+          refetch = {refetch}
+        />
+      )}
+
     </>
   );
 };
