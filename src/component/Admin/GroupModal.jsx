@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { IoMdClose } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 import api from '../../api/axios'
 
@@ -81,11 +81,23 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
     }
   };
 
+  const closeModal = () => {
+    onClose();
+  };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg w-[30rem] p-6">
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
+        <div className="text-xl font-bold mb-4 flex justify-between items-center">
+          <h2 className="text-xl font-semibold mb-4">{title}</h2>
+          <button
+            className="text-white hover:text-gray-900 bg-red-500 p-1 rounded-md"
+            onClick={closeModal}
+          >
+            <IoMdClose />
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
           <div className="mb-4">

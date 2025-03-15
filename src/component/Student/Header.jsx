@@ -67,16 +67,23 @@ const Header = () => {
             </button>
 
             {user?.roles === "ADMIN" && (
-              <button
-                className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => {
-                  closeDropdown();
-                  navigate(`/admin-panel`);
-                }}
-              >
-                <MdAdminPanelSettings className="mr-2 text-gray-600" />
-                <span>{t("admin")}</span>
-              </button>
+              <>
+                <button
+                  className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 
+                 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => {
+                    closeDropdown();
+                    navigate(`/admin-panel`);
+                  }}
+                  disabled={window.innerWidth < 768}
+                >
+                  <MdAdminPanelSettings className="mr-2 text-gray-600" />
+                  <span>{t("admin")}</span>
+                </button>
+                <span className="block md:hidden text-red-500 text-sm text-center">
+                  {t("No support for mobile view.")}
+                </span>
+              </>
             )}
 
             <button

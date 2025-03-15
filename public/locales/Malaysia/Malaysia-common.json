@@ -11,7 +11,8 @@
         "confirm": "Pasti",
         "prev": "Sebelum",
         "next": "Seterusnya",
-        "close": "Tutup"
+        "close": "Tutup",
+        "rename": "Tukar Tajuk"
     },
     "table": {
         "name": "Nama",

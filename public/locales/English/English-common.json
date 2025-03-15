@@ -11,7 +11,8 @@
         "confirm": "Confirm",
         "prev": "Prev",
         "next": "Next",
-        "close": "Close"
+        "close": "Close",
+        "rename": "Rename Topic"
     },
     "table": {
         "name": "Name",

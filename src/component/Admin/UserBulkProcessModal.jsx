@@ -109,7 +109,7 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
         <div className="text-xl font-bold mb-4 flex justify-between items-center">
           <h2>{modalProcess}</h2>
           <button
-            className="text-white hover:text-gray-900 bg-red-400 p-1 rounded-md"
+            className="text-white hover:text-gray-900 bg-red-500 p-1 rounded-md"
             onClick={closeModal}
           >
             <IoMdClose />
