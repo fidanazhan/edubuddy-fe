@@ -98,7 +98,7 @@ const TokenTransactionManagement = () => {
             <div className="flex items-center mb-4 space-x-2">
                 <input
                     type="text"
-                    placeholder={t("admin:token.transaction.seach_sender")}
+                    placeholder={t("admin:token.transaction.search_sender")}
                     className="border rounded-lg px-4 py-2 w-auto dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80"
                     value={searchSenderName}
                     onChange={(e) => setSenderName(e.target.value)}

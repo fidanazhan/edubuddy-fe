@@ -102,27 +102,47 @@ const StorageUsersManagement = () => {
                 {/* <div>Storage Balance | Storage Used | Storage Distributed | ???</div> */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_total")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.totalStorage ?? "Failed to get Storage"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("admin:storage.users.widget_total")}</h2>
+                        {admin?.totalStorage === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.totalStorage}</p>
+                        )}
                     </div>
-                    {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 3 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_used")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.usedStorage ?? "Failed to get Storage"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("admin:storage.users.widget_used")}</h2>
+                        {admin?.usedStorage === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.usedStorage}</p>
+                        )}
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_balance")}</h2>
-                        <p className="text-gray-500 mt-4">{admin
-                                    ? balanceStorage(admin.totalStorage ?? 0, admin.usedStorage ?? 0)
-                                    : "Failed to get Storage"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("admin:storage.users.widget_balance")}</h2>
+                        {admin?.usedStorage === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500 mt-4">
+                                {balanceStorage(admin.totalStorage ?? 0, admin.usedStorage ?? 0)}
+                            </p>
+                        )}
                     </div>
                     {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
@@ -130,8 +150,15 @@ const StorageUsersManagement = () => {
                 {/* Widget 4 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("admin:storage.users.widget_distributed")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.distributedStorage ?? "Failed to get Storage"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("admin:storage.users.widget_distributed")}</h2>
+                        {admin?.distributedStorage === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.distributedStorage}</p>
+                        )}
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
                 </div>

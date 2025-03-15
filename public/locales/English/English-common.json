@@ -25,10 +25,16 @@
         "reason": "Reason",
         "code": "Code",
         "description": "Description",
-        "permission": "Permission"
+        "permission": "Permission",
+        "defaultToken": "Default Token",
+        "defaultStorage": "Default Storage"
     },
     "optional": "Optional",
     "active": "Active",
     "not_active": "Not Active",
-    "drag": "Drag & drop files here, or click to upload."
+    "drag": "Drag & drop files here, or click to upload.",
+    "select_status": "Please select status",
+    "select_role": "Please select role",
+    "select_group": "Please select group",
+    "status": "Status"
 }

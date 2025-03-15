@@ -52,16 +52,19 @@ const TokenWorkspace = () => {
 
     return (
         <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
-            <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200/90 mb-4">{t("token.title")}</h2>
+            <div className="flex justify-between items-center bg-white dark:bg-gray-700 px-4 py-3 shadow-md rounded-lg mb-4">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                    {t("token.title")}
+                </h2>
                 <button
-                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                    className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300"
                     onClick={() => setIsRequestModalOpen(true)}
                 >
-                    <GiToken className="w-6 h-6 inline-block mr-1" />
-                    <span className="text-sm">{t("token.request")}</span>
+                    <GiToken className="w-5 h-5 mr-2" />
+                    <span className="text-sm font-medium">{t("token.request")}</span>
                 </button>
             </div>
+
 
 
             {loading ? (

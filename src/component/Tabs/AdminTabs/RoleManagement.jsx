@@ -70,6 +70,8 @@ const RoleManagement = () => {
                                     <th className="py-2 px-4 border">{t("common:table.name")}</th>
                                     <th className="py-2 px-4 border">{t("common:table.code")}</th>
                                     <th className="py-2 px-4 border">{t("common:table.permission")}</th>
+                                    <th className="py-2 px-4 border">{t("common:table.defaultToken")}</th>
+                                    <th className="py-2 px-4 border">{t("common:table.defaultStorage")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,6 +90,8 @@ const RoleManagement = () => {
                                                     </span>
                                                 ))}
                                             </td>
+                                            <td className="py-2 px-4 border text-sm">{role.defaultToken}</td>
+                                            <td className="py-2 px-4 border text-sm">{role.defaultStorage}</td>
                                         </tr>
                                     ))) : (
                                     <tr>

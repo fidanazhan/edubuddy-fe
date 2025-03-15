@@ -102,7 +102,7 @@ const GroupUserModal = ({ group, onClose, token, tenantId }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-[70rem] p-6">
+      <div className="rounded-lg shadow-lg w-[70rem] p-6">
         <div className="text-xl font-bold mb-4 flex justify-between items-center">
             <h2>{group.name}</h2>
             <button

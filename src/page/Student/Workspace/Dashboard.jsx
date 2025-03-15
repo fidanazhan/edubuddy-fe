@@ -41,16 +41,30 @@ const Dashboard = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
           <div className=''>
-            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("dashboard.widget_token")}</h2>
-            <p className="text-gray-500 mt-4">{userInfo?.usedToken ?? "Failed to get Token"}</p>
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("dashboard.widget_token")}</h2>
+            {userInfo?.usedToken === undefined ? (
+                <div className="flex flex-col items-center">
+                    {/* Animated Spinner */}
+                    <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                ) : (
+                <p className="text-gray-500">{userInfo.usedToken}</p>
+            )}
           </div>
           <TiCloudStorageOutline className='w-20 h-20 text-blue-500' />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
           <div className=''>
-            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("dashboard.widget_storage")}</h2>
-            <p className="text-gray-500 mt-4">{userInfo?.usedStorage ?? "Failed to get Storage"}</p>
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80 mb-4">{t("dashboard.widget_storage")}</h2>
+            {userInfo?.usedStorage === undefined ? (
+                <div className="flex flex-col items-center">
+                    {/* Animated Spinner */}
+                    <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                ) : (
+                <p className="text-gray-500">{userInfo.usedStorage}</p>
+            )}
           </div>
           <GiToken className='w-20 h-20 text-gray-400' />
         </div>

@@ -7,6 +7,7 @@ import Markdown from "./Output";
 import ChatResponse from "../../component/ChatResponse";
 import { useNavigate } from "react-router-dom";
 import { ThumbsUp, ThumbsDown, Share2, RefreshCcw } from "lucide-react";
+import { FiSend } from 'react-icons/fi'
 
 const Chat = () => {
   const { id } = useParams();
@@ -209,7 +210,7 @@ const Chat = () => {
 
 
       {/* Input Box */}
-      <form
+      {/* <form
         onSubmit={handleSubmit}
         className="p-4 flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
         style={{ height: "10vh" }}
@@ -225,9 +226,9 @@ const Chat = () => {
         <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white hover:bg-blue-600">
           Send
         </button>
-      </form>
+      </form> */}
 
-      {/* <div className="flex flex-col h-5/6">
+      <div className="flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
           className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
@@ -251,7 +252,7 @@ const Chat = () => {
             </button>
           </div>
         </form>
-      </div> */}
+      </div>
     </div>
   );
 

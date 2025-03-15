@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { FaEdit, FaTrash, FaUpload } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
 // Balance
 import { Wallet, DollarSign, BanknoteIcon } from "lucide-react";
@@ -102,39 +100,62 @@ const TokenUsersManagement = () => {
                 {/* Monthly Token */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">{t("admin:token.users.widget_total")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.totalToken ?? "Failed to get Token"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{t("admin:token.users.widget_total")}</h2>
+                        {admin?.totalToken === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.totalToken}</p>
+                        )}
                     </div>
-                    {/* <Wallet className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 3 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">{t("admin:token.users.widget_used")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.usedToken ?? "Failed to get Token"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{t("admin:token.users.widget_used")}</h2>
+                        {admin?.usedToken === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.usedToken}</p>
+                        )}
                     </div>
-                    {/* <History className='w-20 h-20 text-gray-400' /> */}
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">{t("admin:token.users.widget_balance")}</h2>
-                        <p className="text-gray-500 mt-4">
-                            {admin
-                                ? balanceToken(admin.totalToken ?? 0, admin.usedToken ?? 0)
-                                : "Failed to get Token"}                            </p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{t("admin:token.users.widget_balance")}</h2>
+                        {admin?.usedToken === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500 mt-4">
+                                {balanceToken(admin.totalToken ?? 0, admin.usedToken ?? 0)}
+                            </p>
+                        )}
                     </div>
-                    {/* <Network className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
                 {/* Widget 4 */}
                 <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800">
                     <div className=''>
-                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">{t("admin:token.users.widget_distributed")}</h2>
-                        <p className="text-gray-500 mt-4">{admin?.distributedToken ?? "Failed to get Token"}</p>
+                        <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">{t("admin:token.users.widget_distributed")}</h2>
+                        {admin?.distributedToken === undefined ? (
+                            <div className="flex flex-col items-center">
+                                {/* Animated Spinner */}
+                                <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                            ) : (
+                            <p className="text-gray-500">{admin.distributedToken}</p>
+                        )}
                     </div>
-                    {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
                 </div>
 
             </div>

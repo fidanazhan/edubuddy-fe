@@ -9,7 +9,8 @@ import { CiChat1, CiTrash, CiMenuKebab } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import Location from '../Location'
 import { useTranslation } from "react-i18next";
-// import './sidebar.css'
+import { format, isToday, isYesterday, subDays, isAfter } from "date-fns";
+
 
 const Sidebar = ({ passIsOpen }) => {
   const [isOpen, setIsOpen] = useState(true); // For toggling the sidebar
@@ -21,34 +22,6 @@ const Sidebar = ({ passIsOpen }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
   const queryClient = useQueryClient();
-  // const { isPending, error, data } = useQuery({
-  //   queryKey: ["userChats"],
-  //   queryFn: () =>
-  //     fetch(`${import.meta.env.VITE_API_URL}/api/chats/userchats?userId=user_2rzHVJFMuvGHRd07bO8oT0FzX4o`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then((res) => res.json()),
-  // });
-
-  // useEffect(() => {
-  //   fetchChats()
-  // }, []);
-
-  // const fetchChats = async () => {
-  //   const response = await fetch(`http://localhost:5000/api/chats/userchats`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": `Bearer ${token}`,
-  //       "x-tenant": subdomain,
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     setChats(data)
-  //   }
-  // }
 
   const { data: chats, isLoading, isError, refetch } = useQuery({
     queryKey: ["userChats"],
@@ -78,21 +51,6 @@ const Sidebar = ({ passIsOpen }) => {
       chatEvents.off("refreshChats", refreshHandler);
     };
   }, [refetch]);
-
-  // const deleteChat = async (chatId) => {
-  //   const response = await fetch(`http://localhost:5000/api/chats/${chatId}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": `Bearer ${token}`,
-  //       "x-tenant": subdomain,
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     setChats((prevChats) => prevChats.filter(chat => chat._id !== chatId));
-  //     fetchChats();
-  //   }
-  // }
 
   const deleteChat = async (chatId) => {
     const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${chatId}`, {
@@ -133,30 +91,38 @@ const Sidebar = ({ passIsOpen }) => {
       : truncatedByWords;
   }
 
-  // const toggleMenu = (chatId, event) => {
-  //   event.stopPropagation(); // Prevent event bubbling
-
-  //   setOpenMenuId((prev) => (prev === chatId ? null : chatId));
-  // };
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       menuRef.current &&
-  //       !menuRef.current.contains(event.target) &&
-  //       !event.target.closest("[data-menu-button]") // Ensure the clicked element is not a menu button
-  //     ) {
-  //       setOpenMenuId(null);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
   if (!ready) return null;
+
+  const groupChatsByDate = (chats) => {
+    if (!Array.isArray(chats)) return { Today: [], Yesterday: [], "Last 7 Days": [] };
+  
+    const today = new Date();
+    const yesterday = subDays(today, 1);
+    const sevenDaysAgo = subDays(today, 7);
+  
+    const groupedChats = {
+      Today: [],
+      Yesterday: [],
+      "Last 7 Days": [],
+    };
+  
+    chats.forEach((chat) => {
+      const updatedAt = new Date(chat.updatedAt);
+  
+      if (isToday(updatedAt)) {
+        groupedChats.Today.push(chat);
+      } else if (isYesterday(updatedAt)) {
+        groupedChats.Yesterday.push(chat);
+      } else if (isAfter(updatedAt, sevenDaysAgo)) {
+        groupedChats["Last 7 Days"].push(chat);
+      }
+    });
+  
+    return groupedChats;
+  };
+  
+
+  const groupedChats = groupChatsByDate(chats);
 
   return (
     <>
@@ -227,33 +193,37 @@ const Sidebar = ({ passIsOpen }) => {
             className={`custom-scrollbar custom-scrollbar-sidebar-height whitespace-nowrap transition-all duration-200 ease-in-out overflow-y-auto max-h-60 ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"
               }`}
           >
-            <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">
+            {/* <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">
               {t("recent")}
+            </div> */}
+            <div>
+              {Object.entries(groupedChats).map(([group, chats]) =>
+                chats.length > 0 ? (
+                  <div key={group}>
+                    <h2 className="text-sm font-bold text-gray-700 dark:text-gray-300 px-4 mt-4 mb-1">
+                      {group}
+                    </h2>
+                    {chats.map((chat) => (
+                      <div
+                        key={chat._id}
+                        className="flex justify-between items-center py-1 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
+                      >
+                        <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow">
+                          <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
+                          {capitalizeAndTruncate(chat.title)}
+                        </Link>
+                        <button
+                          onClick={() => deleteChat(chat._id)}
+                          className="text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-1 rounded-full"
+                        >
+                          <CiTrash className="w-5 h-5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : null
+              )}
             </div>
-            {Array.isArray(chats) ? (
-              chats.map((chat) => (
-                <div
-                  key={chat._id}
-                  className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
-                >
-                  {/* Chat Title aligned to the left */}
-                  <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow">
-                    <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
-                    {capitalizeAndTruncate(chat.title)}
-                  </Link>
-
-                  {/* Delete button aligned to the right */}
-                  <button
-                    onClick={() => deleteChat(chat._id)}
-                    className="text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full"
-                  >
-                    <CiTrash className="w-5 h-5" />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 px-4">No recent chats</p>
-            )}
           </div>
 
         </ul >

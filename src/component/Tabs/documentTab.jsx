@@ -346,107 +346,112 @@ const FileManagement = () => {
         </div>
       ) : (
         <div>
-          <table className="table-auto w-full border-collapse border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100 dark:bg-gray-600 border-b">
-                <th className="px-4 py-2 text-left">
-                  <input
-                    type="checkbox"
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedFiles(files.map((file) => file._id));
-                      } else {
-                        setSelectedFiles([]);
-                      }
-                    }}
-                    checked={
-                      selectedFiles.length === files.length &&
-                      files.length > 0
-                    }
-                  />
-                </th>
-                <th className="border border-gray-200 px-4 py-2 text-left w-96">File Name</th>
-                <th className="border border-gray-200 px-4 py-2 text-center">Type</th>
-                <th className="border border-gray-200 px-4 py-2 text-center">User</th>
-                <th className="border border-gray-200 px-4 py-2 text-center">Size</th>
-                <th className="border border-gray-200 px-4 py-2 text-center">Tag</th>
-                <th className="border border-gray-200 px-4 py-2 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {files.map((file) => (
-                <tr key={file._id} className="border-b">
-                  <td className="px-4 py-2 text-center">
+          <div>
+            <table className="table-auto w-full border-collapse border border-gray-200">
+              <thead>
+                <tr className="bg-gray-100 dark:bg-gray-600 border-b">
+                  <th className="px-4 py-2 text-left">
                     <input
                       type="checkbox"
-                      checked={selectedFiles.includes(file._id)}
-                      onChange={() => toggleSelection(file._id)}
-                    />
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 w-96">
-                    <a
-                      href={file.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 text-sm"
-                    >
-                      {file.originalName}
-                    </a>
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">
-                    {file.type === "application/pdf" ? "PDF" : file.type}
-                  </td>
-                  <td className="px-4 py-2 flex text-center items-center justify-center">
-                    {file.uploadedBy?.profilePictureUrl && (
-                      <img
-                        src={file.uploadedBy.profilePictureUrl}
-                        alt="Profile Photo"
-                        className="w-8 h-8 rounded-full"
-                        title={file.uploadedBy.name}
-                      />
-                    )}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">
-                    {file.size < 1024
-                      ? `${file.size} B`
-                      : file.size < 1024 * 1024
-                        ? `${(file.size / 1024).toFixed(1)} KB`
-                        : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-center text-sm">{file.tag}</td>
-                  <td className="border border-gray-200 px-4 py-2 text-center space-x-4 text-sm">
-                    <button
-                      onClick={() => {
-                        setSelectedFile(file);
-                        setIsDeleteModalOpen(true);
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedFiles(files.map((file) => file._id));
+                        } else {
+                          setSelectedFiles([]);
+                        }
                       }}
-                      className="text-red-500 hover:text-red-700"
-                      title="Delete Document"
-                    >
-                      <FaTrash className="w-5 h-5" />
-                    </button>
-                  </td>
+                      checked={
+                        selectedFiles.length === files.length &&
+                        files.length > 0
+                      }
+                    />
+                  </th>
+                  <th className="border border-gray-200 px-4 py-2 text-left w-96">File Name</th>
+                  <th className="border border-gray-200 px-4 py-2 text-center">Type</th>
+                  <th className="border border-gray-200 px-4 py-2 text-center">User</th>
+                  <th className="border border-gray-200 px-4 py-2 text-center">Size</th>
+                  <th className="border border-gray-200 px-4 py-2 text-center">Tag</th>
+                  <th className="border border-gray-200 px-4 py-2 text-center">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {files.map((file) => (
+                  <tr key={file._id} className="border-b">
+                    <td className="px-4 py-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedFiles.includes(file._id)}
+                        onChange={() => toggleSelection(file._id)}
+                      />
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 w-96">
+                      <a
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 text-sm"
+                      >
+                        {file.originalName}
+                      </a>
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">
+                      {file.type === "application/pdf" ? "PDF" : file.type}
+                    </td>
+                    <td className="px-4 py-2 flex text-center items-center justify-center">
+                      {file.uploadedBy?.profilePictureUrl && (
+                        <img
+                          src={file.uploadedBy.profilePictureUrl}
+                          alt="Profile Photo"
+                          className="w-8 h-8 rounded-full"
+                          title={file.uploadedBy.name}
+                        />
+                      )}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">
+                      {file.size < 1024
+                        ? `${file.size} B`
+                        : file.size < 1024 * 1024
+                          ? `${(file.size / 1024).toFixed(1)} KB`
+                          : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">{file.tag}</td>
+                    <td className="border border-gray-200 px-4 py-2 text-center space-x-4 text-sm">
+                      <button
+                        onClick={() => {
+                          setSelectedFile(file);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className="text-red-500 hover:text-red-700"
+                        title="Delete Document"
+                      >
+                        <FaTrash className="w-5 h-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center mt-4 gap-2">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`px-3 py-1 rounded-lg border ${
+                  currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
+                }`}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
+
       )}
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-4 gap-2">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            className={`px-3 py-1 rounded-lg border ${
-              currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white dark:bg-gray-500 dark:font-semibold"
-            }`}
-            onClick={() => handlePageChange(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+
 
       {/* Delete User UserModal */}
       {isDeleteModalOpen && selectedFile && (

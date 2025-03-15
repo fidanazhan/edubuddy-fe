@@ -25,10 +25,16 @@
         "reason": "Sebab",
         "code": "Kod",
         "description": "Deskripsi",
-        "permission": "Permisi"
+        "permission": "Permisi",
+        "defaultToken": "Ketetapan Token",
+        "defaultStorage": "Ketetapan Simpanan"
     },
     "optional": "Jika Mahu",
     "active": "Aktif",
     "not_active": "Tidak Aktif",
-    "drag": "Seret & lepas fail di sini, atau klik untuk memuat naik."
+    "drag": "Seret & lepas fail di sini, atau klik untuk memuat naik.",
+    "select_status": "Sila pilih status",
+    "select_role": "Sila pilih peranan",
+    "select_group": "Sila pilih kumpulan",
+    "status": "Status"
 }

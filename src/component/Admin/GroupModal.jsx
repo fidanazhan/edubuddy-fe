@@ -34,7 +34,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
     let newErrors = {};
 
     if (!formData.name.trim()) newErrors.name = "Name is required.";
-    if (!formData.description.trim()) newErrors.description = "description is required.";
+    if (!formData.description.trim()) newErrors.description = "Description is required.";
     if (!formData.code.trim() || /\s/.test(formData.code)) {
       newErrors.code = "Code is required and cannot contain spaces.";
     }
@@ -84,7 +84,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-[30rem] p-6">
+      <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg w-[30rem] p-6">
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
@@ -96,7 +96,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
               name="name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:border-2 overflow-hidden"
               required
             />
           </div>
@@ -110,7 +110,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
               name="description"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:border-2 overflow-hidden"
               required
             />
           </div>
@@ -124,7 +124,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, isEdit }) => {
               name="code"
               value={formData.code}
               onChange={(e) => handleInputChange("code", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:border-2 overflow-hidden"
               required
             />
           </div>

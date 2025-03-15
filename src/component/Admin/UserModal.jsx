@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
 import api from '../../api/axios'
+
+
 
 const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,11 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
   const [errors, setErrors] = useState({}); // Store validation errors
   const token = localStorage.getItem("accessToken");
   const { t, ready } = useTranslation(["common", "modal"]);
+
+  const statusOptions = [
+    { value: "1", label: t("common:active") },
+    { value: "0", label: t("common:not_active") },
+  ];
 
   useEffect(() => {
     if (initialValues) {
@@ -102,7 +108,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-[30rem] p-6">
+      <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg w-[30rem] p-6">
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
@@ -114,7 +120,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               name="name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:border-2 overflow-hidden"
               required
             />
           </div>
@@ -128,7 +134,7 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               name="email"
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:border-2 overflow-hidden"
               required
             />
           </div>
@@ -136,17 +142,28 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
 
           {/* Status Field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Status</label>
+            <label className="block text-sm font-medium mb-1">{t("common:status")}</label>
             {errors.status && <p className="text-red-500 text-sm">{errors.status}</p>}
-            <select
-              name="status"
-              value={formData.status}
-              onChange={(e) => handleInputChange("status", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 cursor-pointer"
-            >
-              <option value="1">{t("common:active")}</option>
-              <option value="0">{t("common:not_active")}</option>
-            </select>
+            <Select
+              options={statusOptions}
+              value={statusOptions.find((option) => option.value === formData.status)}
+              onChange={(selectedOption) => handleInputChange("status", selectedOption.value)}
+              placeholder={t("common:select_status")}
+              classNames={{
+                control: () =>
+                  "w-full border rounded-md px-1 py-1 focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white",
+                menu: () => "bg-white dark:bg-gray-700 border dark:border-gray-600",
+                option: ({ isFocused, isSelected }) =>
+                  `px-3 py-2 cursor-pointer ${
+                    isSelected
+                      ? "bg-blue-500 text-white"
+                      : isFocused
+                      ? "bg-gray-200 dark:bg-gray-600"
+                      : "bg-white dark:bg-gray-700 text-gray-700 dark:text-white"
+                  }`,
+                singleValue: () => "text-gray-700 dark:text-white",
+              }}
+            />
           </div>
 
           {/* Role Field */}
@@ -159,7 +176,15 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               onChange={(selectedOption) =>
                 handleInputChange("role", roles.find((role) => role.code === selectedOption.value))
               }
-              className="w-full"
+              placeholder={t("common:select_role")}
+              classNames={{
+                control: () =>
+                  "w-full border rounded-lg px-1 py-1 focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white",
+                menu: () => "bg-white dark:bg-gray-700 border dark:border-gray-600",
+                option: ({ isFocused, isSelected }) =>
+                  `px-3 py-2 cursor-pointer ${isSelected ? "bg-blue-500 text-white" : isFocused ? "bg-gray-200 dark:bg-gray-600" : "bg-white dark:bg-gray-700 text-gray-700 dark:text-white"}`,
+                singleValue: () => "text-gray-700 dark:text-white",
+              }}
             />
           </div>
 
@@ -174,7 +199,18 @@ const Modal = ({ title, onClose, onSubmit, initialValues, roles, isEdit, groups 
               onChange={(selectedOptions) =>
                 handleInputChange("groups", selectedOptions.map((option) => groups.find((group) => group.code === option.value)))
               }
-              className="w-full"
+              placeholder={t("common:select_group")}
+              classNames={{
+                control: () =>
+                  "w-full border rounded-lg px-1 py-1 focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-white",
+                menu: () => "bg-white dark:bg-gray-700 border dark:border-gray-600",
+                option: ({ isFocused, isSelected }) =>
+                  `px-3 py-2 cursor-pointer ${isSelected ? "bg-blue-500 text-white" : isFocused ? "bg-gray-200 dark:bg-gray-600" : "bg-white dark:bg-gray-700 text-gray-700 dark:text-white"}`,
+                multiValue: () => "bg-gray-200 dark:bg-gray-700 rounded px-1 py-0 flex items-center",
+                multiValueLabel: () => "text-gray-700 dark:text-white",
+                multiValueRemove: ({ isFocused }) =>
+                  `text-gray-500 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 cursor-pointer px-1`,
+              }}
             />
           </div>
 

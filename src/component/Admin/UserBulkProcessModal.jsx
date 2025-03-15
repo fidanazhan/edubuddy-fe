@@ -105,7 +105,7 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[34rem]">
+      <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg w-[34rem]">
         <div className="text-xl font-bold mb-4 flex justify-between items-center">
           <h2>{modalProcess}</h2>
           <button
@@ -123,7 +123,7 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
           {t("modal:user_bulk.download")}
         </button>
         {/* <p>Download the Excel template for {modalType}:</p> */}
-        <div className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 py-16 text-center cursor-pointer flex items-center justify-center"
+        <div className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 py-16 text-center cursor-pointer flex items-center justify-center dark:bg-gray-800"
           onClick={() => fileInputRef.current.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
