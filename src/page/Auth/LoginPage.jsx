@@ -70,12 +70,13 @@ const LoginPage = () => {
     }
   }, [login, navigate]);
 
-  const loginProcess = () => {
-    const subdomain = window.location.hostname.split('.')[0];  // Extract subdomain from hostname
-    const baseURL = `${import.meta.env.VITE_API_URL}/api/auth/google?subdomain=${subdomain}`;
+  const loginProcess = (provider) => {
+    const subdomain = window.location.hostname.split('.')[0];  
+    const baseURL = `${import.meta.env.VITE_API_URL}/api/auth/${provider}?subdomain=${subdomain}`;
     console.log("Redirecting to:", baseURL);
     window.location.href = baseURL;
   };
+  
   
 
   if (isLoading) {
@@ -118,14 +119,14 @@ const LoginPage = () => {
             <div className="space-y-3">
               <button
                 className="flex items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
-                onClick={loginProcess}
+                onClick={() => loginProcess("google")}
               >
                 <img src={googleLogo} alt="Google Logo" className="w-6 h-6 mr-5" />
                 Sign In With Google
               </button>
               <button
                 className="flex items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
-                onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`)}
+                onClick={() => loginProcess("microsoft")}
               >
                 <img src={microsoftLogo} alt="Microsoft Logo" className="w-6 h-6 mr-5" />
                 Sign In With Microsoft

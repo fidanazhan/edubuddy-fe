@@ -148,7 +148,7 @@ const TokenRequestScreen = () => {
             ) : (
                 <div>
                     {/* <h1 className="text-xl font-bold mb-4 pt-2">{activeTab} Request</h1> */}
-                    <div className="bg-white shadow-md rounded-lg overflow-hidden mt-2">
+                    <div className="shadow-md rounded-lg overflow-hidden mt-2">
                         {requests.map((request) => (
                             <div
                                 key={request._id}

@@ -9,7 +9,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 404) {
-      window.location.href = "/404"; // Redirect to 404 page
+      window.location.href = "/notfound"; // Redirect to 404 page
     }
     return Promise.reject(error);
   }

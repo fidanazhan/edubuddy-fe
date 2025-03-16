@@ -83,10 +83,10 @@ const Sidebar = ({ passIsOpen }) => {
       .split(" ")
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
 
-    const truncatedByWords = words.slice(0, 4).join(" ");
+    const truncatedByWords = words.slice(0, 6).join(" ");
 
-    return truncatedByWords.length > 20
-      ? truncatedByWords.slice(0, 20).trim() + "..."
+    return truncatedByWords.length > 30
+      ? truncatedByWords.slice(0, 30).trim() + "..."
       : truncatedByWords;
   }
 
@@ -200,15 +200,15 @@ const Sidebar = ({ passIsOpen }) => {
               Object.entries(groupedChats).map(([dateGroup, chats]) =>
                 chats.length > 0 ? (
                   <div key={dateGroup}>
-                    <h2 className="text-gray-700 dark:text-gray-300 font-bold px-4 py-2">{dateGroup}</h2>
+                    <h2 className="text-gray-700 dark:text-gray-300 font-bold px-4 py-2 text-xs">{dateGroup}</h2>
                     {chats.map((chat) => (
                       <div
                         key={chat._id}
                         className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
                       >
                         {/* Chat Title aligned to the left */}
-                        <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow">
-                          <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
+                        <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow text-xs">
+                          {/* <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} /> */}
                           {capitalizeAndTruncate(chat.title)}
                         </Link>
 
@@ -239,7 +239,7 @@ const Sidebar = ({ passIsOpen }) => {
             }`
           }
         >
-          {/* <Location /> */}
+          <Location />
         </div >
       </div >
 
@@ -350,7 +350,7 @@ const Sidebar = ({ passIsOpen }) => {
 
       {isChatModelOpen && selectedChat && (
         <ChatModal
-          title={t("admin:users.user.bulk_update")}
+          title={"Update Chat Title"}
           onClose={() => setIsChatModelOpen(false)}
           initialValues={selectedChat}
           onSubmit={() => {setIsChatModelOpen(false)}}
