@@ -14,7 +14,6 @@ const FileManagement = () => {
   const [tags, setTags] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("asc");
   const [loading, setLoading] = useState("")
   const fileInputRef = useRef(null);
   const [toast, setToast] = useState(null);
@@ -95,9 +94,11 @@ const FileManagement = () => {
       if (response.status === 201 || response.status === 200) {
         getFileByUser();
         showToast("Successfully added!", "bg-green-500", "success");
+      } else{
       }
     } catch (error) {
       console.error("Upload failed:", error);
+      showToast(error.response.data.message, "bg-red-500", "alert")
     }finally{
       handleRemoveFile();
       setNewFile([]);
@@ -184,7 +185,7 @@ const FileManagement = () => {
     }
   
     try {
-      const response = await fetch(import.meta.env.API_VITE_URL + "/api/file/delete-multiple", {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/file/delete-multiple", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -232,7 +233,7 @@ const FileManagement = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold mb-6">Document Management</h2>
         <StorageBar totalStorage={100} usedStorage={60} />
-        <button className="bg-green-500 py-2 px-4 rounded-md">Upgrade Storage</button>
+        {/* <button className="bg-green-500 py-2 px-4 rounded-md">Upgrade Storage</button> */}
       </div>
 
       {/* Upload Section */}

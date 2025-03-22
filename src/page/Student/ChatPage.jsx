@@ -59,64 +59,100 @@ const ChatPage = ({ isPending, error, data }) => {
     });
     
 
+    // const add = async (text, isInitial) => {
+    //     if (!isInitial) setQuestion(text);
+
+    //     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
+    //         method: "PUT",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             question: text.length ? text : undefined,
+    //             imgdb: img2["dbData"]?.filePath || undefined,
+    //             imgai: img2["aiData"] || undefined,
+    //         }),
+    //     });
+
+    //     let accumulatedData = "";
+
+    //     if (!response.ok) {
+    //         // Handle error (e.g., display an error message)
+    //         return;
+    //     }
+
+    //     if (response.ok) {
+    //         const reader = response.body.getReader();
+    //         let isMutationCalled = false; // Flag to track if mutation.mutate() has been called
+
+    //         const read = async () => {
+    //             try {
+    //                 const { done, value } = await reader.read();
+    //                 if (done) {
+    //                     reader.releaseLock();
+    //                     setAnswer(accumulatedData);
+
+    //                     // Ensure mutation.mutate() is called only once
+    //                     if (!isMutationCalled) {
+    //                         console.log("Calling mutation.mutate()");
+    //                         mutation.mutate();
+    //                         isMutationCalled = true; // Set the flag to true
+    //                     }
+    //                     return;
+    //                 }
+    //                 const decoder = new TextDecoder();
+    //                 const chunk = decoder.decode(value);
+    //                 accumulatedData += chunk;
+    //                 console.log(chunk)
+    //                 setAnswer((prevAnswer) => prevAnswer + chunk);
+    //                 console.log("AFTER ", chunk)
+    //                 read();
+    //             } catch (error) {
+    //                 console.error("Error reading stream:", error);
+    //                 reader.releaseLock();
+    //             }
+    //         };
+    //         read();
+    //     }
+    // };
+
+
     const add = async (text, isInitial) => {
-        if (!isInitial) setQuestion(text);
-
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                userId: "user_2rzHVJFMuvGHRd07bO8oT0FzX4o" || undefined,
-                question: text.length ? text : undefined,
-                imgdb: img2["dbData"]?.filePath || undefined,
-                imgai: img2["aiData"] || undefined,
-            }),
-        });
-
-        let accumulatedData = "";
-
-        if (!response.ok) {
-            // Handle error (e.g., display an error message)
-            return;
-        }
-
-        if (response.ok) {
-            const reader = response.body.getReader();
-            let isMutationCalled = false; // Flag to track if mutation.mutate() has been called
-
-            const read = async () => {
-                try {
-                    const { done, value } = await reader.read();
-                    if (done) {
-                        reader.releaseLock();
-                        setAnswer(accumulatedData);
-
-                        // Ensure mutation.mutate() is called only once
-                        if (!isMutationCalled) {
-                            console.log("Calling mutation.mutate()");
-                            mutation.mutate();
-                            isMutationCalled = true; // Set the flag to true
-                        }
-                        return;
-                    }
-                    const decoder = new TextDecoder();
-                    const chunk = decoder.decode(value);
-                    accumulatedData += chunk;
-                    console.log(chunk)
-                    setAnswer((prevAnswer) => prevAnswer + chunk);
-                    console.log("AFTER ", chunk)
-                    read();
-                } catch (error) {
-                    console.error("Error reading stream:", error);
-                    reader.releaseLock();
-                }
-            };
-            read();
-        }
-    };
-
+      if (!isInitial) setQuestion(text);
+  
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chats/${data._id}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              question: text.length ? text : undefined,
+              imgdb: img2["dbData"]?.filePath || undefined,
+              imgai: img2["aiData"] || undefined,
+          }),
+      });
+  
+      if (!response.ok) {
+          console.error("Error in response:", response.statusText);
+          return;
+      }
+  
+      try {
+          const jsonResponse = await response.json(); // Parse response as JSON
+          const answerText = jsonResponse.response || "No response received.";
+  
+          setAnswer(answerText); // Set answer state with extracted response
+  
+          console.log("Received response:", answerText);
+          
+          mutation.mutate(); // Ensure mutation runs after receiving full response
+  
+      } catch (error) {
+          console.error("Error parsing JSON:", error);
+          setAnswer("Error processing response.");
+      }
+  };
+  
     const handleSubmit = async (e, message) => {
         e.preventDefault();
 

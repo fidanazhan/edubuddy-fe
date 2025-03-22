@@ -8,7 +8,7 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 404) {
+    if (error.response && error.response.status === 404 && error.response.data.error == "Tenant not found.") {
       window.location.href = "/notfound"; // Redirect to 404 page
     }
     return Promise.reject(error);

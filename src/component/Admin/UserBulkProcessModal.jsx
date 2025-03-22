@@ -11,6 +11,7 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
   const { t, ready } = useTranslation(["common", "modal"]);
 
   const subdomain = window.location.hostname.split(".")[0];
+  const token = localStorage.getItem("accessToken");
 
   const closeModal = () => {
     setModalType(null);
@@ -66,13 +67,13 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
     // Determine the API endpoint based on modalType
     let apiEndpoint = "";
     switch (modalProcess) { // Use modalProcess instead of modalType (assuming modalProcess holds the type)
-      case "Bulk Add":
+      case "Create User":
         apiEndpoint = "/api/user/bulk-add";
         break;
-      case "Bulk Update":
+      case "Update User":
         apiEndpoint = "/api/user/bulk-update";
         break;
-      case "Bulk Delete":
+      case "Delete User":
         apiEndpoint = "/api/user/bulk-delete";
         break;
       default:
@@ -83,7 +84,11 @@ const UserBulkProcessModal = ({ onClose, modalProcess }) => {
 
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + apiEndpoint, {
-        headers: { "x-tenant": subdomain }, // Ensure subdomain is defined somewhere
+        headers: { 
+          "x-tenant": subdomain,
+          "Authorization": `Bearer ${token}`,
+
+        }, 
         method: "POST",
         body: formData,
       });

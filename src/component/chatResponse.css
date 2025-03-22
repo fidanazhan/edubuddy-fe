@@ -112,3 +112,7 @@ li {
 .codeFont {
     font-size: 14px;
 }
+
+.chatResponseLi {
+    font-size: 20px;
+}

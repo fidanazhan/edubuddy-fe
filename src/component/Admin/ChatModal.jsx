@@ -61,11 +61,13 @@ const ChatModal = ({ title, onClose, initialValues, onSubmit, token, subdomain, 
                 };
                 const response = await api.put(`/api/chats/${formData.id}/title`, payload, { headers });
                 if (response.status === 201 || response.status === 200) {
-                    showToast("Title updated successfully!", "bg-green-500", "success");
-                    refetch();
-                    setTimeout(() => {
-                        onSubmit();
-                    }, 2000);
+                    // showToast("Title updated successfully!", "bg-green-500", "success");
+                    // refetch();
+                    // setTimeout(() => {
+                    //     onSubmit();
+                    //     onClose();
+                    // }, 2000);
+                    onClose()
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -96,12 +98,14 @@ const ChatModal = ({ title, onClose, initialValues, onSubmit, token, subdomain, 
 
             queryClient.invalidateQueries(["userChats"]); // Force refetch after deleting
             showToast("Chat deleted successfully!", "bg-green-500", "success");
-            if (id === chatId) {
-                navigate("/dashboard");
-            }
-            setTimeout(() => {
-                onSubmit();
-            }, 2000);
+            // if (id === chatId) {
+            //     navigate("/dashboard");
+            // }
+            // setTimeout(() => {
+            //     onSubmit();
+            //     onClose();
+            // }, 2000);
+            onClose();
 
         } catch (error) {
             console.error("Error deleting chat:", error);

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { FaEdit, FaTrash, FaUpload } from "react-icons/fa";
-import UserModal from "../../Admin/UserModal";
 import api from '../../../api/axios'
-// Balance
-import { Wallet, DollarSign, BanknoteIcon } from "lucide-react";
-// Used
-import { History, Recycle, RefreshCw, Archive, ShoppingBag } from "lucide-react";
-// Distributed
-import { Network, Share2, ArrowLeftRight, Banknote } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from "../../../context/JWTContext";
+import { formatStorage } from "../../../utils/storageUtils";
 
 const StorageUsersManagement = () => {
     const [users, setUsers] = useState([]);
@@ -109,7 +101,7 @@ const StorageUsersManagement = () => {
                                 <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                             </div>
                             ) : (
-                            <p className="text-gray-500">{admin.totalStorage}</p>
+                            <p className="text-gray-500">{formatStorage(admin.totalStorage)}</p>
                         )}
                     </div>
                 </div>
@@ -124,7 +116,7 @@ const StorageUsersManagement = () => {
                                 <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                             </div>
                             ) : (
-                            <p className="text-gray-500">{admin.usedStorage}</p>
+                            <p className="text-gray-500">{formatStorage(admin.usedStorage)}</p>
                         )}
                     </div>
                     {/* <History className='w-20 h-20 text-gray-400' /> */}
@@ -140,7 +132,7 @@ const StorageUsersManagement = () => {
                             </div>
                             ) : (
                             <p className="text-gray-500 mt-4">
-                                {balanceStorage(admin.totalStorage ?? 0, admin.usedStorage ?? 0)}
+                                {formatStorage(balanceStorage(admin.totalStorage ?? 0, admin.usedStorage ?? 0))}
                             </p>
                         )}
                     </div>
@@ -157,7 +149,7 @@ const StorageUsersManagement = () => {
                                 <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                             </div>
                             ) : (
-                            <p className="text-gray-500">{admin.distributedStorage}</p>
+                            <p className="text-gray-500">{formatStorage(admin.distributedStorage)}</p>
                         )}
                     </div>
                     {/* <Banknote className='w-20 h-20 text-blue-500' /> */}
@@ -213,8 +205,8 @@ const StorageUsersManagement = () => {
                                             <td className="border border-gray-200 px-4 py-2 text-sm">{user.name}</td>
                                             <td className="border border-gray-200 px-3 py-2 text-sm">{user.role?.name}</td>
                                             <td className="border border-gray-200 px-4 py-2 text-sm">{user.email}</td>
-                                            <td className="border border-gray-200 px-4 py-2 text-sm">{user.totalStorage}</td>
-                                            <td className="border border-gray-200 px-1 py-2 text-sm">{user.usedStorage}</td>
+                                            <td className="border border-gray-200 px-4 py-2 text-sm">{formatStorage(user.totalStorage)}</td>
+                                            <td className="border border-gray-200 px-1 py-2 text-sm">{formatStorage(user.usedStorage)}</td>
                                         </tr>
                                     ))
                                 ) : (

@@ -70,10 +70,12 @@ const Sidebar = ({ passIsOpen }) => {
     setIsOpen(!isOpen);
     // setGlobalIsOpen(!isOpen); // Pass updated state to parent component if provided
     passIsOpen(!isOpen)
+    console.log("passIsOpen: " + passIsOpen)
   };
 
   const toggleMobileSidebar = () => {
     setIsMobileOpen(!isMobileOpen);
+    passIsOpen(!isMobileOpen);
   };
 
   function capitalizeAndTruncate(input) {
@@ -175,7 +177,7 @@ const Sidebar = ({ passIsOpen }) => {
               </button>
             </div>
           </Link>
-          <div className="relative w-full">
+          {/* <div className="relative w-full">
             <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
               <MdOutlineSearch className="text-xl flex-shrink-0" />
               <span
@@ -185,9 +187,9 @@ const Sidebar = ({ passIsOpen }) => {
                 {t("search")}
               </span>
             </button>
-          </div>
+          </div> */}
 
-          <hr className="border-gray-300 dark:border-gray-700" />
+          <hr className="border-gray-300 dark:border-gray-700 mt-2" />
           <div
             className={`custom-scrollbar custom-scrollbar-sidebar-height whitespace-nowrap transition-all duration-200 ease-in-out overflow-y-auto max-h-60 ${isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"
               }`}
@@ -245,108 +247,89 @@ const Sidebar = ({ passIsOpen }) => {
 
 
       {/* Mobile Sidebar */}
-      < div >
+      <div>
+        {/* Mobile Toggle Button */}
         <button
           onClick={toggleMobileSidebar}
-          className="lg:hidden bg-blue-600 text-white p-2 fixed top-2 left-2 z-50 rounded-full"
+          className="lg:hidden bg-blue-600 text-white p-3 fixed top-5 left-5 z-50 rounded-full"
         >
-          <FaBars className="text-xl" />
+          <FaBars className="text-4xl" />
         </button>
+
+        {/* Mobile Sidebar */}
         <div
           className={`h-screen bg-slate-100 dark:bg-gray-600 dark:border-gray-900 border-r fixed top-0 left-0 z-40 transform transition-transform duration-300 
-          ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} w-64`}
+          ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} w-[30rem]`}
         >
           {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-blue-600 text-white">
-            <span className="font-bold text-lg"></span>
-            <button
-              onClick={toggleMobileSidebar}
-              className="focus:outline-none text-xl hidden lg:block"
-            >
-              <FaBars />
-            </button>
+          <div className="flex items-center justify-between p-4 bg-slate-100 dark:bg-gray-700 text-gray-900 dark:text-gray-300 h-16">
+           
           </div>
 
           {/* Menu Items */}
-          <ul className="flex-1 mt-4 ml-0">
-            <Link className="mb-3" to="/dashboard">
+          <ul className="flex-1 mt-16">
+            <Link className="mb-5" to="/dashboard">
               <div className="relative w-full">
-                <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
-                  <MdAdd className="text-xl flex-shrink-0" />
-                  <span
-                    className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isMobileOpen ? "opacity-100" : "opacity-0"
-                      } `}
-                  >
+                <button className="px-4 py-4 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
+                  <MdAdd className="text-2xl flex-shrink-0" />
+                  <span className="text-3xl transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap">
                     {t("chat")}
                   </span>
                 </button>
               </div>
             </Link>
-            <Link className="mb-3" to="/workspace">
+            <Link className="mb-5" to="/workspace">
               <div className="relative w-full">
-                <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
-                  <MdDashboard className="text-xl flex-shrink-0" />
-                  <span
-                    className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isMobileOpen ? "opacity-100" : "opacity-0"
-                      }`}
-                  >
+                <button className="px-4 py-4 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
+                  <MdDashboard className="text-2xl flex-shrink-0" />
+                  <span className="text-3xl transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap">
                     {t("workspace")}
                   </span>
                 </button>
               </div>
             </Link>
-            <div className="relative w-full">
-              <button className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-800 flex items-center gap-2 w-full text-gray-900 dark:text-gray-300">
-                <MdOutlineSearch className="text-xl flex-shrink-0" />
-                <span
-                  className={`transition-all duration-200 ease-in-out overflow-hidden whitespace-nowrap ${isMobileOpen ? "opacity-100" : "opacity-0"
-                    }`}
-                >
-                  {t("search")}
-                </span>
-              </button>
-            </div>
+            <hr className="border-gray-300 dark:border-gray-700 mt-2" />
 
-            <hr className="border-gray-300 dark:border-gray-700" />
-            <div
-              className={`custom-scrollbar custom-scrollbar-sidebar-height whitespace-nowrap transition-all duration-200 ease-in-out overflow-y-auto max-h-60 ${isMobileOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"
-                }`}
-            >
-              <div className="px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">
+            {/* Recent Chats */}
+            <div className="custom-scrollbar custom-scrollbar-sidebar-height overflow-y-auto max-h-60">
+              <div className="text-2xl px-4 mt-3 mb-4 font-semibold text-gray-900 dark:text-gray-300">
                 {t("recent")}
               </div>
-              {Array.isArray(chats) ? (
-                chats.map((chat) => (
-                  <div
-                    key={chat._id}
-                    className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
-                  >
-                    {/* Chat Title aligned to the left */}
-                    <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow">
-                      <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} />
-                      {capitalizeAndTruncate(chat.title)}
-                    </Link>
-
-                    {/* Delete button aligned to the right */}
-                    <button
-                      onClick={() => deleteChat(chat._id)}
-                      className="text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full"
-                    >
-                      <CiTrash className="w-5 h-5" />
-                    </button>
-                  </div>
-                ))
+              {Object.values(groupedChats).flat().length > 0 ? (
+                Object.entries(groupedChats).map(([dateGroup, chats]) =>
+                  chats.length > 0 ? (
+                    <div key={dateGroup}>
+                      <h2 className="text-gray-700 dark:text-gray-300 font-bold px-4 pb-2 pt-10 text-2xl ">{dateGroup}</h2>
+                      {chats.map((chat) => (
+                        <div key={chat._id} className="flex justify-between items-center py-2 px-4 text-xl text-gray-600 dark:text-gray-300/80 relative">
+                          <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow text-2xl ">
+                            {/* <CiChat1 className="text-gray-500 mr-1" strokeWidth={1} /> */}
+                            {capitalizeAndTruncate(chat.title)}
+                          </Link>
+                          <button
+                            onClick={() => {
+                              setSelectedChat(chat);
+                              setIsChatModelOpen(true);
+                            }}
+                            className="text-gray-400 hover:text-gray-600"
+                          >
+                            <CiMenuKebab size={18} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null
+                )
               ) : (
                 <p className="text-gray-500 px-4">No recent chats</p>
               )}
             </div>
-
-          </ul >
+          </ul>
 
           {/* Footer */}
           <div className="p-4 text-sm text-gray-500">© 2025 BordUp™</div>
         </div>
-      </div >
+      </div>
 
       {isChatModelOpen && selectedChat && (
         <ChatModal

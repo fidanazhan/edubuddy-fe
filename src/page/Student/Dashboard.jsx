@@ -39,28 +39,32 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-[50vh] items-center justify-center">
-      <div className="w-full max-w-xl">
-        <div className="flex justify-center mt-10">
-          <h1 className='font-bold text-4xl gradient-text'>Hello, {user?.name.split(" ")[0]}</h1>
-        </div>
+    <div className="flex h-[80vh] lg:h-[60vh] items-center justify-center px-4">
+      <div className="w-full max-w-xl text-center">
+        <h1 className="font-bold text-8xl lg:text-3xl gradient-text">
+          Hello, {user?.name.split(" ")[0]}
+        </h1>
 
-        <div className="flex justify-center mt-10">
-          <h1 className='font-bold text-lg'>What I can help you with?</h1>
-        </div>
+        <h2 className="font-bold text-4xl lg:text-lg mt-6">
+          What can I help you with?
+        </h2>
 
-        <input
-          type="text"
+        <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask something..."
-          className="w-full p-4 text-black/80 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500
-                      dark:text-white/80 dark:bg-gray-600 dark:border-gray-500 mt-10"
+          className="w-full p-2 pr-4 text-black/80 text-lg lg:text-base border border-gray-300 rounded-lg shadow-sm 
+             focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white/80 dark:bg-gray-600 
+             dark:border-gray-500 mt-10 lg:mt-6 resize-none scrollbar-hide overflow-hidden"
+          rows={1} // Adjust the number of visible lines
           autoFocus
         />
+
       </div>
     </div>
+
+
   );
 };
 

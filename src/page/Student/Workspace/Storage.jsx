@@ -5,6 +5,7 @@ import RequestModal from "../../../component/Admin/RequestModal";
 import { FaDatabase } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import api from '../../../api/axios'
+import {formatStorage} from '../../../utils/storageUtils'
 
 const StorageWorkspace = () => {
     const [loading, setLoading] = useState("")
@@ -77,7 +78,7 @@ const StorageWorkspace = () => {
                         <div className=''>
                             <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_total")}</h2>
                             <p className="text-gray-500 mt-4">
-                                {userInfo?.totalStorage ?? "Failed to get Storage"}
+                                {formatStorage(userInfo?.totalStorage) ?? "Failed to get Storage"}
                             </p>
 
                         </div>
@@ -87,7 +88,7 @@ const StorageWorkspace = () => {
                         <div className=''>
                             <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_used")}</h2>
                             <p className="text-gray-500 mt-4">
-                                {userInfo?.usedStorage ?? "Failed to get Storage"}
+                                {formatStorage(userInfo?.usedStorage) ?? "Failed to get Storage"}
                             </p>
 
                         </div>
@@ -98,7 +99,7 @@ const StorageWorkspace = () => {
                             <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("storage.widget_balance")}</h2>
                             <p className="text-gray-500 mt-4">
                                 {userInfo
-                                    ? balanceStorage(userInfo.totalStorage ?? 0, userInfo.usedStorage ?? 0)
+                                    ? formatStorage(balanceStorage(userInfo.totalStorage ?? 0, userInfo.usedStorage ?? 0))
                                     : "Failed to get Storage"}
                             </p>
 

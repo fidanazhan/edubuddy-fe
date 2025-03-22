@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { FaDownload, FaEdit, FaTrash, FaUpload, FaPlus, FaLayerGroup } from "react-icons/fa";
 import UserModal from "../../Admin/UserModal";
 import { Search } from 'lucide-react'
-import ConfirmationPopup from "../../Admin/ConfirmationPopup";
 import UserBulkProcessModal from '../../Admin/UserBulkProcessModal'
-import { MdGroups2 } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import api from '../../../api/axios'
+import Toast from '../../Toast/Toast'
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -22,7 +20,7 @@ const UserManagement = () => {
   const [groups, setGroups] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
-  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+  const [toast, setToast] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [isBulkProcessModalOpen, setIsBulkProcessModalOpen] = useState(false);
   const [filterByGroup, setFilterByGroup] = useState(false);
@@ -144,6 +142,7 @@ const UserManagement = () => {
   };
 
   const handleAddUser = () => {
+    showToast("Successfully added!", "bg-green-500", "success");
     fetchUsers()
     setIsAddModalOpen(false);
   };
@@ -211,6 +210,14 @@ const UserManagement = () => {
 
   if (!ready) return null;
 
+
+  // ------------------------------- SHOW TOAST --------------------------------
+
+  const showToast = (message, color, status) => {
+    setToast({ message, color, status });
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
@@ -262,13 +269,13 @@ const UserManagement = () => {
               <FaTrash className="mr-2 text-red-600 dark:text-red-400" />
               <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.bulk_remove")}</span>
             </button>
-            <button
+            {/* <button
               onClick={() => triggerModal(t("admin:users.user.assign_group"))}
               className="w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center"
             >
               <MdGroups2 className="mr-2 text-teal-600 dark:text-teal-400 h-5 w-5" />
               <span className="text-sm text-gray-900 dark:text-gray-200">{t("admin:users.user.assign_group")}</span>
-            </button>
+            </button> */}
           </div>
 
 
@@ -471,6 +478,16 @@ const UserManagement = () => {
         <UserBulkProcessModal
           onClose={() => setIsBulkProcessModalOpen(false)}
           modalProcess={modalType}
+        />
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          color={toast.color}
+          status={toast.status}
+          onClose={() => setToast(null)}
         />
       )}
     </div>

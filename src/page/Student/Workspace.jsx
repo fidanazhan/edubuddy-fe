@@ -21,7 +21,7 @@ const Workspace = () => {
     { name: t("workspace.document"), icon: <IoDocumentAttachOutline />, component: FileManagement, canAccess: user?.permissions?.includes("m_document") },
     { name: t("workspace.notification"), icon: <IoNotificationsOutline />, component: NotificationTab, canAccess: true },
     { name: t("workspace.token"), icon: <IoNotificationsOutline />, component: Token, canAccess: true },
-    { name: t("workspace.storage"), icon: <IoNotificationsOutline />, component: Storage, canAccess: true },
+    { name: t("workspace.storage"), icon: <IoNotificationsOutline />, component: Storage, canAccess: user?.permissions?.includes("m_document") },
   ].filter(tab => tab.canAccess);;
 
   if (!ready) return null;

@@ -4,6 +4,7 @@ import { GiToken } from "react-icons/gi";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../context/JWTContext';
 import api from '../../../api/axios'
+import {formatStorage} from '../../../utils/storageUtils'
 
 const Dashboard = () => {
   const { t, ready } = useTranslation("workspace");
@@ -63,7 +64,7 @@ const Dashboard = () => {
                     <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 ) : (
-                <p className="text-gray-500">{userInfo.usedStorage}</p>
+                <p className="text-gray-500">{formatStorage(userInfo.usedStorage)}</p>
             )}
           </div>
           <GiToken className='w-20 h-20 text-gray-400' />

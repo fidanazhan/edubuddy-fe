@@ -77,7 +77,6 @@ const Chat = () => {
 
         if (response.ok && response.status === 200) {
           const data = await response.json();
-          // console.log(data)
           // Transform API response into the expected format and ensure line breaks
           const formattedMessages = await Promise.all(data.history.map((item) => ({
             role: item.role, // "user" or "assistant"
@@ -89,11 +88,7 @@ const Chat = () => {
             ...msg,
             content: msg.content.replace(/\n/g, '  \n'), // Markdown line breaks
           })));
-          // console.log(formattedWithLineBreaks)
           setMessages(formattedWithLineBreaks);
-
-          // Check if it's a new session by detecting if it was redirected from the dashboard
-
         }
         if (response && response.status === 404) {
           console.log(`Chat did not exist!`);
@@ -114,49 +109,82 @@ const Chat = () => {
 
 
   // 2️⃣ Send User Message (PUT)
+  // const sendMessage = async (message) => {
+  //   const newMessage = { role: "user", content: message || inputRef.current?.value.trim() };
+  //   setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+  //   const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({ question: message || inputRef.current?.value.trim() }),
+  //   });
+
+  //   if (response.body) {
+  //     const reader = response.body.getReader();
+  //     const decoder = new TextDecoder();
+  //     let accumulatedText = "";
+
+  //     setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+  //     while (true) {
+  //       const { done, value } = await reader.read();
+  //       if (done) break;
+
+  //       accumulatedText += decoder.decode(value, { stream: true });
+  //       setMessages((prev) =>
+  //         prev.map((msg, index) =>
+  //           index === prev.length - 1 ? { ...msg, content: accumulatedText } : msg
+  //         )
+  //       );
+  //     }
+  //     chatEvents.emit("refreshChats"); // ✅ Notify Sidebar to refresh
+  //   }
+
+  //   setIsFirstMessageInSession(false); // Mark session as active
+  // };
+
   const sendMessage = async (message) => {
     const newMessage = { role: "user", content: message || inputRef.current?.value.trim() };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-    const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({ question: message || inputRef.current?.value.trim() }),
-    });
-
-    if (response.body) {
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let accumulatedText = "";
-
-      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        accumulatedText += decoder.decode(value, { stream: true });
-        setMessages((prev) =>
-          prev.map((msg, index) =>
-            index === prev.length - 1 ? { ...msg, content: accumulatedText } : msg
-          )
-        );
+  
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ question: message || inputRef.current?.value.trim() }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch AI response");
       }
+  
+      const data = await response.json(); // Read the entire response
+      const modelResponse = data.response || "No response from AI";
+  
+      setMessages((prev) => [...prev, { role: "assistant", content: modelResponse }]);
+  
       chatEvents.emit("refreshChats"); // ✅ Notify Sidebar to refresh
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Error processing response" }]);
     }
-
+  
     setIsFirstMessageInSession(false); // Mark session as active
   };
+  
 
 
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
-      <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll" style={{ height: "85vh" }}>
-        <div className="w-4/6 mx-auto flex-1 space-y-4">
+      <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll h-[85vh]">
+        <div className="w-11/12 lg:w-4/6 lg:mx-auto flex-1 space-y-4">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -166,7 +194,7 @@ const Chat = () => {
             >
               <div
                 className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "bg-gray-200 text-black w-10/12 dark:bg-gray-600 dark:text-gray-100/80"
+                  ? "bg-gray-200 text-black text-2xl lg:text-base w-10/12 dark:bg-gray-600 dark:text-gray-100/80"
                   : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
                   } max-w-xl`}
               >
@@ -207,40 +235,20 @@ const Chat = () => {
         </div>
       </div>
 
-
-
-      {/* Input Box */}
-      {/* <form
-        onSubmit={handleSubmit}
-        className="p-4 flex items-center dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300/80"
-        style={{ height: "10vh" }}
-      >
-        <input
-          type="text"
-          ref={inputRef}
-          onChange={handleInputChange}
-          placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300/80 rounded-lg"
-        />
-
-        <button type="submit" className="ml-2 px-4 py-3 bg-blue-500 text-white hover:bg-blue-600">
-          Send
-        </button>
-      </form> */}
-
       <div className="flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
-          style={{ height: "15vh" }}
+          className="w-full lg:w-[60vw] h-[15vh] bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
         >
-          <div className="relative w-[60vw]">
+          <div className="relative w-full lg:w-[60vw]">
             <input
               type="text"
               ref={inputRef}
               onChange={handleInputChange}
               placeholder="Type your message..."
-              className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-2 text-gray-700 dark:text-gray-300 overflow-hidden pr-10"
+              className="w-full resize-none bg-gray-50 dark:bg-gray-700 rounded-lg border 
+              border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none p-4 
+              text-gray-700 dark:text-gray-300 overflow-hidden h-24 text-4xl lg:h-10 lg:text-base pl-5 "
             />
 
             <button
@@ -248,7 +256,7 @@ const Chat = () => {
               className="absolute right-2 transform -translate-y-1/2 bg-gray-50 dark:bg-gray-700 text-black dark:text-gray-300 rounded-lg px-2 flex items-center justify-center"
               style={{ top: '50%' }}
               title="Send message">
-              <FiSend className="w-5 h-5" />
+              <FiSend className="w-10 h-10 lg:w-5 lg:h-5" />
             </button>
           </div>
         </form>

@@ -12,36 +12,37 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const subdomain = window.location.hostname.split('.')[0];
   const [errorMessage, setErrorMessage] = useState("");
   const [loginImage, setLogin] = useState(null);
   const [bannerImage, setBanner] = useState(null);
 
+  const hostname = window.location.hostname;
+  const subdomain = hostname.split('.')[0];
+  const fetchTenantExist = async (subdomain) => {
+    try {
+      const response = await api.get(`/api/tenant/exist/`, {
+        headers: { "x-tenant": subdomain },
+      });
+      console.log(response.data)
+      const config = response.data
+      if (response.status === 200 && response.data) {
+        console.log(`Subdomain ${subdomain} exists!`);
+        setLogin(config.img?.loginLogoUrl || null);
+        setBanner(config.img?.bannerUrl || null);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.log(`Subdomain ${subdomain} did not exist!`);
+        navigate("/notfound", { replace: true }); // Redirect on 404
+      } else {
+        console.error("Error fetching tenant:", error);
+      }
+    }
+  };
+
 
   useEffect(() => {
-    const hostname = window.location.hostname;
-    const subdomain = hostname.split('.')[0];
-    const fetchTenantExist = async (subdomain) => {
-      try {
-        const response = await api.get(`/api/tenant/exist/`, {
-          headers: { "x-tenant": subdomain },
-        });
-        console.log(response.data)
-        const config = response.data
-        if (response.status === 200 && response.data) {
-          console.log(`Subdomain ${subdomain} exists!`);
-          setLogin(config.img?.loginLogoUrl || null);
-          setBanner(config.img?.bannerUrl || null);
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          console.log(`Subdomain ${subdomain} did not exist!`);
-          navigate("/notfound", { replace: true }); // Redirect on 404
-        } else {
-          console.error("Error fetching tenant:", error);
-        }
-      }
-    };
+
     fetchTenantExist(subdomain);
   }, []);
 
@@ -99,13 +100,13 @@ const LoginPage = () => {
           {errorMessage}
         </div>
       )}
-      <div className="flex w-full h-screen bg-white shadow-lg">
-        <div className="w-7/12 h-full">
+      <div className="flex h-screen w-full bg-white shadow-lg">
+        <div className="h-full hidden lg:block lg:w-7/12">
           <img src={loginImage ? loginImage : loginImages} alt="Login visual" className="w-full h-full object-cover" />
         </div>
 
-        <div className="w-5/12 flex items-center justify-center p-8">
-          <div className="text-center w-full max-w-md">
+        <div className="w-full lg:w-5/12 flex items-center justify-center p-8">
+          <div className="text-center w-[40rem] lg:w-full lg:max-w-md">
             <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
               <div className="w-8/12 h-12 flex items-center justify-center">
                 <img src={bannerImage ? bannerImage : USMLogo} alt="University Logo" className="w-full h-full object-scale-down" />
@@ -116,19 +117,19 @@ const LoginPage = () => {
               </div>
             </h2>
 
-            <div className="space-y-3">
+            <div className="space-y-8 mt-20 lg:space-y-3 lg:mt-0">
               <button
-                className="flex items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
+                className="flex text-2xl lg:text-base items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
                 onClick={() => loginProcess("google")}
               >
-                <img src={googleLogo} alt="Google Logo" className="w-6 h-6 mr-5" />
+                <img src={googleLogo} alt="Google Logo" className="w-10 h-10 lg:w-6 lg:h-6 mr-5" />
                 Sign In With Google
               </button>
               <button
-                className="flex items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
+                className="flex text-2xl lg:text-base items-center justify-center w-full border bg-slate-100 border-slate-200 text-black font-medium py-2 px-4 rounded hover:border-blue-200 transition duration-300"
                 onClick={() => loginProcess("microsoft")}
               >
-                <img src={microsoftLogo} alt="Microsoft Logo" className="w-6 h-6 mr-5" />
+                <img src={microsoftLogo} alt="Microsoft Logo" className="w-10 h-10 lg:w-6 lg:h-6 mr-5" />
                 Sign In With Microsoft
               </button>
             </div>

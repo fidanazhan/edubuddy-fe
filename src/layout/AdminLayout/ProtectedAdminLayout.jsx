@@ -33,9 +33,9 @@ const AdminProtectedRoute = () => {
   }
 
   // Redirect admin users if they are on mobile (screen width < 768px)
-  if (!isLargeScreen) {
-    return <Navigate to="/forbidden" replace />;
-  }
+  // if (!isLargeScreen) {
+  //   return <Navigate to="/forbidden" replace />;
+  // }
 
   return <Outlet />;
 };
