@@ -23,16 +23,16 @@ const LoginPage = () => {
       const response = await api.get(`/api/tenant/exist/`, {
         headers: { "x-tenant": subdomain },
       });
-      console.log(response.data)
+      // console.log(response.data)
       const config = response.data
       if (response.status === 200 && response.data) {
-        console.log(`Subdomain ${subdomain} exists!`);
+        // console.log(`Subdomain ${subdomain} exists!`);
         setLogin(config.img?.loginLogoUrl || null);
         setBanner(config.img?.bannerUrl || null);
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        console.log(`Subdomain ${subdomain} did not exist!`);
+        // console.log(`Subdomain ${subdomain} did not exist!`);
         navigate("/notfound", { replace: true }); // Redirect on 404
       } else {
         console.error("Error fetching tenant:", error);
@@ -94,13 +94,13 @@ const LoginPage = () => {
   return (
 
 
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-gray-100 mt-[-20%] lg:mt-0">
       {errorMessage && (
         <div className="absolute top-4 font-semibold items-center bg-red-200 text-red-600 p-3 rounded shadow-md">
           {errorMessage}
         </div>
       )}
-      <div className="flex h-screen w-full bg-white shadow-lg">
+      <div className="flex h-screen w-full bg-white">
         <div className="h-full hidden lg:block lg:w-7/12">
           <img src={loginImage ? loginImage : loginImages} alt="Login visual" className="w-full h-full object-cover" />
         </div>

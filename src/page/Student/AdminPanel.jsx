@@ -43,35 +43,46 @@ const AdminPanel = () => {
 
   return (
     <div className="w-full py-2">
-      {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700">
-        {tabs.map((tab) => {
-          const isActive =
-            location.pathname === tab.path
-            || (parentPaths[tab.name] && location.pathname.startsWith(parentPaths[tab.name]));
-
-          return (
-            <Link
-              key={tab.name}
-              to={tab.path}
-              className={`flex items-center px-4 py-2 text-sm font-medium transition-colors duration-300 ${isActive
-                ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400"
-                : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                }`}
-            >
-              {tab.icon}
-              <span className="ml-2">{tab.name}</span>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Tab Content */}
-      <div className="p-2">
-        <Outlet />
-      </div>
+      {window.innerWidth < 1024 ? (
+        // Display this message when the screen width is <1024px
+        <div className="flex justify-center items-center h-screen text-red-500 text-4xl font-semibold">
+          This page does not support mobile.
+        </div>
+      ) : (
+        <>
+          {/* Tab Navigation */}
+          <div className="flex border-b border-gray-200 dark:border-gray-700">
+            {tabs.map((tab) => {
+              const isActive =
+                location.pathname === tab.path ||
+                (parentPaths[tab.name] && location.pathname.startsWith(parentPaths[tab.name]));
+  
+              return (
+                <Link
+                  key={tab.name}
+                  to={tab.path}
+                  className={`flex items-center px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                    isActive
+                      ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400"
+                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                  }`}
+                >
+                  {tab.icon}
+                  <span className="ml-2">{tab.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+  
+          {/* Tab Content */}
+          <div className="p-2">
+            <Outlet />
+          </div>
+        </>
+      )}
     </div>
   );
+  
 };
 
 export default AdminPanel;

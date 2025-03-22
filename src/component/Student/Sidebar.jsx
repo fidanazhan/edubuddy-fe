@@ -209,7 +209,7 @@ const Sidebar = ({ passIsOpen }) => {
                         className="flex justify-between items-center py-2 px-4 text-sm text-gray-600 font-semibold dark:text-gray-300/80 relative"
                       >
                         {/* Chat Title aligned to the left */}
-                        <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 flex-grow text-xs">
+                        <Link to={`/chats/${chat._id}`} className="flex items-center gap-2 font-semibold flex-grow text-xs">
                           {/* <CiChat1 className="text-gray-500 mr-1 text-sm" strokeWidth={1} /> */}
                           {capitalizeAndTruncate(chat.title)}
                         </Link>
@@ -327,7 +327,13 @@ const Sidebar = ({ passIsOpen }) => {
           </ul>
 
           {/* Footer */}
-          <div className="p-4 text-sm text-gray-500">© 2025 BordUp™</div>
+          < div
+            className={`p-4 text-sm text-gray-500 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+              }`
+            }
+          >
+            <Location />
+          </div >
         </div>
       </div>
 

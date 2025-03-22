@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/JWTContext";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Toast from '../../../component/Toast/Toast';
 import api from '../../../api/axios'
+import Select from "react-select";
 
 const LanguageSettings = () => {
     const { i18n, t, ready } = useTranslation("settings");
@@ -56,12 +56,12 @@ const LanguageSettings = () => {
 
     return (
         <>
-            <h2 className="text-lg font-bold mb-4">{t("settings.language.title")}</h2>
+            <h2 className="text-2xl lg:text-lg font-bold mb-6 lg:mb-4">{t("settings.language.title")}</h2>
             <div className="flex items-center gap-4 ">
                 <select
                     value={selectedLanguage}
                     onChange={handleLanguageChange}
-                    className="w-full p-2 border rounded-lg dark:text-black/80"
+                    className="w-60 p-2 border rounded-lg dark:text-black/80"
                 >
                     {languages.map((lng) => (
                         <option key={lng} value={lng}>

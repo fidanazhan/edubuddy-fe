@@ -46,15 +46,15 @@ const Header = () => {
             <img
               src={user.photo}
               alt="Profile Photo"
-              className="w-8 h-8 rounded-full mr-2"
+              className="w-16 h-16 lg:w-8 lg:h-8 rounded-full mr-2"
             />
           ) : (
             <HiOutlineUserCircle className="text-2xl" />
           )}
         </button>
-
+  
         {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-gray-50 border rounded shadow-lg z-10 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-900">
+          <div className="absolute right-0 mt-2 w-72 lg:w-48 bg-gray-50 border rounded shadow-lg z-10 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-900 md:left-auto md:right-0">
             <button
               className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => {
@@ -62,47 +62,48 @@ const Header = () => {
                 setIsSettingModalOpen(true);
               }}
             >
-              <FaCogs className="mr-2 text-gray-600" />
-              <span>{t("settings.title")}</span>
+              <FaCogs className="w-8 h-8 mr-4 lg:w-5 lg:h-5 lg:mr-2 text-gray-600" />
+              <span className="text-xl lg:text-base">{t("settings.title")}</span>
             </button>
-
+  
             {user?.roles === "ADMIN" && (
               <>
                 <button
-                  className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 
-                 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => {
-                    closeDropdown();
-                    navigate(`/admin-panel`);
+                    if (window.innerWidth >= 1024) {
+                      closeDropdown();
+                      navigate(`/admin-panel/dashboard`);
+                    }
                   }}
-                  disabled={window.innerWidth < 768}
+                  disabled={window.innerWidth < 1024}
                 >
-                  <MdAdminPanelSettings className="mr-2 text-gray-600" />
-                  <span>{t("admin")}</span>
+                  <MdAdminPanelSettings className="w-8 h-8 mr-4 lg:w-5 lg:h-5 lg:mr-2 text-gray-600" />
+                  <span className="text-xl lg:text-base">{t("admin")}</span>
                 </button>
-                <span className="block md:hidden text-red-500 text-sm text-center">
-                  {t("No support for mobile view.")}
-                </span>
+                {window.innerWidth < 1024 && (
+                  <span className="block text-red-500 text-lg text-center">
+                    {t("No support for mobile view.")}
+                  </span>
+                )}
               </>
             )}
-
+  
             <button
               className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={handleLogout}
             >
-              <MdLogout className="mr-2 text-gray-600" />
-              <span>{t("logout")}</span>
+              <MdLogout className="w-8 h-8 mr-4 lg:w-5 lg:h-5 lg:mr-2 text-gray-600" />
+              <span className="text-xl lg:text-base">{t("logout")}</span>
             </button>
           </div>
         )}
-
-        <SettingsModal
-          isOpen={isSettingModalOpen}
-          onClose={closeModal}
-        />
+  
+        <SettingsModal isOpen={isSettingModalOpen} onClose={closeModal} />
       </div>
     </div>
   );
+  
 };
 
 export default Header;

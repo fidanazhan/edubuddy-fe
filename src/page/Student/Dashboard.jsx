@@ -45,8 +45,8 @@ const Dashboard = () => {
           Hello, {user?.name.split(" ")[0]}
         </h1>
 
-        <h2 className="font-bold text-4xl lg:text-lg mt-6">
-          What can I help you with?
+        <h2 className="font-bold text-5xl mt-10 lg:text-lg lg:mt-6">
+          What can I help you?
         </h2>
 
         <textarea
