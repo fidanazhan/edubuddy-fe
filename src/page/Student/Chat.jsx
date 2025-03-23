@@ -200,7 +200,7 @@ const Chat = () => {
               >
 
                 {msg.role == "user" && (
-                  <p>{msg.content}</p>
+                  <p className="text-lg lg:text-base">{msg.content}</p>
                 )}
 
                 {msg.role != "user" && (

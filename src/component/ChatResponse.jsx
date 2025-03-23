@@ -29,11 +29,11 @@ const ChatResponse2 = ({ answer }) => {
       return !inline && match ? (
         <div className="relative bg-[#282a36] rounded-lg overflow-hidden">
           {/* Top Bar */}
-          <div className="flex justify-between items-center bg-[#343746] px-4 py-2 text-xs text-gray-300">
+          <div className="flex justify-between items-center bg-[#343746] px-4 py-2 text-lg lg:text-base text-gray-300">
             <span>{match[1]}</span>
             <div className="flex gap-2">
               <button
-                className="hover:text-white transition"
+                className="hover:text-white transition text-lg lg:text-base"
                 onClick={() => navigator.clipboard.writeText(codeString)}
               >
                 Copy
@@ -46,41 +46,41 @@ const ChatResponse2 = ({ answer }) => {
             style={dracula}
             language={match[1]}
             PreTag="div"
-            className="px-4 py-3 codeFont overflow-x-auto"
+            className="px-4 py-3 codeFont overflow-x-auto text-lg lg:text-base"
             {...props}
           >
             {codeString}
           </SyntaxHighlighter>
         </div>
       ) : (
-        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md" {...props}>
+        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md text-lg lg:text-base" {...props}>
           {codeString}
         </code>
       );
     },
     ol: ({ children, ...props }) => (
-      <ol className="list-decimal list-outside ml-4" {...props}>
+      <ol className="list-decimal list-outside ml-4 text-lg lg:text-base" {...props}>
         {children}
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li className="ml-8 mt-2" {...props}>
+      <li className="ml-8 mt-2 text-lg lg:text-base" {...props}>
         {children}
       </li>
     ),
     ul: ({ children, ...props }) => (
-      <ul className="list-disc list-outside ml-4" {...props}>
+      <ul className="list-disc list-outside ml-4 text-lg lg:text-base" {...props}>
         {children}
       </ul>
     ),
     strong: ({ children, ...props }) => (
-      <span className="font-semibold" {...props}>
+      <span className="font-semibold text-lg lg:text-base" {...props}>
         {children}
       </span>
     ),
     a: ({ children, ...props }) => (
       <a
-        className="text-blue-500 hover:underline"
+        className="text-blue-500 hover:underline text-lg lg:text-base"
         target="_blank"
         rel="noreferrer"
         {...props}
@@ -89,37 +89,37 @@ const ChatResponse2 = ({ answer }) => {
       </a>
     ),
     h1: ({ children, ...props }) => (
-      <h1 className="text-3xl font-semibold mt-6 mb-2" {...props}>
+      <h1 className="text-3xl lg:text-2xl font-semibold mt-6 mb-2" {...props}>
         {children}
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 className="text-2xl font-semibold mt-6 mb-2" {...props}>
+      <h2 className="text-2xl lg:text-xl font-semibold mt-6 mb-2" {...props}>
         {children}
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 className="text-xl font-semibold mt-6 mb-2" {...props}>
+      <h3 className="text-xl lg:text-lg font-semibold mt-6 mb-2" {...props}>
         {children}
       </h3>
     ),
     h4: ({ children, ...props }) => (
-      <h4 className="text-lg font-semibold mt-6 mb-2" {...props}>
+      <h4 className="text-lg lg:text-base font-semibold mt-6 mb-2" {...props}>
         {children}
       </h4>
     ),
     h5: ({ children, ...props }) => (
-      <h5 className="text-base font-semibold mt-6 mb-2" {...props}>
+      <h5 className="text-base lg:text-sm font-semibold mt-6 mb-2" {...props}>
         {children}
       </h5>
     ),
     h6: ({ children, ...props }) => (
-      <h6 className="text-sm font-semibold mt-6 mb-2" {...props}>
+      <h6 className="text-sm lg:text-xs font-semibold mt-6 mb-2" {...props}>
         {children}
       </h6>
     ),
     p: ({ children, ...props }) => (
-      <p className="mt-4" {...props}>
+      <p className="mt-4 text-lg lg:text-base" {...props}>
         {children}
       </p>
     ),
