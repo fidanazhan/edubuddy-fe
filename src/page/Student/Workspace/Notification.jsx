@@ -60,23 +60,23 @@ const NotificationTab = () => {
             className="flex items-start px-4 py-3 border-b last:border-none hover:bg-gray-50 transition dark:bg-gray-900 dark:border-gray-800"
           >
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-full bg-gray-100">
                 {getIcon(notification.type)}
               </div>
             </div>
             <div className="ml-4 flex-1">
-              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-300/80">
+              <h3 className="text-sm lg:text-base font-semibold text-gray-800 dark:text-gray-300/80">
                 {notification.title}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400/90">{notification.description}</p>
-              <span className="text-xs text-gray-400 dark:text-gray-400/50">{notification.timestamp}</span>
+              <p className="text-sm lg:text-base text-gray-600 dark:text-gray-400/90">{notification.description}</p>
+              <span className="text-xs lg:text-sm text-gray-400 dark:text-gray-400/50">{notification.timestamp}</span>
             </div>
             <button
               className="text-gray-400 hover:text-red-500 transition ml-2"
               onClick={() => deleteNotification(notification.id)}
               aria-label="Delete notification"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 lg:w-7 lg:h-7" />
             </button>
           </div>
         ))}

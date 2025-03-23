@@ -53,15 +53,15 @@ const TokenWorkspace = () => {
     return (
         <div className="max-w-screen-lg mx-0 lg:mx-10 mt-5 lg:mt-10">
             <div className="flex justify-between items-center bg-white dark:bg-gray-700 px-4 py-3 shadow-md rounded-lg mb-4">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-2xl lg:text-lg font-semibold text-gray-900 dark:text-gray-100">
                     {t("token.title")}
                 </h2>
                 <button
                     className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300"
                     onClick={() => setIsRequestModalOpen(true)}
                 >
-                    <GiToken className="w-5 h-5 mr-2" />
-                    <span className="text-sm font-medium">{t("token.request")}</span>
+                    <GiToken className="w-5 h-5 lg:w-7 lg:h-7 mr-2" />
+                    <span className="text-sm lg:text-base font-medium">{t("token.request")}</span>
                 </button>
             </div>
 
@@ -75,8 +75,8 @@ const TokenWorkspace = () => {
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 ">
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_total")}</h2>
-                            <p className="text-gray-500 mt-4">
+                            <h2 className="text-xl lg:text-lg font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_total")}</h2>
+                            <p className="text-xl lg:text-lg text-gray-500 mt-4">
                                 {userInfo?.totalToken ?? "Failed to get Token"}
                             </p>
 
@@ -86,8 +86,8 @@ const TokenWorkspace = () => {
 
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_used")}</h2>
-                            <p className="text-gray-500 mt-4">
+                            <h2 className="text-xl lg:text-lg font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_used")}</h2>
+                            <p className="text-xl lg:text-lg text-gray-500 mt-4">
                                 {userInfo?.usedToken ?? "Failed to get Token"}
                             </p>
 
@@ -97,8 +97,8 @@ const TokenWorkspace = () => {
 
                     <div className="bg-white p-6 rounded-lg shadow-md flex justify-between dark:bg-gray-900 dark:border-gray-800">
                         <div className=''>
-                            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_balance")}</h2>
-                            <p className="text-gray-500 mt-4">
+                            <h2 className="text-xl lg:text-lg font-semibold text-gray-700 dark:text-gray-300/80">{t("token.widget_balance")}</h2>
+                            <p className="text-xl lg:text-lg text-gray-500 mt-4">
                                 {userInfo
                                     ? balanceToken(userInfo.totalToken ?? 0, userInfo.usedToken ?? 0)
                                     : "Failed to get Token"}
