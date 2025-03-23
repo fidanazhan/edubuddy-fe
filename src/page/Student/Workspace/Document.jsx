@@ -231,7 +231,7 @@ const FileManagement = () => {
   return (
     <div className="max-w-screen-lg mx-auto mt-10">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold mb-6">Document Management</h2>
+        <h2 className="text-2xl lg:text-lg font-bold mb-6">Document Management</h2>
         <StorageBar totalStorage={100} usedStorage={60} />
         {/* <button className="bg-green-500 py-2 px-4 rounded-md">Upgrade Storage</button> */}
       </div>
@@ -239,7 +239,7 @@ const FileManagement = () => {
       {/* Upload Section */}
       <div className="flex w-full space-x-4">
         {/* File Upload Box (7/12 width) */}
-        <div className="w-7/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
+        <div className="w-7/12 lg:w-5/12 border-2 border-dashed border-gray-300 rounded-lg p-6 py-10 text-center cursor-pointer flex items-center justify-center"
             onClick={() => fileInputRef.current.click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}>
