@@ -47,7 +47,7 @@ const ChatResponse2 = ({ answer }) => {
               style={dracula}
               language={match[1]}
               PreTag="div"
-              className="min-w-full px-4 py-3 text-3xl lg:text-base"
+              className="leading-loose min-w-full px-4 py-3 text-3xl lg:text-base"
               {...props}
             >
               {codeString}
@@ -61,28 +61,28 @@ const ChatResponse2 = ({ answer }) => {
       );
     },
     ol: ({ children, ...props }) => (
-      <ol className="list-decimal list-outside ml-4 text-4xl lg:text-base" {...props}>
+      <ol className="list-decimal list-outside leading-loose ml-4 text-4xl lg:text-base" {...props}>
         {children}
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li className="ml-8 mt-2 text-4xl lg:text-base" {...props}>
+      <li className="leading-loose ml-8 mt-2 text-4xl lg:text-base" {...props}>
         {children}
       </li>
     ),
     ul: ({ children, ...props }) => (
-      <ul className="list-disc list-outside ml-4 text-4xl lg:text-base" {...props}>
+      <ul className="list-disc list-outside leading-loose ml-4 text-4xl lg:text-base" {...props}>
         {children}
       </ul>
     ),
     strong: ({ children, ...props }) => (
-      <span className="font-semibold text-4xl lg:text-base" {...props}>
+      <span className="leading-loose font-semibold text-4xl lg:text-base" {...props}>
         {children}
       </span>
     ),
     a: ({ children, ...props }) => (
       <a
-        className="text-blue-500 hover:underline text-4xl lg:text-base"
+        className="leading-loose text-blue-500 hover:underline text-4xl lg:text-base"
         target="_blank"
         rel="noreferrer"
         {...props}
@@ -91,37 +91,37 @@ const ChatResponse2 = ({ answer }) => {
       </a>
     ),
     h1: ({ children, ...props }) => (
-      <h1 className="text-3xl lg:text-2xl font-semibold mt-6 mb-2" {...props}>
+      <h1 className="leading-loose text-3xl lg:text-2xl font-semibold mt-6 mb-2" {...props}>
         {children}
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 className="text-2xl lg:text-xl font-semibold mt-6 mb-2" {...props}>
+      <h2 className="leading-loose text-2xl lg:text-xl font-semibold mt-6 mb-2" {...props}>
         {children}
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 className="text-xl lg:text-lg font-semibold mt-6 mb-2" {...props}>
+      <h3 className="leading-loose text-xl lg:text-lg font-semibold mt-6 mb-2" {...props}>
         {children}
       </h3>
     ),
     h4: ({ children, ...props }) => (
-      <h4 className="text-lg lg:text-base font-semibold mt-6 mb-2" {...props}>
+      <h4 className="leading-loose text-lg lg:text-base font-semibold mt-6 mb-2" {...props}>
         {children}
       </h4>
     ),
     h5: ({ children, ...props }) => (
-      <h5 className="text-base lg:text-sm font-semibold mt-6 mb-2" {...props}>
+      <h5 className="leading-loose text-base lg:text-sm font-semibold mt-6 mb-2" {...props}>
         {children}
       </h5>
     ),
     h6: ({ children, ...props }) => (
-      <h6 className="text-sm lg:text-xs font-semibold mt-6 mb-2" {...props}>
+      <h6 className="leading-loose text-sm lg:text-xs font-semibold mt-6 mb-2" {...props}>
         {children}
       </h6>
     ),
     p: ({ children, ...props }) => (
-      <p className="mt-4 text-4xl lg:text-base" {...props}>
+      <p className="mt-4 leading-loose text-4xl lg:text-base" {...props}>
         {children}
       </p>
     ),

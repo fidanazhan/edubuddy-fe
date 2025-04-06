@@ -149,7 +149,7 @@ const Chat = () => {
   const sendMessage = async (message) => {
     const newMessage = { role: "user", content: message || inputRef.current?.value.trim() };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
-  
+
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + `/api/chats/${id}`, {
         method: "PUT",
@@ -159,26 +159,24 @@ const Chat = () => {
         },
         body: JSON.stringify({ question: message || inputRef.current?.value.trim() }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch AI response");
       }
-  
+
       const data = await response.json(); // Read the entire response
       const modelResponse = data.response || "No response from AI";
-  
+
       setMessages((prev) => [...prev, { role: "assistant", content: modelResponse }]);
-  
+
       chatEvents.emit("refreshChats"); // ✅ Notify Sidebar to refresh
     } catch (error) {
       console.error("Error sending message:", error);
       setMessages((prev) => [...prev, { role: "assistant", content: "Error processing response" }]);
     }
-  
+
     setIsFirstMessageInSession(false); // Mark session as active
   };
-  
-
 
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
@@ -193,12 +191,11 @@ const Chat = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
-                className={`p-3 rounded-lg text-2xl lg:text-base lg:w-10/12 ${msg.role === "user"
+                className={`p-3 rounded-lg text-2xl lg:text-base ${msg.role === "user"
                   ? "bg-gray-200 text-black dark:bg-gray-600 dark:text-gray-100/80"
-                  : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  } lg:max-w-xl`}
+                  : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full lg:w-10/12"
+                  } max-w-4xl lg:max-w-2xl`}
               >
-
                 {msg.role == "user" && (
                   <p className="text-4xl lg:text-base">{msg.content}</p>
                 )}
