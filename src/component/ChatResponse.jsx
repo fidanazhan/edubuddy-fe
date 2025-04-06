@@ -29,11 +29,11 @@ const ChatResponse2 = ({ answer }) => {
       return !inline && match ? (
         <div className="relative bg-[#282a36] rounded-lg overflow-hidden">
           {/* Top Bar */}
-          <div className="flex justify-between items-center bg-[#343746] px-4 py-2 text-lg lg:text-base text-gray-300">
+          <div className="flex justify-between items-center bg-[#343746] px-4 py-2 text-4xl lg:text-base text-gray-300">
             <span>{match[1]}</span>
             <div className="flex gap-2">
               <button
-                className="hover:text-white transition text-lg lg:text-base"
+                className="hover:text-white transition text-4xl lg:text-base"
                 onClick={() => navigator.clipboard.writeText(codeString)}
               >
                 Copy
@@ -46,41 +46,41 @@ const ChatResponse2 = ({ answer }) => {
             style={dracula}
             language={match[1]}
             PreTag="div"
-            className="px-4 py-3 codeFont overflow-x-auto text-lg lg:text-base"
+            className="px-4 py-3 codeFont overflow-x-auto text-4xl lg:text-base"
             {...props}
           >
             {codeString}
           </SyntaxHighlighter>
         </div>
       ) : (
-        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md text-lg lg:text-base" {...props}>
+        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md text-4xl lg:text-base" {...props}>
           {codeString}
         </code>
       );
     },
     ol: ({ children, ...props }) => (
-      <ol className="list-decimal list-outside ml-4 text-lg lg:text-base" {...props}>
+      <ol className="list-decimal list-outside ml-4 text-4xl lg:text-base" {...props}>
         {children}
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li className="ml-8 mt-2 text-lg lg:text-base" {...props}>
+      <li className="ml-8 mt-2 text-4xl lg:text-base" {...props}>
         {children}
       </li>
     ),
     ul: ({ children, ...props }) => (
-      <ul className="list-disc list-outside ml-4 text-lg lg:text-base" {...props}>
+      <ul className="list-disc list-outside ml-4 text-4xl lg:text-base" {...props}>
         {children}
       </ul>
     ),
     strong: ({ children, ...props }) => (
-      <span className="font-semibold text-lg lg:text-base" {...props}>
+      <span className="font-semibold text-4xl lg:text-base" {...props}>
         {children}
       </span>
     ),
     a: ({ children, ...props }) => (
       <a
-        className="text-blue-500 hover:underline text-lg lg:text-base"
+        className="text-blue-500 hover:underline text-4xl lg:text-base"
         target="_blank"
         rel="noreferrer"
         {...props}
@@ -119,7 +119,7 @@ const ChatResponse2 = ({ answer }) => {
       </h6>
     ),
     p: ({ children, ...props }) => (
-      <p className="mt-4 text-lg lg:text-base" {...props}>
+      <p className="mt-4 text-4xl lg:text-base" {...props}>
         {children}
       </p>
     ),
@@ -137,7 +137,7 @@ const ChatResponse2 = ({ answer }) => {
           }],
         ]}
         components={components}
-        className="chatResponse sm:text-sm md:text-md lg:text-lg text-lg"
+        className="chatResponse sm:text-sm md:text-md lg:text-lg text-4xl"
       >
         {answer}
       </ReactMarkdown>

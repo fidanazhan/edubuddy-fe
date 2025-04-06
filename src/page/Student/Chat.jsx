@@ -183,7 +183,7 @@ const Chat = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       {/* Chat Messages */}
-      <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll h-[85vh]">
+      <div className="custom-scrollbar flex flex-col items-center p-4 overflow-y-scroll h-[65vh] lg:h-[85vh]">
         <div className="w-11/12 lg:w-4/6 lg:mx-auto flex-1 space-y-4">
           {messages.map((msg, index) => (
             <div
@@ -193,14 +193,14 @@ const Chat = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
-                className={`p-3 rounded-lg ${msg.role === "user"
-                  ? "bg-gray-200 text-black text-2xl lg:text-base w-10/12 dark:bg-gray-600 dark:text-gray-100/80"
+                className={`p-3 rounded-lg text-2xl lg:text-base w-10/12 ${msg.role === "user"
+                  ? "bg-gray-200 text-black dark:bg-gray-600 dark:text-gray-100/80"
                   : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
                   } max-w-xl`}
               >
 
                 {msg.role == "user" && (
-                  <p className="text-lg lg:text-base">{msg.content}</p>
+                  <p className="text-4xl lg:text-base">{msg.content}</p>
                 )}
 
                 {msg.role != "user" && (
@@ -238,7 +238,7 @@ const Chat = () => {
       <div className="flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="w-full lg:w-[60vw] h-[15vh] bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-4 flex items-center space-x-4"
+          className="w-full lg:w-[60vw] h-[10vh] lg:h-[15vh] bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-600 p-2 lg:p-4 flex items-center space-x-4"
         >
           <div className="relative w-full lg:w-[60vw]">
             <input
