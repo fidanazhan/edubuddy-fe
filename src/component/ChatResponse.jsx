@@ -42,18 +42,20 @@ const ChatResponse2 = ({ answer }) => {
           </div>
 
           {/* Code Block */}
-          <SyntaxHighlighter
-            style={dracula}
-            language={match[1]}
-            PreTag="div"
-            className="px-4 py-3 codeFont overflow-x-auto text-4xl lg:text-base"
-            {...props}
-          >
-            {codeString}
-          </SyntaxHighlighter>
+          <div className="overflow-x-auto">
+            <SyntaxHighlighter
+              style={dracula}
+              language={match[1]}
+              PreTag="div"
+              className="min-w-full px-4 py-3 text-3xl lg:text-base"
+              {...props}
+            >
+              {codeString}
+            </SyntaxHighlighter>
+          </div>
         </div>
       ) : (
-        <code className="codeFont bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md text-4xl lg:text-base" {...props}>
+        <code className="bg-zinc-300 text-black dark:bg-zinc-700 dark:text-gray-300/80 py-0.5 px-1 rounded-md text-3xl lg:text-base" {...props}>
           {codeString}
         </code>
       );

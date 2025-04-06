@@ -193,10 +193,10 @@ const Chat = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
-                className={`p-3 rounded-lg text-2xl lg:text-base w-10/12 ${msg.role === "user"
+                className={`p-3 rounded-lg text-2xl lg:text-base lg:w-10/12 ${msg.role === "user"
                   ? "bg-gray-200 text-black dark:bg-gray-600 dark:text-gray-100/80"
                   : "dark:bg-gray-800 dark:text-white/90 text-gray-900 w-full"
-                  } max-w-xl`}
+                  } lg:max-w-xl`}
               >
 
                 {msg.role == "user" && (
